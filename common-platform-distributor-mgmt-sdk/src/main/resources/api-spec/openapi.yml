@@ -1,0 +1,789 @@
+openapi: 3.0.1
+info:
+  title: common-platform-distributor-mgmt
+  description: Distributor Management Core Application
+  contact:
+    name: Catalis Development
+    email: dev@catalis.com
+  version: 1.0.0
+servers:
+  - url: http://core.catalis.vc/distributors
+    description: Development Environment
+  - url: /
+    description: Local Development Environment
+tags:
+  - name: Distributor
+    description: API for managing distributors
+  - name: Distributor Audit Log
+    description: API for managing distributor audit logs
+  - name: Distributor Branding
+    description: API for managing distributor branding
+paths:
+  /api/v1/distributors/{distributorId}/brandings/{brandingId}:
+    get:
+      tags:
+        - Distributor Branding
+      summary: Get distributor branding by ID
+      description: Returns a distributor branding based on its ID
+      operationId: getDistributorBrandingById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandingId
+          in: path
+          description: ID of the distributor branding to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor branding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorBrandingDTO'
+        '404':
+          description: Distributor branding not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Branding
+      summary: Update distributor branding
+      description: Updates an existing distributor branding with the provided information
+      operationId: updateDistributorBranding
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandingId
+          in: path
+          description: ID of the distributor branding to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorBrandingDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor branding successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorBrandingDTO'
+        '400':
+          description: Invalid distributor branding data provided
+        '404':
+          description: Distributor branding not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Branding
+      summary: Delete distributor branding
+      description: Deletes a distributor branding based on its ID
+      operationId: deleteDistributorBranding
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandingId
+          in: path
+          description: ID of the distributor branding to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor branding successfully deleted
+        '404':
+          description: Distributor branding not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}:
+    get:
+      tags:
+        - Distributor Audit Log
+      summary: Get distributor audit log by ID
+      description: Returns a distributor audit log based on its ID
+      operationId: getDistributorAuditLogById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auditLogId
+          in: path
+          description: ID of the distributor audit log to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor audit log
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorAuditLogDTO'
+        '404':
+          description: Distributor audit log not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Audit Log
+      summary: Update distributor audit log
+      description: Updates an existing distributor audit log with the provided information
+      operationId: updateDistributorAuditLog
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auditLogId
+          in: path
+          description: ID of the distributor audit log to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorAuditLogDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor audit log successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorAuditLogDTO'
+        '400':
+          description: Invalid distributor audit log data provided
+        '404':
+          description: Distributor audit log not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Audit Log
+      summary: Delete distributor audit log
+      description: Deletes a distributor audit log based on its ID
+      operationId: deleteDistributorAuditLog
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auditLogId
+          in: path
+          description: ID of the distributor audit log to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor audit log successfully deleted
+        '404':
+          description: Distributor audit log not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}:
+    get:
+      tags:
+        - Distributor
+      summary: Get distributor by ID
+      description: Returns a distributor based on its ID
+      operationId: getDistributorById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorDTO'
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor
+      summary: Update distributor
+      description: Updates an existing distributor with the provided information
+      operationId: updateDistributor
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorDTO'
+        '400':
+          description: Invalid distributor data provided
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor
+      summary: Delete distributor
+      description: Deletes a distributor based on its ID
+      operationId: deleteDistributor
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor successfully deleted
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/brandings/filter:
+    post:
+      tags:
+        - Distributor Branding
+      summary: Filter distributor brandings
+      description: Returns a paginated list of distributor brandings based on filter criteria
+      operationId: filterDistributorBrandings
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorBrandingDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor brandings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/brandings:
+    post:
+      tags:
+        - Distributor Branding
+      summary: Create a new distributor branding
+      description: Creates a new distributor branding with the provided information
+      operationId: createDistributorBranding
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorBrandingDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor branding successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorBrandingDTO'
+        '400':
+          description: Invalid distributor branding data provided
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/audit-logs/filter:
+    post:
+      tags:
+        - Distributor Audit Log
+      summary: Filter distributor audit logs
+      description: Returns a paginated list of distributor audit logs based on filter criteria
+      operationId: filterDistributorAuditLogs
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorAuditLogDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor audit logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/audit-logs:
+    post:
+      tags:
+        - Distributor Audit Log
+      summary: Create a new distributor audit log
+      description: Creates a new distributor audit log with the provided information
+      operationId: createDistributorAuditLog
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorAuditLogDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor audit log successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorAuditLogDTO'
+        '400':
+          description: Invalid distributor audit log data provided
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/filter:
+    post:
+      tags:
+        - Distributor
+      summary: Filter distributors
+      description: Returns a paginated list of distributors based on filter criteria
+      operationId: filterDistributors
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors:
+    post:
+      tags:
+        - Distributor
+      summary: Create a new distributor
+      description: Creates a new distributor with the provided information
+      operationId: createDistributor
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorDTO'
+        '400':
+          description: Invalid distributor data provided
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    DistributorBrandingDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        distributorId:
+          type: integer
+          format: int64
+        logoUrl:
+          type: string
+        faviconUrl:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        backgroundColor:
+          type: string
+        fontFamily:
+          type: string
+        theme:
+          type: string
+          enum:
+            - LIGHT
+            - DARK
+            - CUSTOM
+        isDefault:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    DistributorAuditLogDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        distributorId:
+          type: integer
+          format: int64
+        action:
+          type: string
+          enum:
+            - CREATED
+            - UPDATED
+            - TERMINATED
+        entity:
+          type: string
+        entityId:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+        ipAddress:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        timestamp:
+          type: string
+          format: date-time
+    JsonNode:
+      type: object
+    DistributorDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        externalCode:
+          type: string
+        name:
+          type: string
+        displayName:
+          type: string
+        taxId:
+          type: string
+        registrationNumber:
+          type: string
+        websiteUrl:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        supportEmail:
+          type: string
+        addressLine:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        countryCode:
+          type: string
+        isActive:
+          type: boolean
+        isTestDistributor:
+          type: boolean
+        timeZone:
+          type: string
+        defaultLocale:
+          type: string
+        onboardedAt:
+          type: string
+          format: date-time
+        terminatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    FilterOptions:
+      type: object
+      properties:
+        caseInsensitiveStrings:
+          type: boolean
+        includeInheritedFields:
+          type: boolean
+      description: Filter options for customizing filter behavior
+    FilterRequestDistributorBrandingDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorBrandingDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    PaginationRequest:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          description: The zero-based page number to retrieve.
+          format: int32
+          example: 0
+          default: 0
+        pageSize:
+          type: integer
+          description: The number of items per page.
+          format: int32
+          example: 10
+          default: 10
+        sortBy:
+          type: string
+          description: The field to sort the results by.
+          example: name
+        sortDirection:
+          type: string
+          description: The direction of sorting, either ASC or DESC.
+          example: DESC
+          default: DESC
+      description: Represents a pagination request for retrieving paginated results, including page number, size, sort field, and direction.
+    RangeFilter:
+      type: object
+      properties:
+        ranges:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RangeObject'
+          description: Map of field names to their range criteria
+      description: Represents range filters for numeric fields
+    RangeObject:
+      type: object
+      properties:
+        from:
+          type: object
+          description: Start value of the range
+        to:
+          type: object
+          description: End value of the range
+      description: Represents a range with from and to values
+    PaginationResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            type: object
+            description: The list of items for the current page.
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: The current page number, typically zero-based.
+          format: int32
+      description: Represents a paginated response containing a list of items and pagination metadata.
+    FilterRequestDistributorAuditLogDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorAuditLogDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
