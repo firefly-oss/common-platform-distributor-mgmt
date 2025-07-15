@@ -1,0 +1,175 @@
+package com.catalis.core.distributor.core.services;
+
+import com.catalis.common.core.filters.FilterRequest;
+import com.catalis.core.distributor.core.mappers.DistributorBrandingMapper;
+import com.catalis.core.distributor.interfaces.dtos.DistributorBrandingDTO;
+import com.catalis.core.distributor.models.entities.DistributorBranding;
+import com.catalis.core.distributor.models.repositories.DistributorBrandingRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+public class DistributorBrandingServiceImplTest {
+
+    private DistributorBrandingRepository repository;
+    private DistributorBrandingMapper mapper;
+    private DistributorBrandingServiceImpl service;
+
+    private DistributorBranding distributorBranding;
+    private DistributorBrandingDTO distributorBrandingDTO;
+    private FilterRequest<DistributorBrandingDTO> filterRequest;
+
+    @BeforeEach
+    void setUp() {
+        // Initialize mocks
+        repository = mock(DistributorBrandingRepository.class);
+        mapper = mock(DistributorBrandingMapper.class);
+        service = new DistributorBrandingServiceImpl();
+
+        // Use reflection to set the mocked dependencies
+        try {
+            java.lang.reflect.Field repoField = DistributorBrandingServiceImpl.class.getDeclaredField("repository");
+            repoField.setAccessible(true);
+            repoField.set(service, repository);
+
+            java.lang.reflect.Field mapperField = DistributorBrandingServiceImpl.class.getDeclaredField("mapper");
+            mapperField.setAccessible(true);
+            mapperField.set(service, mapper);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set up test", e);
+        }
+
+        // Initialize test data
+        distributorBranding = new DistributorBranding();
+        distributorBranding.setId(1L);
+
+        distributorBrandingDTO = new DistributorBrandingDTO();
+        distributorBrandingDTO.setId(1L);
+
+        filterRequest = new FilterRequest<>();
+    }
+
+    @Test
+    void createDistributorBranding_ShouldCreateAndReturnDistributorBranding() {
+        // Arrange
+        when(mapper.toEntity(any(DistributorBrandingDTO.class))).thenReturn(distributorBranding);
+        when(repository.save(any(DistributorBranding.class))).thenReturn(Mono.just(distributorBranding));
+        when(mapper.toDTO(any(DistributorBranding.class))).thenReturn(distributorBrandingDTO);
+
+        // Act & Assert
+        StepVerifier.create(service.createDistributorBranding(distributorBrandingDTO))
+                .expectNext(distributorBrandingDTO)
+                .verifyComplete();
+
+        // Verify
+        verify(mapper).toEntity(distributorBrandingDTO);
+        verify(repository).save(distributorBranding);
+        verify(mapper).toDTO(distributorBranding);
+    }
+
+    @Test
+    void updateDistributorBranding_WhenDistributorBrandingExists_ShouldUpdateAndReturnDistributorBranding() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorBranding));
+        when(mapper.toEntity(any(DistributorBrandingDTO.class))).thenReturn(distributorBranding);
+        when(repository.save(any(DistributorBranding.class))).thenReturn(Mono.just(distributorBranding));
+        when(mapper.toDTO(any(DistributorBranding.class))).thenReturn(distributorBrandingDTO);
+
+        // Act & Assert
+        StepVerifier.create(service.updateDistributorBranding(1L, distributorBrandingDTO))
+                .expectNext(distributorBrandingDTO)
+                .verifyComplete();
+
+        // Verify
+        verify(repository).findById(1L);
+        verify(mapper).toEntity(distributorBrandingDTO);
+        verify(repository).save(distributorBranding);
+        verify(mapper).toDTO(distributorBranding);
+    }
+
+    @Test
+    void updateDistributorBranding_WhenDistributorBrandingDoesNotExist_ShouldReturnError() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(service.updateDistributorBranding(1L, distributorBrandingDTO))
+                .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
+                        throwable.getMessage().equals("Distributor branding not found with ID: 1"))
+                .verify();
+
+        // Verify
+        verify(repository).findById(1L);
+        verify(mapper, never()).toEntity(any());
+        verify(repository, never()).save(any());
+        verify(mapper, never()).toDTO(any());
+    }
+
+    @Test
+    void deleteDistributorBranding_WhenDistributorBrandingExists_ShouldDeleteDistributorBranding() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorBranding));
+        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(service.deleteDistributorBranding(1L))
+                .verifyComplete();
+
+        // Verify
+        verify(repository).findById(1L);
+        verify(repository).deleteById(1L);
+    }
+
+    @Test
+    void deleteDistributorBranding_WhenDistributorBrandingDoesNotExist_ShouldReturnError() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(service.deleteDistributorBranding(1L))
+                .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
+                        throwable.getMessage().equals("Distributor branding not found with ID: 1"))
+                .verify();
+
+        // Verify
+        verify(repository).findById(1L);
+        verify(repository, never()).deleteById(anyLong());
+    }
+
+    @Test
+    void getDistributorBrandingById_WhenDistributorBrandingExists_ShouldReturnDistributorBranding() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorBranding));
+        when(mapper.toDTO(any(DistributorBranding.class))).thenReturn(distributorBrandingDTO);
+
+        // Act & Assert
+        StepVerifier.create(service.getDistributorBrandingById(1L))
+                .expectNext(distributorBrandingDTO)
+                .verifyComplete();
+
+        // Verify
+        verify(repository).findById(1L);
+        verify(mapper).toDTO(distributorBranding);
+    }
+
+    @Test
+    void getDistributorBrandingById_WhenDistributorBrandingDoesNotExist_ShouldReturnError() {
+        // Arrange
+        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(service.getDistributorBrandingById(1L))
+                .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
+                        throwable.getMessage().equals("Distributor branding not found with ID: 1"))
+                .verify();
+
+        // Verify
+        verify(repository).findById(1L);
+        verify(mapper, never()).toDTO(any());
+    }
+}
