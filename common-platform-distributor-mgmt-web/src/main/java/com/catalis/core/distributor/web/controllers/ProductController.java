@@ -6,8 +6,17 @@ import com.catalis.core.distributor.core.services.ProductService;
 import com.catalis.core.distributor.core.services.ProductCategoryService;
 import com.catalis.core.distributor.interfaces.dtos.ProductCategoryDTO;
 import com.catalis.core.distributor.interfaces.dtos.ProductDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -18,6 +27,7 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @RequestMapping("/api/v1/distributors/{distributorId}/products")
+@Tag(name = "Product", description = "API for managing distributor products")
 public class ProductController {
 
     @Autowired
@@ -33,10 +43,21 @@ public class ProductController {
      * @param filterRequest the filter request containing criteria and pagination
      * @return the ResponseEntity with status 200 (OK) and the list of products in body
      */
-    @PostMapping("/filter")
+    @Operation(summary = "Filter products", description = "Returns a paginated list of products based on filter criteria for a specific distributor")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved products",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = PaginationResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<PaginationResponse<ProductDTO>>> filterProducts(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
-            @RequestBody FilterRequest<ProductDTO> filterRequest) {
+            @Valid @RequestBody FilterRequest<ProductDTO> filterRequest) {
         
         // Ensure we're only filtering products for the specified distributor
         if (filterRequest.getFilters() == null) {
@@ -55,10 +76,21 @@ public class ProductController {
      * @param productDTO the product to create
      * @return the ResponseEntity with status 201 (Created) and with body the new product
      */
-    @PostMapping
+    @Operation(summary = "Create a new product", description = "Creates a new product for a specific distributor")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Product successfully created",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid product data provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ProductDTO>> createProduct(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
-            @RequestBody ProductDTO productDTO) {
+            @Valid @RequestBody ProductDTO productDTO) {
         
         productDTO.setDistributorId(distributorId);
         
@@ -74,11 +106,25 @@ public class ProductController {
      * @param productDTO the product to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated product
      */
-    @PutMapping("/{productId}")
+    @Operation(summary = "Update an existing product", description = "Updates an existing product for a specific distributor")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Product successfully updated",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid product data provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "404", description = "Product not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PutMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ProductDTO>> updateProduct(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product to update", required = true)
             @PathVariable Long productId,
-            @RequestBody ProductDTO productDTO) {
+            @Valid @RequestBody ProductDTO productDTO) {
         
         productDTO.setDistributorId(distributorId);
         
@@ -93,9 +139,21 @@ public class ProductController {
      * @param productId the ID of the product to delete
      * @return the ResponseEntity with status 204 (NO_CONTENT)
      */
+    @Operation(summary = "Delete a product", description = "Deletes a product based on its ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Product successfully deleted",
+                content = @Content),
+        @ApiResponse(responseCode = "404", description = "Product not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
     @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteProduct(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product to delete", required = true)
             @PathVariable Long productId) {
         
         return productService.deleteProduct(productId)
@@ -109,9 +167,21 @@ public class ProductController {
      * @param productId the ID of the product to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the product
      */
-    @GetMapping("/{productId}")
+    @Operation(summary = "Get product by ID", description = "Returns a product based on its ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved product",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Product not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ProductDTO>> getProductById(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product to retrieve", required = true)
             @PathVariable Long productId) {
         
         return productService.getProductById(productId)
@@ -124,8 +194,19 @@ public class ProductController {
      * @param distributorId the ID of the distributor
      * @return the ResponseEntity with status 200 (OK) and with body the list of products
      */
-    @GetMapping
+    @Operation(summary = "Get all products for a distributor", description = "Returns all products associated with a specific distributor")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved products",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Distributor not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getProductsByDistributorId(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId) {
         
         return Mono.just(ResponseEntity.ok(productService.getProductsByDistributorId(distributorId)));
@@ -137,8 +218,19 @@ public class ProductController {
      * @param distributorId the ID of the distributor
      * @return the ResponseEntity with status 200 (OK) and with body the list of active products
      */
-    @GetMapping("/active")
+    @Operation(summary = "Get all active products for a distributor", description = "Returns all active products associated with a specific distributor")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved active products",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Distributor not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getActiveProductsByDistributorId(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId) {
         
         return Mono.just(ResponseEntity.ok(productService.getActiveProductsByDistributorId(distributorId)));
@@ -151,9 +243,21 @@ public class ProductController {
      * @param categoryId the ID of the product category
      * @return the ResponseEntity with status 200 (OK) and with body the list of products
      */
-    @GetMapping("/category/{categoryId}")
+    @Operation(summary = "Get products by category", description = "Returns all products for a specific distributor filtered by category")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved products",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Distributor or category not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/category/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getProductsByDistributorIdAndCategory(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product category", required = true)
             @PathVariable Long categoryId) {
         
         return productCategoryService.getProductCategoryById(categoryId)
