@@ -1,5 +1,6 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DistributorDTO {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+
     private String externalCode;
     private String name;
     private String displayName;

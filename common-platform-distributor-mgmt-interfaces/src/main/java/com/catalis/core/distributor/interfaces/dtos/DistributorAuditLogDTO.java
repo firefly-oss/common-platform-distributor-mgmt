@@ -1,6 +1,8 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
 import com.catalis.core.distributor.interfaces.enums.DistributorActionEnum;
+import com.catalis.core.utils.annotations.FilterableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,10 +20,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DistributorAuditLogDTO {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+
+    @FilterableId
     private Long distributorId;
+
     private DistributorActionEnum action;
     private String entity;
+
+    @FilterableId
     private String entityId;
     private JsonNode metadata;
     private String ipAddress;

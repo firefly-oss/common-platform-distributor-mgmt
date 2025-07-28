@@ -1,6 +1,8 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
 import com.catalis.core.distributor.interfaces.enums.ThemeEnum;
+import com.catalis.core.utils.annotations.FilterableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +19,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DistributorBrandingDTO {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+
+    @FilterableId
     private Long distributorId;
     private String logoUrl;
     private String faviconUrl;
