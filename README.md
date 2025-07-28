@@ -22,6 +22,11 @@ Key features include:
 - Distributor lifecycle management (creation, updates, termination)
 - Customizable branding configurations for distributors
 - Comprehensive audit logging for all distributor-related actions
+- Product management for distributor offerings
+- Product categorization and organization
+- Lending configuration management with various lending types
+- Leasing contract creation and management
+- Shipment tracking for leased products
 - RESTful API for integration with other services
 
 ## Architecture
@@ -52,6 +57,18 @@ The service manages the following core entities:
 erDiagram
     Distributor ||--o{ DistributorBranding : "has"
     Distributor ||--o{ DistributorAuditLog : "has"
+    Distributor ||--o{ Product : "offers"
+    Distributor ||--o{ LeasingContract : "manages"
+    
+    Product ||--o{ LendingConfiguration : "has"
+    Product }|--|| ProductCategory : "belongs to"
+    Product ||--o{ LeasingContract : "included in"
+    Product ||--o{ Shipment : "shipped as"
+    
+    LendingConfiguration }|--|| LendingType : "has type"
+    LendingConfiguration ||--o{ LeasingContract : "used in"
+    
+    LeasingContract ||--o{ Shipment : "has"
 
     Distributor {
         Long id PK
@@ -109,6 +126,115 @@ erDiagram
         Long userId
         LocalDateTime timestamp
     }
+    
+    Product {
+        Long id PK
+        Long distributorId FK
+        String name
+        String description
+        String sku
+        String modelNumber
+        String manufacturer
+        ProductCategory category FK
+        String imageUrl
+        String specifications
+        Boolean isActive
+        LocalDateTime createdAt
+        Long createdBy
+        LocalDateTime updatedAt
+        Long updatedBy
+    }
+    
+    ProductCategory {
+        Long id PK
+        String name
+        String code
+        String description
+        Boolean isActive
+        LocalDateTime createdAt
+        Long createdBy
+        LocalDateTime updatedAt
+        Long updatedBy
+    }
+    
+    LendingConfiguration {
+        Long id PK
+        Long productId FK
+        String name
+        String description
+        LendingType lendingType FK
+        Integer minTermMonths
+        Integer maxTermMonths
+        Integer defaultTermMonths
+        BigDecimal minDownPaymentPercentage
+        BigDecimal defaultDownPaymentPercentage
+        BigDecimal interestRate
+        BigDecimal processingFeePercentage
+        BigDecimal earlyTerminationFeePercentage
+        BigDecimal latePaymentFeeAmount
+        Integer gracePeriodDays
+        Boolean isDefault
+        Boolean isActive
+        String termsConditions
+        LocalDateTime createdAt
+        Long createdBy
+        LocalDateTime updatedAt
+        Long updatedBy
+    }
+    
+    LendingType {
+        Long id PK
+        String name
+        String code
+        String description
+        Boolean isActive
+        LocalDateTime createdAt
+        Long createdBy
+        LocalDateTime updatedAt
+        Long updatedBy
+    }
+    
+    LeasingContract {
+        Long id PK
+        Long contractId
+        Long partyId
+        Long distributorId FK
+        Long productId FK
+        Long lendingConfigurationId FK
+        LocalDate startDate
+        LocalDate endDate
+        BigDecimal monthlyPayment
+        BigDecimal downPayment
+        BigDecimal totalAmount
+        String status
+        LocalDateTime approvalDate
+        Long approvedBy
+        String termsConditions
+        String notes
+        Boolean isActive
+        LocalDateTime createdAt
+        Long createdBy
+        LocalDateTime updatedAt
+        Long updatedBy
+    }
+    
+    Shipment {
+        Long id PK
+        Long leasingContractId FK
+        Long productId FK
+        String trackingNumber
+        String carrier
+        String shippingAddress
+        LocalDateTime shippingDate
+        LocalDateTime estimatedDeliveryDate
+        LocalDateTime actualDeliveryDate
+        String status
+        String notes
+        LocalDateTime createdAt
+        Long createdBy
+        LocalDateTime updatedAt
+        Long updatedBy
+    }
 ```
 
 ### Enumerations
@@ -122,6 +248,23 @@ erDiagram
   - `CREATED`
   - `UPDATED`
   - `TERMINATED`
+
+- **ProductCategoryEnum**: Defines the categories of products (later migrated to a separate table)
+  - `MEDICAL_EQUIPMENT`: Equipment used in medical and healthcare settings
+  - `VEHICLE`: Automobiles, trucks, and other vehicles
+  - `CONSTRUCTION_EQUIPMENT`: Equipment used in construction and building
+  - `TECHNOLOGY`: Computers, servers, and other technology products
+  - `OFFICE_EQUIPMENT`: Equipment used in office settings
+  - `INDUSTRIAL_MACHINERY`: Machinery used in industrial settings
+  - `OTHER`: Other types of products not fitting into specific categories
+
+- **LendingTypeEnum**: Defines the types of lending options (later migrated to a separate table)
+  - `LEASE`: Traditional lease with fixed term
+  - `RENT`: Short-term rental
+  - `LEASE_TO_OWN`: Lease with option to purchase at end of term
+  - `FINANCE`: Direct financing option
+  - `SUBSCRIPTION`: Recurring payment model
+  - `INSTALLMENT`: Payment in installments
 
 ## Setup and Installation
 
@@ -298,6 +441,182 @@ curl -X POST http://localhost:8080/api/v1/distributors/1/audit-logs/filter \
   -H "Content-Type: application/json" \
   -d '{
     "filters": {
+      "entity": "DISTRIBUTOR",
+      "entityId": "1"
+    },
+    "pagination": {
+      "pageNumber": 0,
+      "pageSize": 10,
+      "sortBy": "timestamp",
+      "sortDirection": "DESC"
+    }
+  }'
+```
+
+#### Product Management
+
+1. **Create a new product** for a distributor:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/distributors/1/products \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Medical Scanner X2000",
+    "description": "Advanced medical imaging scanner for diagnostic use",
+    "sku": "MS-X2000",
+    "modelNumber": "X2000-MED",
+    "manufacturer": "MedTech Innovations",
+    "category": "MEDICAL_EQUIPMENT",
+    "imageUrl": "https://example.com/images/scanner-x2000.jpg",
+    "specifications": {
+      "dimensions": "60cm x 80cm x 150cm",
+      "weight": "120kg",
+      "powerRequirements": "220V, 10A",
+      "certifications": ["FDA", "CE", "ISO13485"]
+    },
+    "isActive": true
+  }'
+```
+
+2. **Update product details** when information changes:
+
+```bash
+curl -X PUT http://localhost:8080/api/v1/distributors/1/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": 1,
+    "distributorId": 1,
+    "name": "Medical Scanner X2000 Pro",
+    "description": "Advanced medical imaging scanner for diagnostic use with enhanced resolution",
+    "sku": "MS-X2000-PRO",
+    "modelNumber": "X2000-MED-PRO",
+    "manufacturer": "MedTech Innovations",
+    "category": "MEDICAL_EQUIPMENT",
+    "imageUrl": "https://example.com/images/scanner-x2000-pro.jpg",
+    "specifications": {
+      "dimensions": "60cm x 80cm x 150cm",
+      "weight": "115kg",
+      "powerRequirements": "220V, 8A",
+      "certifications": ["FDA", "CE", "ISO13485", "AAMI"]
+    },
+    "isActive": true
+  }'
+```
+
+3. **Get all products** for a distributor:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/distributors/1/products
+```
+
+4. **Get products by category**:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/distributors/1/products/category/MEDICAL_EQUIPMENT
+```
+
+5. **Filter products** based on criteria:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/distributors/1/products/filter \
+  -H "Content-Type: application/json" \
+  -d '{
+    "filters": {
+      "category": "MEDICAL_EQUIPMENT",
+      "isActive": true
+    },
+    "pagination": {
+      "pageNumber": 0,
+      "pageSize": 10,
+      "sortBy": "name",
+      "sortDirection": "ASC"
+    }
+  }'
+```
+
+#### Lending Configuration Management
+
+1. **Create a new lending configuration** for a product:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/distributors/1/products/1/lending-configurations \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Standard Lease",
+    "description": "Standard leasing terms for medical equipment",
+    "lendingType": "LEASE",
+    "minTermMonths": 12,
+    "maxTermMonths": 60,
+    "defaultTermMonths": 36,
+    "minDownPaymentPercentage": 10.00,
+    "defaultDownPaymentPercentage": 15.00,
+    "interestRate": 5.75,
+    "processingFeePercentage": 1.50,
+    "earlyTerminationFeePercentage": 3.00,
+    "latePaymentFeeAmount": 50.00,
+    "gracePeriodDays": 10,
+    "isDefault": true,
+    "isActive": true,
+    "termsConditions": "Standard terms and conditions apply. See contract for details."
+  }'
+```
+
+2. **Update a lending configuration**:
+
+```bash
+curl -X PUT http://localhost:8080/api/v1/distributors/1/products/1/lending-configurations/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": 1,
+    "productId": 1,
+    "name": "Premium Lease",
+    "description": "Premium leasing terms with lower interest rate",
+    "lendingType": "LEASE",
+    "minTermMonths": 12,
+    "maxTermMonths": 60,
+    "defaultTermMonths": 36,
+    "minDownPaymentPercentage": 15.00,
+    "defaultDownPaymentPercentage": 20.00,
+    "interestRate": 4.75,
+    "processingFeePercentage": 1.00,
+    "earlyTerminationFeePercentage": 2.50,
+    "latePaymentFeeAmount": 45.00,
+    "gracePeriodDays": 15,
+    "isDefault": true,
+    "isActive": true,
+    "termsConditions": "Premium terms and conditions apply. See contract for details."
+  }'
+```
+
+3. **Get all lending configurations** for a product:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/distributors/1/products/1/lending-configurations
+```
+
+4. **Get the default lending configuration** for a product:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/distributors/1/products/1/lending-configurations/default
+```
+
+5. **Get lending configurations by type**:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/distributors/1/products/1/lending-configurations/type/LEASE
+```
+
+6. **Get all lending configurations** for a distributor:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/distributors/1/lending-configurations
+```
+
+```bash
+curl -X POST http://localhost:8080/api/v1/distributors/1/audit-logs/filter \
+  -H "Content-Type: application/json" \
+  -d '{
+    "filters": {
       "action": "UPDATED"
     },
     "page": 0,
@@ -338,6 +657,58 @@ The service provides a RESTful API with the following main endpoints:
 - `PUT /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}` - Update audit log
 - `DELETE /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}` - Delete audit log
 - `POST /api/v1/distributors/{distributorId}/audit-logs/filter` - Filter audit logs
+
+### Product Endpoints
+
+- `POST /api/v1/distributors/{distributorId}/products` - Create a new product
+- `GET /api/v1/distributors/{distributorId}/products/{productId}` - Get product by ID
+- `PUT /api/v1/distributors/{distributorId}/products/{productId}` - Update product
+- `DELETE /api/v1/distributors/{distributorId}/products/{productId}` - Delete product
+- `GET /api/v1/distributors/{distributorId}/products` - Get all products for a distributor
+- `GET /api/v1/distributors/{distributorId}/products/active` - Get all active products for a distributor
+- `GET /api/v1/distributors/{distributorId}/products/category/{categoryId}` - Get products by category
+- `POST /api/v1/distributors/{distributorId}/products/filter` - Filter products
+
+### Lending Configuration Endpoints
+
+- `POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations` - Create a new lending configuration
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}` - Get lending configuration by ID
+- `PUT /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}` - Update lending configuration
+- `DELETE /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}` - Delete lending configuration
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations` - Get all lending configurations for a product
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/active` - Get active lending configurations
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/type/{lendingTypeId}` - Get configurations by type
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/default` - Get default configuration
+- `POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}/create-contract` - Create contract from configuration
+- `POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/filter` - Filter lending configurations
+- `GET /api/v1/distributors/{distributorId}/lending-configurations` - Get all lending configurations for a distributor
+
+### Leasing Contract Endpoints
+
+- `POST /api/v1/leasing-contracts` - Create a new leasing contract
+- `GET /api/v1/leasing-contracts/{id}` - Get leasing contract by ID
+- `PUT /api/v1/leasing-contracts/{id}` - Update leasing contract
+- `DELETE /api/v1/leasing-contracts/{id}` - Delete leasing contract
+- `GET /api/v1/leasing-contracts/contract/{contractId}` - Get leasing contract by contract ID
+- `GET /api/v1/leasing-contracts/distributor/{distributorId}` - Get contracts for a distributor
+- `GET /api/v1/leasing-contracts/product/{productId}` - Get contracts for a product
+- `GET /api/v1/leasing-contracts/party/{partyId}` - Get contracts for a party
+- `GET /api/v1/leasing-contracts/status/{status}` - Get contracts by status
+- `POST /api/v1/leasing-contracts/{id}/approve` - Approve a leasing contract
+- `POST /api/v1/leasing-contracts/filter` - Filter leasing contracts
+
+### Shipment Endpoints
+
+- `POST /api/v1/shipments` - Create a new shipment
+- `GET /api/v1/shipments/{id}` - Get shipment by ID
+- `PUT /api/v1/shipments/{id}` - Update shipment
+- `DELETE /api/v1/shipments/{id}` - Delete shipment
+- `GET /api/v1/shipments/tracking/{trackingNumber}` - Get shipment by tracking number
+- `GET /api/v1/shipments/leasing-contract/{leasingContractId}` - Get shipments for a leasing contract
+- `GET /api/v1/shipments/product/{productId}` - Get shipments for a product
+- `GET /api/v1/shipments/status/{status}` - Get shipments by status
+- `PUT /api/v1/shipments/{id}/status` - Update shipment status
+- `POST /api/v1/shipments/filter` - Filter shipments
 
 Detailed API documentation is available through Swagger UI at `/swagger-ui.html` when the service is running.
 
