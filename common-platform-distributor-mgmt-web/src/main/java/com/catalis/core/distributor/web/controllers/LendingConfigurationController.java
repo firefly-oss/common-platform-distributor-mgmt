@@ -8,8 +8,17 @@ import com.catalis.core.distributor.core.services.LendingTypeService;
 import com.catalis.core.distributor.interfaces.dtos.LeasingContractDTO;
 import com.catalis.core.distributor.interfaces.dtos.LendingConfigurationDTO;
 import com.catalis.core.distributor.interfaces.dtos.LendingTypeDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -20,6 +29,7 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @RequestMapping("/api/v1/distributors/{distributorId}/products/{productId}/lending-configurations")
+@Tag(name = "Lending Configuration", description = "API for managing product lending configurations")
 public class LendingConfigurationController {
 
     @Autowired
@@ -39,11 +49,23 @@ public class LendingConfigurationController {
      * @param filterRequest the filter request containing criteria and pagination
      * @return the ResponseEntity with status 200 (OK) and the list of lending configurations in body
      */
-    @PostMapping("/filter")
+    @Operation(summary = "Filter lending configurations", description = "Returns a paginated list of lending configurations based on filter criteria for a specific product")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending configurations",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = PaginationResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<PaginationResponse<LendingConfigurationDTO>>> filterLendingConfigurations(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
-            @RequestBody FilterRequest<LendingConfigurationDTO> filterRequest) {
+            @Valid @RequestBody FilterRequest<LendingConfigurationDTO> filterRequest) {
         
         // Ensure we're only filtering lending configurations for the specified product
         if (filterRequest.getFilters() == null) {
@@ -63,11 +85,23 @@ public class LendingConfigurationController {
      * @param lendingConfigurationDTO the lending configuration to create
      * @return the ResponseEntity with status 201 (Created) and with body the new lending configuration
      */
-    @PostMapping
+    @Operation(summary = "Create a new lending configuration", description = "Creates a new lending configuration for a specific product")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Lending configuration successfully created",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid lending configuration data provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> createLendingConfiguration(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
-            @RequestBody LendingConfigurationDTO lendingConfigurationDTO) {
+            @Valid @RequestBody LendingConfigurationDTO lendingConfigurationDTO) {
         
         lendingConfigurationDTO.setProductId(productId);
         
@@ -84,12 +118,27 @@ public class LendingConfigurationController {
      * @param lendingConfigurationDTO the lending configuration to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated lending configuration
      */
-    @PutMapping("/{configId}")
+    @Operation(summary = "Update an existing lending configuration", description = "Updates an existing lending configuration for a specific product")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lending configuration successfully updated",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid lending configuration data provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "404", description = "Lending configuration not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PutMapping(value = "/{configId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> updateLendingConfiguration(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
+            @Parameter(description = "ID of the lending configuration to update", required = true)
             @PathVariable Long configId,
-            @RequestBody LendingConfigurationDTO lendingConfigurationDTO) {
+            @Valid @RequestBody LendingConfigurationDTO lendingConfigurationDTO) {
         
         lendingConfigurationDTO.setProductId(productId);
         
@@ -105,10 +154,23 @@ public class LendingConfigurationController {
      * @param configId the ID of the lending configuration to delete
      * @return the ResponseEntity with status 204 (NO_CONTENT)
      */
+    @Operation(summary = "Delete a lending configuration", description = "Deletes a lending configuration based on its ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Lending configuration successfully deleted",
+                content = @Content),
+        @ApiResponse(responseCode = "404", description = "Lending configuration not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
     @DeleteMapping("/{configId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteLendingConfiguration(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
+            @Parameter(description = "ID of the lending configuration to delete", required = true)
             @PathVariable Long configId) {
         
         return lendingConfigurationService.deleteLendingConfiguration(configId)
@@ -123,10 +185,23 @@ public class LendingConfigurationController {
      * @param configId the ID of the lending configuration to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the lending configuration
      */
-    @GetMapping("/{configId}")
+    @Operation(summary = "Get lending configuration by ID", description = "Returns a lending configuration based on its ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending configuration",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Lending configuration not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/{configId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> getLendingConfigurationById(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
+            @Parameter(description = "ID of the lending configuration to retrieve", required = true)
             @PathVariable Long configId) {
         
         return lendingConfigurationService.getLendingConfigurationById(configId)
@@ -140,9 +215,21 @@ public class LendingConfigurationController {
      * @param productId the ID of the product
      * @return the ResponseEntity with status 200 (OK) and with body the list of lending configurations
      */
-    @GetMapping
+    @Operation(summary = "Get all lending configurations for a product", description = "Returns all lending configurations associated with a specific product")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending configurations",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Product not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getLendingConfigurationsByProductId(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId) {
         
         return Mono.just(ResponseEntity.ok(lendingConfigurationService.getLendingConfigurationsByProductId(productId)));
@@ -155,9 +242,21 @@ public class LendingConfigurationController {
      * @param productId the ID of the product
      * @return the ResponseEntity with status 200 (OK) and with body the list of active lending configurations
      */
-    @GetMapping("/active")
+    @Operation(summary = "Get all active lending configurations for a product", description = "Returns all active lending configurations associated with a specific product")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved active lending configurations",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Product not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getActiveLendingConfigurationsByProductId(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId) {
         
         return Mono.just(ResponseEntity.ok(lendingConfigurationService.getActiveLendingConfigurationsByProductId(productId)));
@@ -171,10 +270,23 @@ public class LendingConfigurationController {
      * @param lendingTypeId the ID of the lending type
      * @return the ResponseEntity with status 200 (OK) and with body the list of lending configurations
      */
-    @GetMapping("/type/{lendingTypeId}")
+    @Operation(summary = "Get lending configurations by product and lending type", description = "Returns all lending configurations for a specific product filtered by lending type")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending configurations",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Product or lending type not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/type/{lendingTypeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getLendingConfigurationsByProductIdAndLendingType(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
+            @Parameter(description = "ID of the lending type", required = true)
             @PathVariable Long lendingTypeId) {
         
         return lendingTypeService.getLendingTypeById(lendingTypeId)
@@ -189,9 +301,21 @@ public class LendingConfigurationController {
      * @param productId the ID of the product
      * @return the ResponseEntity with status 200 (OK) and with body the default lending configuration
      */
-    @GetMapping("/default")
+    @Operation(summary = "Get default lending configuration for a product", description = "Returns the default lending configuration for a specific product")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved default lending configuration",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LendingConfigurationDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Product or default configuration not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @GetMapping(value = "/default", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> getDefaultLendingConfigurationByProductId(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId) {
         
         return lendingConfigurationService.getDefaultLendingConfigurationByProductId(productId)
@@ -207,12 +331,27 @@ public class LendingConfigurationController {
      * @param leasingContractDTO the leasing contract details
      * @return the ResponseEntity with status 201 (Created) and with body the new leasing contract
      */
-    @PostMapping("/{configId}/create-contract")
+    @Operation(summary = "Create a leasing contract from a lending configuration", description = "Creates a new leasing contract based on a specific lending configuration")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Leasing contract successfully created",
+                content = @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = LeasingContractDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid leasing contract data provided", 
+                content = @Content),
+        @ApiResponse(responseCode = "404", description = "Lending configuration not found", 
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+                content = @Content)
+    })
+    @PostMapping(value = "/{configId}/create-contract", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LeasingContractDTO>> createLeasingContractFromConfiguration(
+            @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
+            @Parameter(description = "ID of the product", required = true)
             @PathVariable Long productId,
+            @Parameter(description = "ID of the lending configuration", required = true)
             @PathVariable Long configId,
-            @RequestBody LeasingContractDTO leasingContractDTO) {
+            @Valid @RequestBody LeasingContractDTO leasingContractDTO) {
         
         // Set the required fields from the path variables
         leasingContractDTO.setDistributorId(distributorId);
