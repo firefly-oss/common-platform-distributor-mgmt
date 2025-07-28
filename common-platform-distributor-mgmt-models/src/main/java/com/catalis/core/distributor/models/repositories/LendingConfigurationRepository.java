@@ -1,6 +1,7 @@
 package com.catalis.core.distributor.models.repositories;
 
 import com.catalis.core.distributor.models.entities.LendingConfiguration;
+import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -52,5 +53,6 @@ public interface LendingConfigurationRepository extends BaseRepository<LendingCo
      * @param distributorId the ID of the distributor
      * @return a Flux of lending configurations
      */
+    @Query("SELECT lc.* FROM lending_configuration lc JOIN product p ON lc.product_id = p.id WHERE p.distributor_id = :distributorId")
     Flux<LendingConfiguration> findByProductDistributorId(Long distributorId);
 }
