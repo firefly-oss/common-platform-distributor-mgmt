@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,8 +43,8 @@ public class ProductCategoryController {
                 content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<ProductCategoryDTO> getAllProductCategories() {
-        return productCategoryService.getAllProductCategories();
+    public ResponseEntity<Flux<ProductCategoryDTO>> getAllProductCategories() {
+        return ResponseEntity.ok(productCategoryService.getAllProductCategories());
     }
 
     /**
@@ -60,8 +61,8 @@ public class ProductCategoryController {
                 content = @Content)
     })
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<ProductCategoryDTO> getActiveProductCategories() {
-        return productCategoryService.getActiveProductCategories();
+    public ResponseEntity<Flux<ProductCategoryDTO>> getActiveProductCategories() {
+        return ResponseEntity.ok(productCategoryService.getActiveProductCategories());
     }
 
     /**
