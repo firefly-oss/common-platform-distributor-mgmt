@@ -1,0 +1,2806 @@
+openapi: 3.0.1
+info:
+  title: common-platform-distributor-mgmt
+  description: Distributor Management Core Application
+  contact:
+    name: Catalis Development
+    email: dev@catalis.com
+  version: 1.0.0
+servers:
+  - url: http://core.catalis.vc/distributors
+    description: Development Environment
+  - url: /
+    description: Local Development Environment
+tags:
+  - name: Distributor Lending Configuration
+    description: API for managing distributor-level lending configurations
+  - name: Product
+    description: API for managing distributor products
+  - name: Distributor
+    description: API for managing distributors
+  - name: Distributor Audit Log
+    description: API for managing distributor audit logs
+  - name: Lending Configuration
+    description: API for managing product lending configurations
+  - name: Product Category
+    description: API for managing product categories
+  - name: Leasing Contract
+    description: API for managing leasing contracts
+  - name: Distributor Branding
+    description: API for managing distributor branding
+  - name: Shipment
+    description: API for managing shipments
+  - name: Lending Type
+    description: API for managing lending types
+paths:
+  /api/v1/shipments/{id}/status:
+    put:
+      tags:
+        - Shipment
+      summary: Update shipment status
+      description: Updates the status of an existing shipment
+      operationId: updateShipmentStatus
+      parameters:
+        - name: id
+          in: path
+          description: ID of the shipment to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          description: New status value
+          required: true
+          schema:
+            type: string
+        - name: updatedBy
+          in: query
+          description: ID of the user updating the status
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Shipment status successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Shipment not found
+        '500':
+          description: Internal server error
+  /api/v1/shipments/{id}:
+    get:
+      tags:
+        - Shipment
+      summary: Get shipment by ID
+      description: Returns a shipment based on its ID
+      operationId: getShipmentById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the shipment to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved shipment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '404':
+          description: Shipment not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Shipment
+      summary: Update an existing shipment
+      description: Updates an existing shipment with the provided information
+      operationId: updateShipment
+      parameters:
+        - name: id
+          in: path
+          description: ID of the shipment to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipmentDTO'
+        required: true
+      responses:
+        '200':
+          description: Shipment successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '400':
+          description: Invalid shipment data provided
+        '404':
+          description: Shipment not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Shipment
+      summary: Delete a shipment
+      description: Deletes a shipment based on its ID
+      operationId: deleteShipment
+      parameters:
+        - name: id
+          in: path
+          description: ID of the shipment to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Shipment successfully deleted
+        '404':
+          description: Shipment not found
+        '500':
+          description: Internal server error
+  /api/v1/product-categories/{id}:
+    get:
+      tags:
+        - Product Category
+      summary: Get product category by ID
+      description: Returns a product category based on its ID
+      operationId: getProductCategoryById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product category to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved product category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategoryDTO'
+        '404':
+          description: Product category not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Product Category
+      summary: Update product category
+      description: Updates an existing product category with the provided information
+      operationId: updateProductCategory
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product category to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCategoryDTO'
+        required: true
+      responses:
+        '200':
+          description: Product category successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategoryDTO'
+        '400':
+          description: Invalid product category data provided
+        '404':
+          description: Product category not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Product Category
+      summary: Delete product category
+      description: Deletes a product category based on its ID
+      operationId: deleteProductCategory
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product category to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Product category successfully deleted
+        '404':
+          description: Product category not found
+        '500':
+          description: Internal server error
+  /api/v1/lending-types/{id}:
+    get:
+      tags:
+        - Lending Type
+      summary: Get lending type by ID
+      description: Returns a lending type based on its ID
+      operationId: getLendingTypeById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the lending type to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved lending type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingTypeDTO'
+        '404':
+          description: Lending type not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Lending Type
+      summary: Update lending type
+      description: Updates an existing lending type with the provided information
+      operationId: updateLendingType
+      parameters:
+        - name: id
+          in: path
+          description: ID of the lending type to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LendingTypeDTO'
+        required: true
+      responses:
+        '200':
+          description: Lending type successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingTypeDTO'
+        '400':
+          description: Invalid lending type data provided
+        '404':
+          description: Lending type not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Lending Type
+      summary: Delete lending type
+      description: Deletes a lending type based on its ID
+      operationId: deleteLendingType
+      parameters:
+        - name: id
+          in: path
+          description: ID of the lending type to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Lending type successfully deleted
+        '404':
+          description: Lending type not found
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/{id}:
+    get:
+      tags:
+        - Leasing Contract
+      summary: Get leasing contract by ID
+      description: Returns a leasing contract based on its ID
+      operationId: getLeasingContractById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the leasing contract to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved leasing contract
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '404':
+          description: Leasing contract not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Leasing Contract
+      summary: Update an existing leasing contract
+      description: Updates an existing leasing contract with the provided information
+      operationId: updateLeasingContract
+      parameters:
+        - name: id
+          in: path
+          description: ID of the leasing contract to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingContractDTO'
+        required: true
+      responses:
+        '200':
+          description: Leasing contract successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '400':
+          description: Invalid leasing contract data provided
+        '404':
+          description: Leasing contract not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Leasing Contract
+      summary: Delete a leasing contract
+      description: Deletes a leasing contract based on its ID
+      operationId: deleteLeasingContract
+      parameters:
+        - name: id
+          in: path
+          description: ID of the leasing contract to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Leasing contract successfully deleted
+        '404':
+          description: Leasing contract not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}:
+    get:
+      tags:
+        - Lending Configuration
+      summary: Get lending configuration by ID
+      description: Returns a lending configuration based on its ID
+      operationId: getLendingConfigurationById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: configId
+          in: path
+          description: ID of the lending configuration to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved lending configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '404':
+          description: Lending configuration not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Lending Configuration
+      summary: Update an existing lending configuration
+      description: Updates an existing lending configuration for a specific product
+      operationId: updateLendingConfiguration
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: configId
+          in: path
+          description: ID of the lending configuration to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LendingConfigurationDTO'
+        required: true
+      responses:
+        '200':
+          description: Lending configuration successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '400':
+          description: Invalid lending configuration data provided
+        '404':
+          description: Lending configuration not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Lending Configuration
+      summary: Delete a lending configuration
+      description: Deletes a lending configuration based on its ID
+      operationId: deleteLendingConfiguration
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: configId
+          in: path
+          description: ID of the lending configuration to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Lending configuration successfully deleted
+        '404':
+          description: Lending configuration not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Get product by ID
+      description: Returns a product based on its ID
+      operationId: getProductById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Product
+      summary: Update an existing product
+      description: Updates an existing product for a specific distributor
+      operationId: updateProduct
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+        required: true
+      responses:
+        '200':
+          description: Product successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+        '400':
+          description: Invalid product data provided
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Product
+      summary: Delete a product
+      description: Deletes a product based on its ID
+      operationId: deleteProduct
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Product successfully deleted
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/brandings/{brandingId}:
+    get:
+      tags:
+        - Distributor Branding
+      summary: Get distributor branding by ID
+      description: Returns a distributor branding based on its ID
+      operationId: getDistributorBrandingById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandingId
+          in: path
+          description: ID of the distributor branding to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor branding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorBrandingDTO'
+        '404':
+          description: Distributor branding not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Branding
+      summary: Update distributor branding
+      description: Updates an existing distributor branding with the provided information
+      operationId: updateDistributorBranding
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandingId
+          in: path
+          description: ID of the distributor branding to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorBrandingDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor branding successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorBrandingDTO'
+        '400':
+          description: Invalid distributor branding data provided
+        '404':
+          description: Distributor branding not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Branding
+      summary: Delete distributor branding
+      description: Deletes a distributor branding based on its ID
+      operationId: deleteDistributorBranding
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: brandingId
+          in: path
+          description: ID of the distributor branding to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor branding successfully deleted
+        '404':
+          description: Distributor branding not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}:
+    get:
+      tags:
+        - Distributor Audit Log
+      summary: Get distributor audit log by ID
+      description: Returns a distributor audit log based on its ID
+      operationId: getDistributorAuditLogById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auditLogId
+          in: path
+          description: ID of the distributor audit log to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor audit log
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorAuditLogDTO'
+        '404':
+          description: Distributor audit log not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Audit Log
+      summary: Update distributor audit log
+      description: Updates an existing distributor audit log with the provided information
+      operationId: updateDistributorAuditLog
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auditLogId
+          in: path
+          description: ID of the distributor audit log to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorAuditLogDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor audit log successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorAuditLogDTO'
+        '400':
+          description: Invalid distributor audit log data provided
+        '404':
+          description: Distributor audit log not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Audit Log
+      summary: Delete distributor audit log
+      description: Deletes a distributor audit log based on its ID
+      operationId: deleteDistributorAuditLog
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auditLogId
+          in: path
+          description: ID of the distributor audit log to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor audit log successfully deleted
+        '404':
+          description: Distributor audit log not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}:
+    get:
+      tags:
+        - Distributor
+      summary: Get distributor by ID
+      description: Returns a distributor based on its ID
+      operationId: getDistributorById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorDTO'
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor
+      summary: Update distributor
+      description: Updates an existing distributor with the provided information
+      operationId: updateDistributor
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorDTO'
+        '400':
+          description: Invalid distributor data provided
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor
+      summary: Delete distributor
+      description: Deletes a distributor based on its ID
+      operationId: deleteDistributor
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor successfully deleted
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/shipments/filter:
+    post:
+      tags:
+        - Shipment
+      summary: Filter shipments
+      description: Returns a paginated list of shipments based on filter criteria
+      operationId: filterShipments
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestShipmentDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved shipments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/shipments:
+    post:
+      tags:
+        - Shipment
+      summary: Create a new shipment
+      description: Creates a new shipment with the provided information
+      operationId: createShipment
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipmentDTO'
+        required: true
+      responses:
+        '201':
+          description: Shipment successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '400':
+          description: Invalid shipment data provided
+        '500':
+          description: Internal server error
+  /api/v1/product-categories:
+    get:
+      tags:
+        - Product Category
+      summary: Get all product categories
+      description: Returns all product categories
+      operationId: getAllProductCategories
+      responses:
+        '200':
+          description: Successfully retrieved product categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategoryDTO'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Product Category
+      summary: Create a new product category
+      description: Creates a new product category with the provided information
+      operationId: createProductCategory
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCategoryDTO'
+        required: true
+      responses:
+        '201':
+          description: Product category successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategoryDTO'
+        '400':
+          description: Invalid product category data provided
+        '500':
+          description: Internal server error
+  /api/v1/lending-types:
+    get:
+      tags:
+        - Lending Type
+      summary: Get all lending types
+      description: Returns all lending types
+      operationId: getAllLendingTypes
+      responses:
+        '200':
+          description: Successfully retrieved lending types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingTypeDTO'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Lending Type
+      summary: Create a new lending type
+      description: Creates a new lending type with the provided information
+      operationId: createLendingType
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LendingTypeDTO'
+        required: true
+      responses:
+        '201':
+          description: Lending type successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingTypeDTO'
+        '400':
+          description: Invalid lending type data provided
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/{id}/approve:
+    post:
+      tags:
+        - Leasing Contract
+      summary: Approve a leasing contract
+      description: Approves a leasing contract and updates its status
+      operationId: approveLeasingContract
+      parameters:
+        - name: id
+          in: path
+          description: ID of the leasing contract to approve
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: approvedBy
+          in: query
+          description: ID of the user approving the contract
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Leasing contract successfully approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '400':
+          description: Invalid approval request
+        '404':
+          description: Leasing contract not found
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/filter:
+    post:
+      tags:
+        - Leasing Contract
+      summary: Filter leasing contracts
+      description: Returns a paginated list of leasing contracts based on filter criteria
+      operationId: filterLeasingContracts
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestLeasingContractDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved leasing contracts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts:
+    post:
+      tags:
+        - Leasing Contract
+      summary: Create a new leasing contract
+      description: Creates a new leasing contract with the provided information
+      operationId: createLeasingContract
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingContractDTO'
+        required: true
+      responses:
+        '201':
+          description: Leasing contract successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '400':
+          description: Invalid leasing contract data provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}/create-contract:
+    post:
+      tags:
+        - Lending Configuration
+      summary: Create a leasing contract from a lending configuration
+      description: Creates a new leasing contract based on a specific lending configuration
+      operationId: createLeasingContractFromConfiguration
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: configId
+          in: path
+          description: ID of the lending configuration
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingContractDTO'
+        required: true
+      responses:
+        '201':
+          description: Leasing contract successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '400':
+          description: Invalid leasing contract data provided
+        '404':
+          description: Lending configuration not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/filter:
+    post:
+      tags:
+        - Lending Configuration
+      summary: Filter lending configurations
+      description: Returns a paginated list of lending configurations based on filter criteria for a specific product
+      operationId: filterLendingConfigurations
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestLendingConfigurationDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved lending configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations:
+    get:
+      tags:
+        - Lending Configuration
+      summary: Get all lending configurations for a product
+      description: Returns all lending configurations associated with a specific product
+      operationId: getLendingConfigurationsByProductId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved lending configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Lending Configuration
+      summary: Create a new lending configuration
+      description: Creates a new lending configuration for a specific product
+      operationId: createLendingConfiguration
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LendingConfigurationDTO'
+        required: true
+      responses:
+        '201':
+          description: Lending configuration successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '400':
+          description: Invalid lending configuration data provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/filter:
+    post:
+      tags:
+        - Product
+      summary: Filter products
+      description: Returns a paginated list of products based on filter criteria for a specific distributor
+      operationId: filterProducts
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestProductDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products:
+    get:
+      tags:
+        - Product
+      summary: Get all products for a distributor
+      description: Returns all products associated with a specific distributor
+      operationId: getProductsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Product
+      summary: Create a new product
+      description: Creates a new product for a specific distributor
+      operationId: createProduct
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+        required: true
+      responses:
+        '201':
+          description: Product successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+        '400':
+          description: Invalid product data provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/brandings/filter:
+    post:
+      tags:
+        - Distributor Branding
+      summary: Filter distributor brandings
+      description: Returns a paginated list of distributor brandings based on filter criteria
+      operationId: filterDistributorBrandings
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorBrandingDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor brandings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/brandings:
+    post:
+      tags:
+        - Distributor Branding
+      summary: Create a new distributor branding
+      description: Creates a new distributor branding with the provided information
+      operationId: createDistributorBranding
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorBrandingDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor branding successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorBrandingDTO'
+        '400':
+          description: Invalid distributor branding data provided
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/audit-logs/filter:
+    post:
+      tags:
+        - Distributor Audit Log
+      summary: Filter distributor audit logs
+      description: Returns a paginated list of distributor audit logs based on filter criteria
+      operationId: filterDistributorAuditLogs
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorAuditLogDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor audit logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/audit-logs:
+    post:
+      tags:
+        - Distributor Audit Log
+      summary: Create a new distributor audit log
+      description: Creates a new distributor audit log with the provided information
+      operationId: createDistributorAuditLog
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorAuditLogDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor audit log successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorAuditLogDTO'
+        '400':
+          description: Invalid distributor audit log data provided
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/filter:
+    post:
+      tags:
+        - Distributor
+      summary: Filter distributors
+      description: Returns a paginated list of distributors based on filter criteria
+      operationId: filterDistributors
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors:
+    post:
+      tags:
+        - Distributor
+      summary: Create a new distributor
+      description: Creates a new distributor with the provided information
+      operationId: createDistributor
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorDTO'
+        '400':
+          description: Invalid distributor data provided
+        '500':
+          description: Internal server error
+  /api/v1/shipments/tracking/{trackingNumber}:
+    get:
+      tags:
+        - Shipment
+      summary: Get shipment by tracking number
+      description: Returns a shipment based on its tracking number
+      operationId: getShipmentByTrackingNumber
+      parameters:
+        - name: trackingNumber
+          in: path
+          description: Tracking number of the shipment to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved shipment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '404':
+          description: Shipment not found
+        '500':
+          description: Internal server error
+  /api/v1/shipments/status/{status}:
+    get:
+      tags:
+        - Shipment
+      summary: Get shipments by status
+      description: Returns all shipments with a specific status
+      operationId: getShipmentsByStatus
+      parameters:
+        - name: status
+          in: path
+          description: Status value to filter shipments
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved shipments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '400':
+          description: Invalid status value
+        '500':
+          description: Internal server error
+  /api/v1/shipments/product/{productId}:
+    get:
+      tags:
+        - Shipment
+      summary: Get shipments by product
+      description: Returns all shipments associated with a specific product
+      operationId: getShipmentsByProductId
+      parameters:
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved shipments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+  /api/v1/shipments/leasing-contract/{leasingContractId}:
+    get:
+      tags:
+        - Shipment
+      summary: Get shipments by leasing contract
+      description: Returns all shipments associated with a specific leasing contract
+      operationId: getShipmentsByLeasingContractId
+      parameters:
+        - name: leasingContractId
+          in: path
+          description: ID of the leasing contract
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved shipments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDTO'
+        '404':
+          description: Leasing contract not found
+        '500':
+          description: Internal server error
+  /api/v1/product-categories/code/{code}:
+    get:
+      tags:
+        - Product Category
+      summary: Get product category by code
+      description: Returns a product category based on its code
+      operationId: getProductCategoryByCode
+      parameters:
+        - name: code
+          in: path
+          description: Code of the product category to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved product category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategoryDTO'
+        '404':
+          description: Product category not found
+        '500':
+          description: Internal server error
+  /api/v1/product-categories/active:
+    get:
+      tags:
+        - Product Category
+      summary: Get all active product categories
+      description: Returns all active product categories
+      operationId: getActiveProductCategories
+      responses:
+        '200':
+          description: Successfully retrieved active product categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategoryDTO'
+        '500':
+          description: Internal server error
+  /api/v1/lending-types/code/{code}:
+    get:
+      tags:
+        - Lending Type
+      summary: Get lending type by code
+      description: Returns a lending type based on its code
+      operationId: getLendingTypeByCode
+      parameters:
+        - name: code
+          in: path
+          description: Code of the lending type to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved lending type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingTypeDTO'
+        '404':
+          description: Lending type not found
+        '500':
+          description: Internal server error
+  /api/v1/lending-types/active:
+    get:
+      tags:
+        - Lending Type
+      summary: Get all active lending types
+      description: Returns all active lending types
+      operationId: getActiveLendingTypes
+      responses:
+        '200':
+          description: Successfully retrieved active lending types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingTypeDTO'
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/status/{status}:
+    get:
+      tags:
+        - Leasing Contract
+      summary: Get leasing contracts by status
+      description: Returns all leasing contracts with a specific status
+      operationId: getLeasingContractsByStatus
+      parameters:
+        - name: status
+          in: path
+          description: Status value to filter leasing contracts
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved leasing contracts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '400':
+          description: Invalid status value
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/product/{productId}:
+    get:
+      tags:
+        - Leasing Contract
+      summary: Get leasing contracts by product
+      description: Returns all leasing contracts associated with a specific product
+      operationId: getLeasingContractsByProductId
+      parameters:
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved leasing contracts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/party/{partyId}:
+    get:
+      tags:
+        - Leasing Contract
+      summary: Get leasing contracts by party
+      description: Returns all leasing contracts associated with a specific party
+      operationId: getLeasingContractsByPartyId
+      parameters:
+        - name: partyId
+          in: path
+          description: ID of the party
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved leasing contracts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '404':
+          description: Party not found
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/distributor/{distributorId}:
+    get:
+      tags:
+        - Leasing Contract
+      summary: Get leasing contracts by distributor
+      description: Returns all leasing contracts associated with a specific distributor
+      operationId: getLeasingContractsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved leasing contracts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/leasing-contracts/contract/{contractId}:
+    get:
+      tags:
+        - Leasing Contract
+      summary: Get leasing contract by contract ID
+      description: Returns a leasing contract based on its contract ID
+      operationId: getLeasingContractByContractId
+      parameters:
+        - name: contractId
+          in: path
+          description: Contract ID of the leasing contract to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved leasing contract
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeasingContractDTO'
+        '404':
+          description: Leasing contract not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/type/{lendingTypeId}:
+    get:
+      tags:
+        - Lending Configuration
+      summary: Get lending configurations by product and lending type
+      description: Returns all lending configurations for a specific product filtered by lending type
+      operationId: getLendingConfigurationsByProductIdAndLendingType
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: lendingTypeId
+          in: path
+          description: ID of the lending type
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved lending configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '404':
+          description: Product or lending type not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/default:
+    get:
+      tags:
+        - Lending Configuration
+      summary: Get default lending configuration for a product
+      description: Returns the default lending configuration for a specific product
+      operationId: getDefaultLendingConfigurationByProductId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved default lending configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '404':
+          description: Product or default configuration not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/active:
+    get:
+      tags:
+        - Lending Configuration
+      summary: Get all active lending configurations for a product
+      description: Returns all active lending configurations associated with a specific product
+      operationId: getActiveLendingConfigurationsByProductId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: productId
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved active lending configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '404':
+          description: Product not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/category/{categoryId}:
+    get:
+      tags:
+        - Product
+      summary: Get products by category
+      description: Returns all products for a specific distributor filtered by category
+      operationId: getProductsByDistributorIdAndCategory
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: categoryId
+          in: path
+          description: ID of the product category
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+        '404':
+          description: Distributor or category not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/products/active:
+    get:
+      tags:
+        - Product
+      summary: Get all active products for a distributor
+      description: Returns all active products associated with a specific distributor
+      operationId: getActiveProductsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved active products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/lending-configurations:
+    get:
+      tags:
+        - Distributor Lending Configuration
+      summary: Get all lending configurations for a distributor
+      description: Returns all lending configurations associated with a specific distributor
+      operationId: getLendingConfigurationsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved lending configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LendingConfigurationDTO'
+        '404':
+          description: Distributor not found
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    JsonNode:
+      type: object
+    LeasingContractDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        contractId:
+          type: integer
+          format: int64
+        partyId:
+          type: integer
+          format: int64
+        distributorId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        lendingConfigurationId:
+          type: integer
+          format: int64
+        product:
+          $ref: '#/components/schemas/ProductDTO'
+        lendingConfiguration:
+          $ref: '#/components/schemas/LendingConfigurationDTO'
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        monthlyPayment:
+          type: number
+        downPayment:
+          type: number
+        totalAmount:
+          type: number
+        status:
+          type: string
+        approvalDate:
+          type: string
+          format: date-time
+        approvedBy:
+          type: integer
+          format: int64
+        termsConditions:
+          type: string
+        notes:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
+    LendingConfigurationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        productId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        lendingType:
+          $ref: '#/components/schemas/LendingTypeDTO'
+        minTermMonths:
+          type: integer
+          format: int32
+        maxTermMonths:
+          type: integer
+          format: int32
+        defaultTermMonths:
+          type: integer
+          format: int32
+        minDownPaymentPercentage:
+          type: number
+        defaultDownPaymentPercentage:
+          type: number
+        interestRate:
+          type: number
+        processingFeePercentage:
+          type: number
+        earlyTerminationFeePercentage:
+          type: number
+        latePaymentFeeAmount:
+          type: number
+        gracePeriodDays:
+          type: integer
+          format: int32
+        isDefault:
+          type: boolean
+        isActive:
+          type: boolean
+        termsConditions:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    LendingTypeDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
+    ProductCategoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        distributorId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        sku:
+          type: string
+        modelNumber:
+          type: string
+        manufacturer:
+          type: string
+        category:
+          $ref: '#/components/schemas/ProductCategoryDTO'
+        imageUrl:
+          type: string
+        specifications:
+          $ref: '#/components/schemas/JsonNode'
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    ShipmentDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        leasingContractId:
+          type: integer
+          format: int64
+        leasingContract:
+          $ref: '#/components/schemas/LeasingContractDTO'
+        productId:
+          type: integer
+          format: int64
+        product:
+          $ref: '#/components/schemas/ProductDTO'
+        trackingNumber:
+          type: string
+        carrier:
+          type: string
+        shippingAddress:
+          type: string
+        shippingDate:
+          type: string
+          format: date-time
+        estimatedDeliveryDate:
+          type: string
+          format: date-time
+        actualDeliveryDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
+    DistributorBrandingDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        distributorId:
+          type: integer
+          format: int64
+        logoUrl:
+          type: string
+        faviconUrl:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        backgroundColor:
+          type: string
+        fontFamily:
+          type: string
+        theme:
+          type: string
+          enum:
+            - LIGHT
+            - DARK
+            - CUSTOM
+        isDefault:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    DistributorAuditLogDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        distributorId:
+          type: integer
+          format: int64
+        action:
+          type: string
+          enum:
+            - CREATED
+            - UPDATED
+            - TERMINATED
+        entity:
+          type: string
+        entityId:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+        ipAddress:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        timestamp:
+          type: string
+          format: date-time
+    DistributorDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        externalCode:
+          type: string
+        name:
+          type: string
+        displayName:
+          type: string
+        taxId:
+          type: string
+        registrationNumber:
+          type: string
+        websiteUrl:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        supportEmail:
+          type: string
+        addressLine:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        countryCode:
+          type: string
+        isActive:
+          type: boolean
+        isTestDistributor:
+          type: boolean
+        timeZone:
+          type: string
+        defaultLocale:
+          type: string
+        onboardedAt:
+          type: string
+          format: date-time
+        terminatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    FilterOptions:
+      type: object
+      properties:
+        caseInsensitiveStrings:
+          type: boolean
+        includeInheritedFields:
+          type: boolean
+      description: Filter options for customizing filter behavior
+    FilterRequestShipmentDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/ShipmentDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    PaginationRequest:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          description: The zero-based page number to retrieve.
+          format: int32
+          example: 0
+          default: 0
+        pageSize:
+          type: integer
+          description: The number of items per page.
+          format: int32
+          example: 10
+          default: 10
+        sortBy:
+          type: string
+          description: The field to sort the results by.
+          example: name
+        sortDirection:
+          type: string
+          description: The direction of sorting, either ASC or DESC.
+          example: DESC
+          default: DESC
+      description: Represents a pagination request for retrieving paginated results, including page number, size, sort field, and direction.
+    RangeFilter:
+      type: object
+      properties:
+        ranges:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RangeObject'
+          description: Map of field names to their range criteria
+      description: Represents range filters for numeric fields
+    RangeObject:
+      type: object
+      properties:
+        from:
+          type: object
+          description: Start value of the range
+        to:
+          type: object
+          description: End value of the range
+      description: Represents a range with from and to values
+    PaginationResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            type: object
+            description: The list of items for the current page.
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: The current page number, typically zero-based.
+          format: int32
+      description: Represents a paginated response containing a list of items and pagination metadata.
+    FilterRequestLeasingContractDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/LeasingContractDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestLendingConfigurationDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/LendingConfigurationDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestProductDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/ProductDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorBrandingDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorBrandingDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorAuditLogDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorAuditLogDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
