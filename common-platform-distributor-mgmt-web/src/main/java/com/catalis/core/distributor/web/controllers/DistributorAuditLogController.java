@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -37,11 +38,11 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<PaginationResponse<DistributorAuditLogDTO>> filterDistributorAuditLogs(
+    public ResponseEntity<Mono<PaginationResponse<DistributorAuditLogDTO>>> filterDistributorAuditLogs(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
             @Valid @RequestBody FilterRequest<DistributorAuditLogDTO> filterRequest) {
-        return distributorAuditLogService.filterDistributorAuditLogs(filterRequest);
+        return ResponseEntity.ok(distributorAuditLogService.filterDistributorAuditLogs(filterRequest));
     }
 
     @Operation(summary = "Create a new distributor audit log", description = "Creates a new distributor audit log with the provided information")
@@ -57,14 +58,14 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Mono<DistributorAuditLogDTO> createDistributorAuditLog(
+    public ResponseEntity<Mono<DistributorAuditLogDTO>> createDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
             @Valid @RequestBody DistributorAuditLogDTO distributorAuditLogDTO) {
         // Ensure the distributorId in the path is used
         distributorAuditLogDTO.setDistributorId(distributorId);
-        return distributorAuditLogService.createDistributorAuditLog(distributorAuditLogDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(distributorAuditLogService.createDistributorAuditLog(distributorAuditLogDTO));
     }
 
     @Operation(summary = "Get distributor audit log by ID", description = "Returns a distributor audit log based on its ID")
@@ -78,13 +79,13 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @GetMapping(value = "/{auditLogId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<DistributorAuditLogDTO> getDistributorAuditLogById(
+    public ResponseEntity<Mono<DistributorAuditLogDTO>> getDistributorAuditLogById(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
             @Parameter(description = "ID of the distributor audit log to retrieve", required = true)
             @PathVariable Long auditLogId) {
-        return distributorAuditLogService.getDistributorAuditLogById(auditLogId)
-                .filter(auditLog -> auditLog.getDistributorId().equals(distributorId));
+        return ResponseEntity.ok(distributorAuditLogService.getDistributorAuditLogById(auditLogId)
+                .filter(auditLog -> auditLog.getDistributorId().equals(distributorId)));
     }
 
     @Operation(summary = "Update distributor audit log", description = "Updates an existing distributor audit log with the provided information")
@@ -100,7 +101,7 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @PutMapping(value = "/{auditLogId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<DistributorAuditLogDTO> updateDistributorAuditLog(
+    public ResponseEntity<Mono<DistributorAuditLogDTO>> updateDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
             @Parameter(description = "ID of the distributor audit log to update", required = true)
@@ -108,7 +109,7 @@ public class DistributorAuditLogController {
             @Valid @RequestBody DistributorAuditLogDTO distributorAuditLogDTO) {
         // Ensure the distributorId in the path is used
         distributorAuditLogDTO.setDistributorId(distributorId);
-        return distributorAuditLogService.updateDistributorAuditLog(auditLogId, distributorAuditLogDTO);
+        return ResponseEntity.ok(distributorAuditLogService.updateDistributorAuditLog(auditLogId, distributorAuditLogDTO));
     }
 
     @Operation(summary = "Delete distributor audit log", description = "Deletes a distributor audit log based on its ID")
@@ -121,14 +122,14 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @DeleteMapping("/{auditLogId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteDistributorAuditLog(
+    public Mono<ResponseEntity<Void>> deleteDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable Long distributorId,
             @Parameter(description = "ID of the distributor audit log to delete", required = true)
             @PathVariable Long auditLogId) {
         return distributorAuditLogService.getDistributorAuditLogById(auditLogId)
                 .filter(auditLog -> auditLog.getDistributorId().equals(distributorId))
-                .flatMap(auditLog -> distributorAuditLogService.deleteDistributorAuditLog(auditLogId));
+                .flatMap(auditLog -> distributorAuditLogService.deleteDistributorAuditLog(auditLogId))
+                .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
 }
