@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,8 +43,8 @@ public class LendingTypeController {
                 content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<LendingTypeDTO> getAllLendingTypes() {
-        return lendingTypeService.getAllLendingTypes();
+    public ResponseEntity<Flux<LendingTypeDTO>> getAllLendingTypes() {
+        return ResponseEntity.ok(lendingTypeService.getAllLendingTypes());
     }
 
     /**
@@ -60,8 +61,8 @@ public class LendingTypeController {
                 content = @Content)
     })
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<LendingTypeDTO> getActiveLendingTypes() {
-        return lendingTypeService.getActiveLendingTypes();
+    public ResponseEntity<Flux<LendingTypeDTO>> getActiveLendingTypes() {
+        return ResponseEntity.ok(lendingTypeService.getActiveLendingTypes());
     }
 
     /**
@@ -81,10 +82,10 @@ public class LendingTypeController {
                 content = @Content)
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<LendingTypeDTO> getLendingTypeById(
+    public ResponseEntity<Mono<LendingTypeDTO>> getLendingTypeById(
             @Parameter(description = "ID of the lending type to retrieve", required = true)
             @PathVariable Long id) {
-        return lendingTypeService.getLendingTypeById(id);
+        return ResponseEntity.ok(lendingTypeService.getLendingTypeById(id));
     }
 
     /**
@@ -104,10 +105,10 @@ public class LendingTypeController {
                 content = @Content)
     })
     @GetMapping(value = "/code/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<LendingTypeDTO> getLendingTypeByCode(
+    public ResponseEntity<Mono<LendingTypeDTO>> getLendingTypeByCode(
             @Parameter(description = "Code of the lending type to retrieve", required = true)
             @PathVariable String code) {
-        return lendingTypeService.getLendingTypeByCode(code);
+        return ResponseEntity.ok(lendingTypeService.getLendingTypeByCode(code));
     }
 
     /**
@@ -127,10 +128,10 @@ public class LendingTypeController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Mono<LendingTypeDTO> createLendingType(
+    public ResponseEntity<Mono<LendingTypeDTO>> createLendingType(
             @Valid @RequestBody LendingTypeDTO lendingTypeDTO) {
-        return lendingTypeService.createLendingType(lendingTypeDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(lendingTypeService.createLendingType(lendingTypeDTO));
     }
 
     /**
@@ -153,11 +154,11 @@ public class LendingTypeController {
                 content = @Content)
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<LendingTypeDTO> updateLendingType(
+    public ResponseEntity<Mono<LendingTypeDTO>> updateLendingType(
             @Parameter(description = "ID of the lending type to update", required = true)
             @PathVariable Long id,
             @Valid @RequestBody LendingTypeDTO lendingTypeDTO) {
-        return lendingTypeService.updateLendingType(id, lendingTypeDTO);
+        return ResponseEntity.ok(lendingTypeService.updateLendingType(id, lendingTypeDTO));
     }
 
     /**
@@ -176,10 +177,10 @@ public class LendingTypeController {
                 content = @Content)
     })
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteLendingType(
+    public Mono<ResponseEntity<Void>> deleteLendingType(
             @Parameter(description = "ID of the lending type to delete", required = true)
             @PathVariable Long id) {
-        return lendingTypeService.deleteLendingType(id);
+        return lendingTypeService.deleteLendingType(id)
+                .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
 }
