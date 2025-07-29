@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -37,9 +38,9 @@ public class DistributorController {
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<PaginationResponse<DistributorDTO>> filterDistributors(
+    public ResponseEntity<Mono<PaginationResponse<DistributorDTO>>> filterDistributors(
             @Valid @RequestBody FilterRequest<DistributorDTO> filterRequest) {
-        return distributorService.filterDistributors(filterRequest);
+        return ResponseEntity.ok(distributorService.filterDistributors(filterRequest));
     }
 
     @Operation(summary = "Create a new distributor", description = "Creates a new distributor with the provided information")
@@ -53,10 +54,10 @@ public class DistributorController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Mono<DistributorDTO> createDistributor(
+    public ResponseEntity<Mono<DistributorDTO>> createDistributor(
             @Valid @RequestBody DistributorDTO distributorDTO) {
-        return distributorService.createDistributor(distributorDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(distributorService.createDistributor(distributorDTO));
     }
 
     @Operation(summary = "Get distributor by ID", description = "Returns a distributor based on its ID")
@@ -70,10 +71,10 @@ public class DistributorController {
                 content = @Content)
     })
     @GetMapping(value = "/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<DistributorDTO> getDistributorById(
+    public ResponseEntity<Mono<DistributorDTO>> getDistributorById(
             @Parameter(description = "ID of the distributor to retrieve", required = true)
             @PathVariable Long distributorId) {
-        return distributorService.getDistributorById(distributorId);
+        return ResponseEntity.ok(distributorService.getDistributorById(distributorId));
     }
 
     @Operation(summary = "Update distributor", description = "Updates an existing distributor with the provided information")
@@ -89,11 +90,11 @@ public class DistributorController {
                 content = @Content)
     })
     @PutMapping(value = "/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<DistributorDTO> updateDistributor(
+    public ResponseEntity<Mono<DistributorDTO>> updateDistributor(
             @Parameter(description = "ID of the distributor to update", required = true)
             @PathVariable Long distributorId,
             @Valid @RequestBody DistributorDTO distributorDTO) {
-        return distributorService.updateDistributor(distributorId, distributorDTO);
+        return ResponseEntity.ok(distributorService.updateDistributor(distributorId, distributorDTO));
     }
 
     @Operation(summary = "Delete distributor", description = "Deletes a distributor based on its ID")
@@ -106,10 +107,10 @@ public class DistributorController {
                 content = @Content)
     })
     @DeleteMapping("/{distributorId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteDistributor(
+    public Mono<ResponseEntity<Void>> deleteDistributor(
             @Parameter(description = "ID of the distributor to delete", required = true)
             @PathVariable Long distributorId) {
-        return distributorService.deleteDistributor(distributorId);
+        return distributorService.deleteDistributor(distributorId)
+                .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
 }
