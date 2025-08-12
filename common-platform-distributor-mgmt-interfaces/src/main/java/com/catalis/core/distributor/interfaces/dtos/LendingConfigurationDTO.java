@@ -1,4 +1,7 @@
 package com.catalis.core.distributor.interfaces.dtos;
+import com.catalis.annotations.ValidAmount;
+import com.catalis.annotations.ValidDateTime;
+import com.catalis.annotations.ValidInterestRate;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -30,18 +33,26 @@ public class LendingConfigurationDTO {
     private Integer minTermMonths;
     private Integer maxTermMonths;
     private Integer defaultTermMonths;
+    @ValidInterestRate
     private BigDecimal minDownPaymentPercentage;
+    @ValidInterestRate
     private BigDecimal defaultDownPaymentPercentage;
+    @ValidInterestRate
     private BigDecimal interestRate;
+    @ValidInterestRate
     private BigDecimal processingFeePercentage;
+    @ValidInterestRate
     private BigDecimal earlyTerminationFeePercentage;
+    @ValidInterestRate
     private BigDecimal latePaymentFeeAmount;
     private Integer gracePeriodDays;
     private Boolean isDefault;
     private Boolean isActive;
     private String termsConditions;
+    @ValidDateTime
     private LocalDateTime createdAt;
     private Long createdBy;
+    @ValidDateTime
     private LocalDateTime updatedAt;
     private Long updatedBy;
 }

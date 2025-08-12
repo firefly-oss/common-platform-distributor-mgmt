@@ -1,5 +1,6 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
+import com.catalis.annotations.ValidDateTime;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -48,12 +49,14 @@ public class ShipmentDTO {
     private String notes;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ValidDateTime
     private LocalDateTime createdAt;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long createdBy;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ValidDateTime
     private LocalDateTime updatedAt;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

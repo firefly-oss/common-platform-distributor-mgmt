@@ -1,4 +1,5 @@
 package com.catalis.core.distributor.interfaces.dtos;
+import com.catalis.annotations.ValidDateTime;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,6 +34,7 @@ public class ProductDTO {
     private String imageUrl;
     private JsonNode specifications; // Using JsonNode for flexible JSON structure
     private Boolean isActive;
+    @ValidDateTime
     private LocalDateTime createdAt;
     private Long createdBy;
     private LocalDateTime updatedAt;

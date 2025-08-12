@@ -1,5 +1,6 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
+import com.catalis.annotations.ValidDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,16 +25,18 @@ public class ProductCategoryDTO {
     private String code;
     private String description;
     private Boolean isActive;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ValidDateTime
     private LocalDateTime createdAt;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long createdBy;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ValidDateTime
     private LocalDateTime updatedAt;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long updatedBy;
 }

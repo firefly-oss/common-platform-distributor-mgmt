@@ -1,5 +1,6 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
+import com.catalis.annotations.ValidDateTime;
 import com.catalis.core.distributor.interfaces.enums.DistributorActionEnum;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,5 +35,6 @@ public class DistributorAuditLogDTO {
     private JsonNode metadata;
     private String ipAddress;
     private Long userId;
+    @ValidDateTime
     private LocalDateTime timestamp;
 }

@@ -1,5 +1,6 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
+import com.catalis.annotations.ValidDateTime;
 import com.catalis.core.distributor.interfaces.enums.ThemeEnum;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,8 +33,10 @@ public class DistributorBrandingDTO {
     private String fontFamily;
     private ThemeEnum theme;
     private Boolean isDefault;
+    @ValidDateTime
     private LocalDateTime createdAt;
     private Long createdBy;
+    @ValidDateTime
     private LocalDateTime updatedAt;
     private Long updatedBy;
 }

@@ -1,5 +1,8 @@
 package com.catalis.core.distributor.interfaces.dtos;
 
+import com.catalis.annotations.ValidAmount;
+import com.catalis.annotations.ValidDate;
+import com.catalis.annotations.ValidDateTime;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -34,42 +37,50 @@ public class LeasingContractDTO {
     private Long productId;
 
     private Long lendingConfigurationId;
-    
+
     private ProductDTO product;
-    
+
     private LendingConfigurationDTO lendingConfiguration;
 
+    @ValidDate
     private LocalDate startDate;
-    
+
+    @ValidDate
     private LocalDate endDate;
-    
+
+    @ValidAmount
     private BigDecimal monthlyPayment;
-    
+
+    @ValidAmount
     private BigDecimal downPayment;
-    
+
+    @ValidAmount
     private BigDecimal totalAmount;
-    
+
     private String status;
-    
+
+    @ValidDateTime
     private LocalDateTime approvalDate;
-    
+
     private Long approvedBy;
-    
+
     private String termsConditions;
-    
+
     private String notes;
-    
+
     private Boolean isActive;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ValidDateTime
     private LocalDateTime createdAt;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long createdBy;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ValidDateTime
     private LocalDateTime updatedAt;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long updatedBy;
 }

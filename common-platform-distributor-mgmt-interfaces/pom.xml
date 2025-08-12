@@ -32,6 +32,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.catalis</groupId>
+            <artifactId>lib-commons-validators</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Spring WebFlux -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
