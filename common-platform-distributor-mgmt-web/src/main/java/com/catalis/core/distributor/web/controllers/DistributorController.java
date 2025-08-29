@@ -1,9 +1,9 @@
-package com.catalis.core.distributor.web.controllers;
+package com.firefly.core.distributor.web.controllers;
 
-import com.catalis.common.core.filters.FilterRequest;
-import com.catalis.common.core.queries.PaginationResponse;
-import com.catalis.core.distributor.core.services.DistributorService;
-import com.catalis.core.distributor.interfaces.dtos.DistributorDTO;
+import com.firefly.common.core.filters.FilterRequest;
+import com.firefly.common.core.queries.PaginationResponse;
+import com.firefly.core.distributor.core.services.DistributorService;
+import com.firefly.core.distributor.interfaces.dtos.DistributorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

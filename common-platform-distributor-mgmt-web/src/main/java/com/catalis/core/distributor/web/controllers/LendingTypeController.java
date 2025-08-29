@@ -1,7 +1,7 @@
-package com.catalis.core.distributor.web.controllers;
+package com.firefly.core.distributor.web.controllers;
 
-import com.catalis.core.distributor.core.services.LendingTypeService;
-import com.catalis.core.distributor.interfaces.dtos.LendingTypeDTO;
+import com.firefly.core.distributor.core.services.LendingTypeService;
+import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

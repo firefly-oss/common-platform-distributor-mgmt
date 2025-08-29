@@ -1,13 +1,13 @@
-package com.catalis.core.distributor.web.controllers;
+package com.firefly.core.distributor.web.controllers;
 
-import com.catalis.common.core.filters.FilterRequest;
-import com.catalis.common.core.queries.PaginationResponse;
-import com.catalis.core.distributor.core.services.LeasingContractService;
-import com.catalis.core.distributor.core.services.LendingConfigurationService;
-import com.catalis.core.distributor.core.services.LendingTypeService;
-import com.catalis.core.distributor.interfaces.dtos.LeasingContractDTO;
-import com.catalis.core.distributor.interfaces.dtos.LendingConfigurationDTO;
-import com.catalis.core.distributor.interfaces.dtos.LendingTypeDTO;
+import com.firefly.common.core.filters.FilterRequest;
+import com.firefly.common.core.queries.PaginationResponse;
+import com.firefly.core.distributor.core.services.LeasingContractService;
+import com.firefly.core.distributor.core.services.LendingConfigurationService;
+import com.firefly.core.distributor.core.services.LendingTypeService;
+import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.interfaces.dtos.LendingConfigurationDTO;
+import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

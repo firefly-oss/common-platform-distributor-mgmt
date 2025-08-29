@@ -4,8 +4,8 @@ spring:
     version: 1.0.0
     description: Distributor Management Core Application
     team:
-      name: Catalis Development
-      email: dev@catalis.com
+      name: Firefly Software Solutions Inc
+      email: dev@getfirefly.io
 
   r2dbc:
     pool:
@@ -30,7 +30,8 @@ spring:
       enabled: true
 
 server:
-  port: 8080
+  address: ${SERVER_ADDRESS:localhost}
+  port: ${SERVER_PORT:8080}
   shutdown: graceful
 
 springdoc:
@@ -43,7 +44,7 @@ springdoc:
     operationsSorter: method
     docExpansion: none
     filter: true
-  packages-to-scan: com.catalis.core.distributor.web.controllers
+  packages-to-scan: com.firefly.core.distributor.web.controllers
   paths-to-match: /api/**
 
 management:
@@ -75,7 +76,7 @@ spring:
 logging:
   level:
     root: INFO
-    com.catalis: DEBUG
+    com.firefly: DEBUG
     org.springframework.r2dbc: DEBUG
     org.flywaydb: DEBUG
 
@@ -88,7 +89,7 @@ spring:
 logging:
   level:
     root: INFO
-    com.catalis: DEBUG
+    com.firefly: DEBUG
     org.springframework.r2dbc: INFO
 
 springdoc:
@@ -106,7 +107,7 @@ spring:
 logging:
   level:
     root: WARN
-    com.catalis: INFO
+    com.firefly: INFO
     org.springframework: WARN
 
 springdoc:

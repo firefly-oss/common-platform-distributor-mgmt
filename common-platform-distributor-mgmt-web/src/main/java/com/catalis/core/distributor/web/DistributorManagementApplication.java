@@ -1,4 +1,4 @@
-package com.catalis.core.distributor.web;
+package com.firefly.core.distributor.web;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -13,13 +13,13 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication(
         scanBasePackages = {
-                "com.catalis.core.distributor",
-                "com.catalis.common.web"  // Scan common web library configurations
+                "com.firefly.core.distributor",
+                "com.firefly.common.web"  // Scan common web library configurations
         }
 )
 @EnableWebFlux
 @EnableR2dbcRepositories(
-        basePackages = "com.catalis.core.distributor.models.repositories"
+        basePackages = "com.firefly.core.distributor.models.repositories"
 )
 @EnableR2dbcAuditing
 @ConfigurationPropertiesScan
