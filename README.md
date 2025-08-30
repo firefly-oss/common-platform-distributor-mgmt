@@ -546,16 +546,7 @@ The service will start on `http://localhost:8080` by default.
 
 ### Database Migrations
 
-The service includes automatic database migrations:
-- `V1__initial_schema.sql` - Core distributor and product tables
-- `V2__add_branding_tables.sql` - Branding configuration tables
-- `V3__add_audit_tables.sql` - Audit logging tables
-- `V4__add_lending_tables.sql` - Lending and leasing tables
-- `V5__add_shipment_tables.sql` - Shipment tracking tables
-- `V9__create_distributor_operation_and_simulation_tables.sql` - Multi-country operations and simulation tracking
-- `V10__create_terms_and_conditions_tables.sql` - Terms and conditions management with sample templates
-
-Migrations are automatically applied when the service starts.
+The service uses Flyway for database schema management. All migrations are automatically applied when the service starts, ensuring your database schema is always up-to-date with the application version.
 
 ### Docker Deployment
 
@@ -1768,7 +1759,23 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+```
+Copyright 2024 Firefly Financial Services
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 ---
 
