@@ -12,16 +12,16 @@ servers:
   - url: /
     description: Local Development Environment
 tags:
-  - name: Distributor Lending Configuration
-    description: API for managing distributor-level lending configurations
   - name: Product
     description: API for managing distributor products
   - name: Distributor
     description: API for managing distributors
-  - name: Distributor Audit Log
-    description: API for managing distributor audit logs
   - name: Lending Configuration
     description: API for managing product lending configurations
+  - name: Distributor Simulations
+    description: API for managing distributor simulation tracking
+  - name: Terms and Conditions Templates
+    description: API for managing terms and conditions templates
   - name: Product Category
     description: API for managing product categories
   - name: Leasing Contract
@@ -30,9 +30,107 @@ tags:
     description: API for managing distributor branding
   - name: Shipment
     description: API for managing shipments
+  - name: Distributor Lending Configuration
+    description: API for managing distributor-level lending configurations
+  - name: Distributor Operations
+    description: API for managing distributor operational coverage
+  - name: Distributor Audit Log
+    description: API for managing distributor audit logs
+  - name: Simulations
+    description: API for global simulation access and management
+  - name: Distributor Terms and Conditions
+    description: API for managing distributor terms and conditions
   - name: Lending Type
     description: API for managing lending types
 paths:
+  /api/v1/terms-and-conditions-templates/{templateId}:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get template by ID
+      description: Returns a template based on its ID
+      operationId: getTemplateById
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Terms and Conditions Templates
+      summary: Update template
+      description: Updates an existing template
+      operationId: updateTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        required: true
+      responses:
+        '200':
+          description: Template successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '400':
+          description: Invalid template data provided
+        '404':
+          description: Template not found
+        '409':
+          description: Template name already exists
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Terms and Conditions Templates
+      summary: Delete template
+      description: Deletes a template
+      operationId: deleteTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Template successfully deleted
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
   /api/v1/shipments/{id}/status:
     put:
       tags:
@@ -424,6 +522,220 @@ paths:
           description: Leasing contract not found
         '500':
           description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/{termsId}:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Get distributor terms and conditions by ID
+      description: Returns distributor terms and conditions based on its ID
+      operationId: getDistributorTermsAndConditionsById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Update distributor terms and conditions
+      description: Updates existing distributor terms and conditions
+      operationId: updateDistributorTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        required: true
+      responses:
+        '200':
+          description: Terms and conditions successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '400':
+          description: Invalid terms and conditions data provided
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Delete distributor terms and conditions
+      description: Deletes distributor terms and conditions
+      operationId: deleteDistributorTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Terms and conditions successfully deleted
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/{simulationId}:
+    get:
+      tags:
+        - Distributor Simulations
+      summary: Get distributor simulation by ID
+      description: Returns a distributor simulation based on its ID
+      operationId: getDistributorSimulationById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: simulationId
+          in: path
+          description: ID of the distributor simulation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor simulation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '404':
+          description: Distributor simulation not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Simulations
+      summary: Update distributor simulation
+      description: Updates an existing distributor simulation
+      operationId: updateDistributorSimulation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: simulationId
+          in: path
+          description: ID of the distributor simulation to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorSimulationDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor simulation successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '400':
+          description: Invalid distributor simulation data provided
+        '404':
+          description: Distributor simulation not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Simulations
+      summary: Delete distributor simulation
+      description: Deletes a distributor simulation
+      operationId: deleteDistributorSimulation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: simulationId
+          in: path
+          description: ID of the distributor simulation to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor simulation successfully deleted
+        '404':
+          description: Distributor simulation not found
+        '500':
+          description: Internal server error
   /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}:
     get:
       tags:
@@ -657,6 +969,113 @@ paths:
           description: Product successfully deleted
         '404':
           description: Product not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/operations/{operationId}:
+    get:
+      tags:
+        - Distributor Operations
+      summary: Get distributor operation by ID
+      description: Returns a distributor operation based on its ID
+      operationId: getDistributorOperationById
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: operationId
+          in: path
+          description: ID of the distributor operation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '404':
+          description: Distributor operation not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Distributor Operations
+      summary: Update distributor operation
+      description: Updates an existing distributor operation
+      operationId: updateDistributorOperation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: operationId
+          in: path
+          description: ID of the distributor operation to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorOperationDTO'
+        required: true
+      responses:
+        '200':
+          description: Distributor operation successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '400':
+          description: Invalid distributor operation data provided
+        '404':
+          description: Distributor operation not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Distributor Operations
+      summary: Delete distributor operation
+      description: Deletes a distributor operation
+      operationId: deleteDistributorOperation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: operationId
+          in: path
+          description: ID of the distributor operation to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Distributor operation successfully deleted
+        '404':
+          description: Distributor operation not found
         '500':
           description: Internal server error
   /api/v1/distributors/{distributorId}/brandings/{brandingId}:
@@ -959,6 +1378,110 @@ paths:
           description: Distributor not found
         '500':
           description: Internal server error
+  /api/v1/terms-and-conditions-templates/{templateId}/preview:
+    post:
+      tags:
+        - Terms and Conditions Templates
+      summary: Preview template generation
+      description: Previews the generated content from a template with provided variables
+      operationId: previewGeneration
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        '200':
+          description: Successfully generated preview
+          content:
+            text/plain: {}
+        '400':
+          description: Invalid template or variables provided
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/filter:
+    post:
+      tags:
+        - Terms and Conditions Templates
+      summary: Filter terms and conditions templates
+      description: Returns a paginated list of templates based on filter criteria
+      operationId: filterTemplates
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestTermsAndConditionsTemplateDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates:
+    post:
+      tags:
+        - Terms and Conditions Templates
+      summary: Create a new template
+      description: Creates a new terms and conditions template
+      operationId: createTemplate
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        required: true
+      responses:
+        '201':
+          description: Template successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '400':
+          description: Invalid template data provided
+        '409':
+          description: Template name already exists
+        '500':
+          description: Internal server error
   /api/v1/shipments/filter:
     post:
       tags:
@@ -1214,6 +1737,253 @@ paths:
                 $ref: '#/components/schemas/LeasingContractDTO'
         '400':
           description: Invalid leasing contract data provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/generate/{templateId}:
+    post:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Generate terms and conditions from template
+      description: Generates new terms and conditions from a template with provided variables
+      operationId: generateFromTemplate
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: templateId
+          in: path
+          description: ID of the template
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        '201':
+          description: Terms and conditions successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '400':
+          description: Invalid template or variables provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/filter:
+    post:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Filter distributor terms and conditions
+      description: Returns a paginated list of distributor terms and conditions based on filter criteria
+      operationId: filterDistributorTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorTermsAndConditionsDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Get all terms and conditions for distributor
+      description: Returns all terms and conditions for a distributor
+      operationId: getTermsAndConditionsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Create new distributor terms and conditions
+      description: Creates new terms and conditions for a distributor
+      operationId: createDistributorTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        required: true
+      responses:
+        '201':
+          description: Terms and conditions successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '400':
+          description: Invalid terms and conditions data provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/filter:
+    post:
+      tags:
+        - Distributor Simulations
+      summary: Filter distributor simulations
+      description: Returns a paginated list of distributor simulations based on filter criteria
+      operationId: filterDistributorSimulations
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorSimulationDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor simulations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations:
+    get:
+      tags:
+        - Distributor Simulations
+      summary: Get all simulations for distributor
+      description: Returns all simulations tracked by a distributor
+      operationId: getSimulationsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor simulations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Distributor Simulations
+      summary: Create a new distributor simulation
+      description: Creates a new simulation tracking for a distributor
+      operationId: createDistributorSimulation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorSimulationDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor simulation successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '400':
+          description: Invalid distributor simulation data provided
+        '409':
+          description: Distributor simulation already exists for this application
         '500':
           description: Internal server error
   /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}/create-contract:
@@ -1493,6 +2263,107 @@ paths:
           description: Invalid product data provided
         '500':
           description: Internal server error
+  /api/v1/distributors/{distributorId}/operations/filter:
+    post:
+      tags:
+        - Distributor Operations
+      summary: Filter distributor operations
+      description: Returns a paginated list of distributor operations based on filter criteria
+      operationId: filterDistributorOperations
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorOperationDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved distributor operations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter criteria provided
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/operations:
+    get:
+      tags:
+        - Distributor Operations
+      summary: Get all operations for distributor
+      description: Returns all operational coverage areas for a distributor
+      operationId: getOperationsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved distributor operations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Distributor Operations
+      summary: Create a new distributor operation
+      description: Creates a new operational coverage for a distributor
+      operationId: createDistributorOperation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorOperationDTO'
+        required: true
+      responses:
+        '201':
+          description: Distributor operation successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '400':
+          description: Invalid distributor operation data provided
+        '409':
+          description: Distributor operation already exists for this location
+        '500':
+          description: Internal server error
   /api/v1/distributors/{distributorId}/brandings/filter:
     post:
       tags:
@@ -1709,6 +2580,789 @@ paths:
                 $ref: '#/components/schemas/DistributorDTO'
         '400':
           description: Invalid distributor data provided
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/{templateId}/set-default:
+    patch:
+      tags:
+        - Terms and Conditions Templates
+      summary: Set template as default
+      description: Sets a template as default for its category
+      operationId: setAsDefault
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template to set as default
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template successfully set as default
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/{templateId}/remove-default:
+    patch:
+      tags:
+        - Terms and Conditions Templates
+      summary: Remove default status
+      description: Removes default status from a template
+      operationId: removeDefault
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template to remove default status from
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default status successfully removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/{templateId}/deactivate:
+    patch:
+      tags:
+        - Terms and Conditions Templates
+      summary: Deactivate template
+      description: Deactivates a template
+      operationId: deactivateTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template to deactivate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template successfully deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/{templateId}/activate:
+    patch:
+      tags:
+        - Terms and Conditions Templates
+      summary: Activate template
+      description: Activates a template
+      operationId: activateTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: ID of the template to activate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template successfully activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/{termsId}/status:
+    patch:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Update terms and conditions status
+      description: Updates the status of distributor terms and conditions
+      operationId: updateStatus
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          description: New status
+          required: true
+          schema:
+            type: string
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/{termsId}/sign:
+    patch:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Sign terms and conditions
+      description: Signs the distributor terms and conditions
+      operationId: signTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions to sign
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: signedBy
+          in: query
+          description: ID of the user signing
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Terms and conditions successfully signed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/{termsId}/deactivate:
+    patch:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Deactivate terms and conditions
+      description: Deactivates distributor terms and conditions
+      operationId: deactivateTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions to deactivate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Terms and conditions successfully deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/{termsId}/activate:
+    patch:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Activate terms and conditions
+      description: Activates distributor terms and conditions
+      operationId: activateTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: termsId
+          in: path
+          description: ID of the terms and conditions to activate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Terms and conditions successfully activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '404':
+          description: Terms and conditions not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/{simulationId}/status:
+    patch:
+      tags:
+        - Distributor Simulations
+      summary: Update simulation status
+      description: Updates the status of a distributor simulation
+      operationId: updateSimulationStatus
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: simulationId
+          in: path
+          description: ID of the distributor simulation
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          description: New status for the simulation
+          required: true
+          schema:
+            type: string
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Simulation status successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '404':
+          description: Distributor simulation not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/{simulationId}/deactivate:
+    patch:
+      tags:
+        - Distributor Simulations
+      summary: Deactivate distributor simulation
+      description: Deactivates a distributor simulation
+      operationId: deactivateDistributorSimulation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: simulationId
+          in: path
+          description: ID of the distributor simulation to deactivate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Distributor simulation successfully deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '404':
+          description: Distributor simulation not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/{simulationId}/activate:
+    patch:
+      tags:
+        - Distributor Simulations
+      summary: Activate distributor simulation
+      description: Activates a distributor simulation
+      operationId: activateDistributorSimulation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: simulationId
+          in: path
+          description: ID of the distributor simulation to activate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Distributor simulation successfully activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '404':
+          description: Distributor simulation not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/operations/{operationId}/deactivate:
+    patch:
+      tags:
+        - Distributor Operations
+      summary: Deactivate distributor operation
+      description: Deactivates a distributor operation
+      operationId: deactivateDistributorOperation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: operationId
+          in: path
+          description: ID of the distributor operation to deactivate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Distributor operation successfully deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '404':
+          description: Distributor operation not found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/operations/{operationId}/activate:
+    patch:
+      tags:
+        - Distributor Operations
+      summary: Activate distributor operation
+      description: Activates a distributor operation
+      operationId: activateDistributorOperation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: operationId
+          in: path
+          description: ID of the distributor operation to activate
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: updatedBy
+          in: query
+          description: ID of the user performing the update
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Distributor operation successfully activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '404':
+          description: Distributor operation not found
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/name/{name}:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get template by name
+      description: Returns a template based on its name
+      operationId: getTemplateByName
+      parameters:
+        - name: name
+          in: path
+          description: Name of the template
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Template not found
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/default/category/{category}:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get default template by category
+      description: Returns the default template for a specific category
+      operationId: getDefaultTemplateByCategory
+      parameters:
+        - name: category
+          in: path
+          description: Category
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved default template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '404':
+          description: Default template not found for category
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/default:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get default templates
+      description: Returns all default templates
+      operationId: getDefaultTemplates
+      responses:
+        '200':
+          description: Successfully retrieved default templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/category/{category}/active:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get active templates by category
+      description: Returns active templates in a specific category
+      operationId: getActiveTemplatesByCategory
+      parameters:
+        - name: category
+          in: path
+          description: Category of templates
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved active templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/category/{category}:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get templates by category
+      description: Returns templates in a specific category
+      operationId: getTemplatesByCategory
+      parameters:
+        - name: category
+          in: path
+          description: Category of templates
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '500':
+          description: Internal server error
+  /api/v1/terms-and-conditions-templates/active:
+    get:
+      tags:
+        - Terms and Conditions Templates
+      summary: Get all active templates
+      description: Returns all active templates
+      operationId: getActiveTemplates
+      responses:
+        '200':
+          description: Successfully retrieved active templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+        '500':
+          description: Internal server error
+  /api/v1/simulations/status/{status}:
+    get:
+      tags:
+        - Simulations
+      summary: Get simulations by status
+      description: Returns all simulations with a specific status
+      operationId: getSimulationsByStatus
+      parameters:
+        - name: status
+          in: path
+          description: Status of the simulations
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved simulations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '500':
+          description: Internal server error
+  /api/v1/simulations/country/{countryId}:
+    get:
+      tags:
+        - Simulations
+      summary: Get simulations by country
+      description: Returns all simulations for distributors operating in a specific country
+      operationId: getSimulationsByCountry
+      parameters:
+        - name: countryId
+          in: path
+          description: ID of the country
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved simulations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '500':
+          description: Internal server error
+  /api/v1/simulations/application/{applicationId}:
+    get:
+      tags:
+        - Simulations
+      summary: Get simulation by application ID
+      description: Returns a simulation based on its application ID
+      operationId: getSimulationByApplicationId
+      parameters:
+        - name: applicationId
+          in: path
+          description: ID of the application
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved simulation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '404':
+          description: Simulation not found
         '500':
           description: Internal server error
   /api/v1/shipments/tracking/{trackingNumber}:
@@ -2024,6 +3678,195 @@ paths:
           description: Leasing contract not found
         '500':
           description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/status/{status}:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Get terms and conditions by status
+      description: Returns terms and conditions with a specific status for a distributor
+      operationId: getTermsAndConditionsByDistributorIdAndStatus
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: path
+          description: Status of the terms and conditions
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/latest:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Get latest terms and conditions
+      description: Returns the latest version of terms and conditions for a distributor
+      operationId: getLatestTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved latest terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '404':
+          description: No terms and conditions found
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/has-active-signed:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Check if distributor has active signed terms
+      description: Checks if a distributor has active signed terms and conditions
+      operationId: hasActiveSignedTerms
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully checked active signed terms
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/expiring:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Get expiring terms and conditions
+      description: Returns terms and conditions expiring before a certain date
+      operationId: getExpiringTermsAndConditions
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: expirationDate
+          in: query
+          description: Expiration date threshold
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Successfully retrieved expiring terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/terms-and-conditions/active:
+    get:
+      tags:
+        - Distributor Terms and Conditions
+      summary: Get active terms and conditions for distributor
+      description: Returns all active terms and conditions for a distributor
+      operationId: getActiveTermsAndConditionsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved active terms and conditions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/status/{status}:
+    get:
+      tags:
+        - Distributor Simulations
+      summary: Get simulations by status
+      description: Returns simulations with a specific status for a distributor
+      operationId: getSimulationsByDistributorIdAndStatus
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: path
+          description: Status of the simulations
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved distributor simulations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/simulations/active:
+    get:
+      tags:
+        - Distributor Simulations
+      summary: Get active simulations for distributor
+      description: Returns all active simulations tracked by a distributor
+      operationId: getActiveSimulationsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved active distributor simulations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorSimulationDTO'
+        '500':
+          description: Internal server error
   /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/type/{lendingTypeId}:
     get:
       tags:
@@ -2189,6 +4032,68 @@ paths:
           description: Distributor not found
         '500':
           description: Internal server error
+  /api/v1/distributors/{distributorId}/operations/can-operate:
+    get:
+      tags:
+        - Distributor Operations
+      summary: Check if distributor can operate in location
+      description: Checks if a distributor can operate in a specific country and administrative division
+      operationId: canDistributorOperateInLocation
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: countryId
+          in: query
+          description: ID of the country
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: administrativeDivisionId
+          in: query
+          description: ID of the administrative division
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully checked operation capability
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '500':
+          description: Internal server error
+  /api/v1/distributors/{distributorId}/operations/active:
+    get:
+      tags:
+        - Distributor Operations
+      summary: Get active operations for distributor
+      description: Returns all active operational coverage areas for a distributor
+      operationId: getActiveOperationsByDistributorId
+      parameters:
+        - name: distributorId
+          in: path
+          description: ID of the distributor
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved active distributor operations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributorOperationDTO'
+        '500':
+          description: Internal server error
   /api/v1/distributors/{distributorId}/lending-configurations:
     get:
       tags:
@@ -2219,7 +4124,76 @@ components:
   schemas:
     JsonNode:
       type: object
+    TermsAndConditionsTemplateDTO:
+      required:
+        - category
+        - name
+        - templateContent
+        - version
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          maxLength: 255
+          minLength: 0
+          type: string
+        description:
+          maxLength: 1000
+          minLength: 0
+          type: string
+        category:
+          pattern: GENERAL|LENDING|OPERATIONAL|COMPLIANCE|MARKETING|TECHNICAL
+          type: string
+        templateContent:
+          type: string
+        variables:
+          $ref: '#/components/schemas/JsonNode'
+        version:
+          maxLength: 50
+          minLength: 0
+          type: string
+        isDefault:
+          type: boolean
+        isActive:
+          type: boolean
+        approvalRequired:
+          type: boolean
+        autoRenewal:
+          type: boolean
+        renewalPeriodMonths:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
     LeasingContractDTO:
+      required:
+        - contractId
+        - distributorId
+        - downPayment
+        - endDate
+        - lendingConfigurationId
+        - monthlyPayment
+        - partyId
+        - productId
+        - startDate
+        - totalAmount
       type: object
       properties:
         id:
@@ -2258,6 +4232,7 @@ components:
         totalAmount:
           type: number
         status:
+          pattern: DRAFT|PENDING|APPROVED|ACTIVE|COMPLETED|CANCELLED|TERMINATED
           type: string
         approvalDate:
           type: string
@@ -2266,8 +4241,12 @@ components:
           type: integer
           format: int64
         termsConditions:
+          maxLength: 5000
+          minLength: 0
           type: string
         notes:
+          maxLength: 1000
+          minLength: 0
           type: string
         isActive:
           type: boolean
@@ -2288,6 +4267,13 @@ components:
           format: int64
           readOnly: true
     LendingConfigurationDTO:
+      required:
+        - defaultTermMonths
+        - lendingType
+        - maxTermMonths
+        - minTermMonths
+        - name
+        - productId
       type: object
       properties:
         id:
@@ -2298,8 +4284,12 @@ components:
           type: integer
           format: int64
         name:
+          maxLength: 255
+          minLength: 0
           type: string
         description:
+          maxLength: 1000
+          minLength: 0
           type: string
         lendingType:
           $ref: '#/components/schemas/LendingTypeDTO'
@@ -2325,6 +4315,7 @@ components:
         latePaymentFeeAmount:
           type: number
         gracePeriodDays:
+          minimum: 0
           type: integer
           format: int32
         isDefault:
@@ -2332,6 +4323,8 @@ components:
         isActive:
           type: boolean
         termsConditions:
+          maxLength: 5000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -2346,6 +4339,9 @@ components:
           type: integer
           format: int64
     LendingTypeDTO:
+      required:
+        - code
+        - name
       type: object
       properties:
         id:
@@ -2353,10 +4349,16 @@ components:
           format: int64
           readOnly: true
         name:
+          maxLength: 255
+          minLength: 0
           type: string
         code:
+          maxLength: 100
+          minLength: 0
           type: string
         description:
+          maxLength: 1000
+          minLength: 0
           type: string
         isActive:
           type: boolean
@@ -2377,6 +4379,9 @@ components:
           format: int64
           readOnly: true
     ProductCategoryDTO:
+      required:
+        - code
+        - name
       type: object
       properties:
         id:
@@ -2384,10 +4389,16 @@ components:
           format: int64
           readOnly: true
         name:
+          maxLength: 255
+          minLength: 0
           type: string
         code:
+          maxLength: 100
+          minLength: 0
           type: string
         description:
+          maxLength: 1000
+          minLength: 0
           type: string
         isActive:
           type: boolean
@@ -2408,6 +4419,9 @@ components:
           format: int64
           readOnly: true
     ProductDTO:
+      required:
+        - distributorId
+        - name
       type: object
       properties:
         id:
@@ -2418,18 +4432,30 @@ components:
           type: integer
           format: int64
         name:
+          maxLength: 255
+          minLength: 0
           type: string
         description:
+          maxLength: 1000
+          minLength: 0
           type: string
         sku:
+          maxLength: 100
+          minLength: 0
           type: string
         modelNumber:
+          maxLength: 100
+          minLength: 0
           type: string
         manufacturer:
+          maxLength: 255
+          minLength: 0
           type: string
         category:
           $ref: '#/components/schemas/ProductCategoryDTO'
         imageUrl:
+          maxLength: 255
+          minLength: 0
           type: string
         specifications:
           $ref: '#/components/schemas/JsonNode'
@@ -2448,6 +4474,10 @@ components:
           type: integer
           format: int64
     ShipmentDTO:
+      required:
+        - leasingContractId
+        - productId
+        - shippingAddress
       type: object
       properties:
         id:
@@ -2465,10 +4495,16 @@ components:
         product:
           $ref: '#/components/schemas/ProductDTO'
         trackingNumber:
+          maxLength: 100
+          minLength: 0
           type: string
         carrier:
+          maxLength: 100
+          minLength: 0
           type: string
         shippingAddress:
+          maxLength: 500
+          minLength: 0
           type: string
         shippingDate:
           type: string
@@ -2480,8 +4516,11 @@ components:
           type: string
           format: date-time
         status:
+          pattern: PENDING|SHIPPED|IN_TRANSIT|DELIVERED|CANCELLED|RETURNED
           type: string
         notes:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -2499,7 +4538,245 @@ components:
           type: integer
           format: int64
           readOnly: true
+    DistributorDTO:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        externalCode:
+          maxLength: 255
+          minLength: 0
+          type: string
+        name:
+          maxLength: 255
+          minLength: 0
+          type: string
+        displayName:
+          maxLength: 255
+          minLength: 0
+          type: string
+        taxId:
+          type: string
+        registrationNumber:
+          maxLength: 100
+          minLength: 0
+          type: string
+        websiteUrl:
+          maxLength: 255
+          minLength: 0
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        supportEmail:
+          type: string
+        addressLine:
+          maxLength: 255
+          minLength: 0
+          type: string
+        postalCode:
+          maxLength: 20
+          minLength: 0
+          type: string
+        city:
+          maxLength: 100
+          minLength: 0
+          type: string
+        state:
+          maxLength: 100
+          minLength: 0
+          type: string
+        countryCode:
+          pattern: ^[A-Z]{2}$
+          type: string
+        isActive:
+          type: boolean
+        isTestDistributor:
+          type: boolean
+        timeZone:
+          maxLength: 50
+          minLength: 0
+          type: string
+        defaultLocale:
+          maxLength: 10
+          minLength: 0
+          type: string
+        onboardedAt:
+          type: string
+          format: date-time
+        terminatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: integer
+          format: int64
+    DistributorTermsAndConditionsDTO:
+      required:
+        - content
+        - distributorId
+        - effectiveDate
+        - title
+        - version
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        distributorId:
+          type: integer
+          format: int64
+        templateId:
+          type: integer
+          format: int64
+        title:
+          maxLength: 255
+          minLength: 0
+          type: string
+        content:
+          type: string
+        version:
+          maxLength: 50
+          minLength: 0
+          type: string
+        effectiveDate:
+          type: string
+          format: date-time
+        expirationDate:
+          type: string
+          format: date-time
+        signedDate:
+          type: string
+          format: date-time
+        signedBy:
+          type: integer
+          format: int64
+        status:
+          pattern: DRAFT|PENDING_SIGNATURE|SIGNED|EXPIRED|TERMINATED
+          type: string
+        isActive:
+          type: boolean
+        notes:
+          maxLength: 1000
+          minLength: 0
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
+        distributor:
+          $ref: '#/components/schemas/DistributorDTO'
+        template:
+          $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
+    DistributorSimulationDTO:
+      required:
+        - applicationId
+        - distributorId
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        distributorId:
+          type: integer
+          format: int64
+        applicationId:
+          type: integer
+          format: int64
+        simulationStatus:
+          maxLength: 50
+          minLength: 0
+          type: string
+        notes:
+          maxLength: 1000
+          minLength: 0
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
+    DistributorOperationDTO:
+      required:
+        - administrativeDivisionId
+        - countryId
+        - distributorId
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        distributorId:
+          type: integer
+          format: int64
+        countryId:
+          type: integer
+          format: int64
+        administrativeDivisionId:
+          type: integer
+          format: int64
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        createdBy:
+          type: integer
+          format: int64
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedBy:
+          type: integer
+          format: int64
+          readOnly: true
     DistributorBrandingDTO:
+      required:
+        - distributorId
       type: object
       properties:
         id:
@@ -2510,16 +4787,25 @@ components:
           type: integer
           format: int64
         logoUrl:
+          maxLength: 255
+          minLength: 0
           type: string
         faviconUrl:
+          maxLength: 255
+          minLength: 0
           type: string
         primaryColor:
+          pattern: ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$
           type: string
         secondaryColor:
+          pattern: ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$
           type: string
         backgroundColor:
+          pattern: ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$
           type: string
         fontFamily:
+          maxLength: 100
+          minLength: 0
           type: string
         theme:
           type: string
@@ -2542,6 +4828,12 @@ components:
           type: integer
           format: int64
     DistributorAuditLogDTO:
+      required:
+        - action
+        - distributorId
+        - entity
+        - entityId
+        - timestamp
       type: object
       properties:
         id:
@@ -2558,12 +4850,17 @@ components:
             - UPDATED
             - TERMINATED
         entity:
+          maxLength: 50
+          minLength: 0
           type: string
         entityId:
+          maxLength: 50
+          minLength: 0
           type: string
         metadata:
           $ref: '#/components/schemas/JsonNode'
         ipAddress:
+          pattern: ^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$
           type: string
         userId:
           type: integer
@@ -2571,67 +4868,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    DistributorDTO:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-        externalCode:
-          type: string
-        name:
-          type: string
-        displayName:
-          type: string
-        taxId:
-          type: string
-        registrationNumber:
-          type: string
-        websiteUrl:
-          type: string
-        phoneNumber:
-          type: string
-        email:
-          type: string
-        supportEmail:
-          type: string
-        addressLine:
-          type: string
-        postalCode:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        countryCode:
-          type: string
-        isActive:
-          type: boolean
-        isTestDistributor:
-          type: boolean
-        timeZone:
-          type: string
-        defaultLocale:
-          type: string
-        onboardedAt:
-          type: string
-          format: date-time
-        terminatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          type: integer
-          format: int64
-        updatedAt:
-          type: string
-          format: date-time
-        updatedBy:
-          type: integer
-          format: int64
     FilterOptions:
       type: object
       properties:
@@ -2640,13 +4876,13 @@ components:
         includeInheritedFields:
           type: boolean
       description: Filter options for customizing filter behavior
-    FilterRequestShipmentDTO:
+    FilterRequestTermsAndConditionsTemplateDTO:
       required:
         - pagination
       type: object
       properties:
         filters:
-          $ref: '#/components/schemas/ShipmentDTO'
+          $ref: '#/components/schemas/TermsAndConditionsTemplateDTO'
         rangeFilters:
           $ref: '#/components/schemas/RangeFilter'
         pagination:
@@ -2720,6 +4956,20 @@ components:
           description: The current page number, typically zero-based.
           format: int32
       description: Represents a paginated response containing a list of items and pagination metadata.
+    FilterRequestShipmentDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/ShipmentDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
     FilterRequestLeasingContractDTO:
       required:
         - pagination
@@ -2727,6 +4977,34 @@ components:
       properties:
         filters:
           $ref: '#/components/schemas/LeasingContractDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorTermsAndConditionsDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorTermsAndConditionsDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorSimulationDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorSimulationDTO'
         rangeFilters:
           $ref: '#/components/schemas/RangeFilter'
         pagination:
@@ -2755,6 +5033,20 @@ components:
       properties:
         filters:
           $ref: '#/components/schemas/ProductDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorOperationDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorOperationDTO'
         rangeFilters:
           $ref: '#/components/schemas/RangeFilter'
         pagination:

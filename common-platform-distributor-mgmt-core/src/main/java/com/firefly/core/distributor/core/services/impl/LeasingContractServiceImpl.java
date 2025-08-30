@@ -1,8 +1,11 @@
-package com.firefly.core.distributor.core.services;
+package com.firefly.core.distributor.core.services.impl;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.mappers.LeasingContractMapper;
+import com.firefly.core.distributor.core.services.LeasingContractService;
+import com.firefly.core.distributor.core.services.ProductService;
+import com.firefly.core.distributor.core.services.ShipmentService;
 import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
 import com.firefly.core.distributor.models.entities.LeasingContract;
 import com.firefly.core.distributor.models.repositories.LeasingContractRepository;

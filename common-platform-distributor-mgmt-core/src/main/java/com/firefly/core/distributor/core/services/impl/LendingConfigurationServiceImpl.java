@@ -1,9 +1,10 @@
-package com.firefly.core.distributor.core.services;
+package com.firefly.core.distributor.core.services.impl;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.filters.FilterUtils;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.mappers.LendingConfigurationMapper;
+import com.firefly.core.distributor.core.services.LendingConfigurationService;
 import com.firefly.core.distributor.interfaces.dtos.LendingConfigurationDTO;
 import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import com.firefly.core.distributor.models.entities.LendingConfiguration;

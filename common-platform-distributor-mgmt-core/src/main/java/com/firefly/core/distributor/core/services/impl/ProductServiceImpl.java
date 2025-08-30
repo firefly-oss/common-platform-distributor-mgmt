@@ -1,9 +1,10 @@
-package com.firefly.core.distributor.core.services;
+package com.firefly.core.distributor.core.services.impl;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.filters.FilterUtils;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.mappers.ProductMapper;
+import com.firefly.core.distributor.core.services.ProductService;
 import com.firefly.core.distributor.interfaces.dtos.ProductCategoryDTO;
 import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import com.firefly.core.distributor.models.entities.Product;

@@ -1,9 +1,10 @@
-package com.firefly.core.distributor.core.services;
+package com.firefly.core.distributor.core.services.impl;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.filters.FilterUtils;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.mappers.DistributorAuditLogMapper;
+import com.firefly.core.distributor.core.services.DistributorAuditLogService;
 import com.firefly.core.distributor.interfaces.dtos.DistributorAuditLogDTO;
 import com.firefly.core.distributor.models.entities.DistributorAuditLog;
 import com.firefly.core.distributor.models.repositories.DistributorAuditLogRepository;

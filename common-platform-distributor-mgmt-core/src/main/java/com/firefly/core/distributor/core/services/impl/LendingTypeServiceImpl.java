@@ -1,6 +1,7 @@
-package com.firefly.core.distributor.core.services;
+package com.firefly.core.distributor.core.services.impl;
 
 import com.firefly.core.distributor.core.mappers.LendingTypeMapper;
+import com.firefly.core.distributor.core.services.LendingTypeService;
 import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import com.firefly.core.distributor.models.entities.LendingType;
 import com.firefly.core.distributor.models.repositories.LendingTypeRepository;

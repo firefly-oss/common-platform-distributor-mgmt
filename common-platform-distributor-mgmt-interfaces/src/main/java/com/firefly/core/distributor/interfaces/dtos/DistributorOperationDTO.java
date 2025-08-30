@@ -1,9 +1,10 @@
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.firefly.annotations.ValidDateTime;
+import com.firefly.core.utils.annotations.FilterableId;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,27 +13,28 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * Data Transfer Object for LendingType entity.
+ * Data Transfer Object for DistributorOperation entity.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LendingTypeDTO {
+public class DistributorOperationDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NotBlank(message = "Lending type name is required")
-    @Size(max = 255, message = "Lending type name cannot exceed 255 characters")
-    private String name;
+    @FilterableId
+    @NotNull(message = "Distributor ID is required")
+    private Long distributorId;
 
-    @NotBlank(message = "Lending type code is required")
-    @Size(max = 100, message = "Lending type code cannot exceed 100 characters")
-    private String code;
+    @NotNull(message = "Country ID is required")
+    @Positive(message = "Country ID must be positive")
+    private Long countryId;
 
-    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
-    private String description;
+    @NotNull(message = "Administrative Division ID is required")
+    @Positive(message = "Administrative Division ID must be positive")
+    private Long administrativeDivisionId;
 
     private Boolean isActive;
 

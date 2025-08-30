@@ -1,0 +1,123 @@
+package com.firefly.core.distributor.core.services;
+
+import com.firefly.common.core.filters.FilterRequest;
+import com.firefly.common.core.queries.PaginationResponse;
+import com.firefly.core.distributor.interfaces.dtos.DistributorSimulationDTO;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * Service interface for managing distributor simulations.
+ */
+public interface DistributorSimulationService {
+
+    /**
+     * Filters the distributor simulations based on the given criteria.
+     *
+     * @param filterRequest the request object containing filtering criteria for DistributorSimulationDTO
+     * @return a reactive {@code Mono} emitting a {@code PaginationResponse} containing the filtered list of distributor simulations
+     */
+    Mono<PaginationResponse<DistributorSimulationDTO>> filterDistributorSimulations(FilterRequest<DistributorSimulationDTO> filterRequest);
+
+    /**
+     * Creates a new distributor simulation.
+     *
+     * @param distributorSimulationDTO the distributor simulation to create
+     * @return a reactive {@code Mono} emitting the created distributor simulation
+     */
+    Mono<DistributorSimulationDTO> createDistributorSimulation(DistributorSimulationDTO distributorSimulationDTO);
+
+    /**
+     * Updates an existing distributor simulation.
+     *
+     * @param id the ID of the distributor simulation to update
+     * @param distributorSimulationDTO the updated distributor simulation data
+     * @return a reactive {@code Mono} emitting the updated distributor simulation
+     */
+    Mono<DistributorSimulationDTO> updateDistributorSimulation(Long id, DistributorSimulationDTO distributorSimulationDTO);
+
+    /**
+     * Deletes a distributor simulation by its ID.
+     *
+     * @param id the ID of the distributor simulation to delete
+     * @return a reactive {@code Mono} that completes when the simulation is deleted
+     */
+    Mono<Void> deleteDistributorSimulation(Long id);
+
+    /**
+     * Retrieves a distributor simulation by its ID.
+     *
+     * @param id the ID of the distributor simulation to retrieve
+     * @return a reactive {@code Mono} emitting the distributor simulation if found
+     */
+    Mono<DistributorSimulationDTO> getDistributorSimulationById(Long id);
+
+    /**
+     * Retrieves all simulations for a specific distributor.
+     *
+     * @param distributorId the distributor ID
+     * @return a reactive {@code Flux} emitting all simulations for the distributor
+     */
+    Flux<DistributorSimulationDTO> getSimulationsByDistributorId(Long distributorId);
+
+    /**
+     * Retrieves all active simulations for a specific distributor.
+     *
+     * @param distributorId the distributor ID
+     * @return a reactive {@code Flux} emitting all active simulations for the distributor
+     */
+    Flux<DistributorSimulationDTO> getActiveSimulationsByDistributorId(Long distributorId);
+
+    /**
+     * Retrieves a simulation by application ID.
+     *
+     * @param applicationId the application ID
+     * @return a reactive {@code Mono} emitting the simulation if found
+     */
+    Mono<DistributorSimulationDTO> getSimulationByApplicationId(Long applicationId);
+
+    /**
+     * Retrieves simulations by status.
+     *
+     * @param simulationStatus the simulation status
+     * @return a reactive {@code Flux} emitting simulations with the specified status
+     */
+    Flux<DistributorSimulationDTO> getSimulationsByStatus(String simulationStatus);
+
+    /**
+     * Retrieves simulations by distributor and status.
+     *
+     * @param distributorId the distributor ID
+     * @param simulationStatus the simulation status
+     * @return a reactive {@code Flux} emitting simulations for the distributor with the specified status
+     */
+    Flux<DistributorSimulationDTO> getSimulationsByDistributorIdAndStatus(Long distributorId, String simulationStatus);
+
+    /**
+     * Updates the status of a distributor simulation.
+     *
+     * @param id the ID of the distributor simulation
+     * @param simulationStatus the new simulation status
+     * @param updatedBy the ID of the user performing the update
+     * @return a reactive {@code Mono} emitting the updated distributor simulation
+     */
+    Mono<DistributorSimulationDTO> updateSimulationStatus(Long id, String simulationStatus, Long updatedBy);
+
+    /**
+     * Activates a distributor simulation.
+     *
+     * @param id the ID of the distributor simulation to activate
+     * @param updatedBy the ID of the user performing the update
+     * @return a reactive {@code Mono} emitting the updated distributor simulation
+     */
+    Mono<DistributorSimulationDTO> activateDistributorSimulation(Long id, Long updatedBy);
+
+    /**
+     * Deactivates a distributor simulation.
+     *
+     * @param id the ID of the distributor simulation to deactivate
+     * @param updatedBy the ID of the user performing the update
+     * @return a reactive {@code Mono} emitting the updated distributor simulation
+     */
+    Mono<DistributorSimulationDTO> deactivateDistributorSimulation(Long id, Long updatedBy);
+}

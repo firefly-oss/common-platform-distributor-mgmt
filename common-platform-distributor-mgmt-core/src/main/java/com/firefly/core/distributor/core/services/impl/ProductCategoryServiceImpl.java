@@ -1,6 +1,7 @@
-package com.firefly.core.distributor.core.services;
+package com.firefly.core.distributor.core.services.impl;
 
 import com.firefly.core.distributor.core.mappers.ProductCategoryMapper;
+import com.firefly.core.distributor.core.services.ProductCategoryService;
 import com.firefly.core.distributor.interfaces.dtos.ProductCategoryDTO;
 import com.firefly.core.distributor.models.entities.ProductCategory;
 import com.firefly.core.distributor.models.repositories.ProductCategoryRepository;

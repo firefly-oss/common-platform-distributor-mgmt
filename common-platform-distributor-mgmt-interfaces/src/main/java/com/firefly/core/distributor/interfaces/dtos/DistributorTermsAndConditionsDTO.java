@@ -1,8 +1,8 @@
 package com.firefly.core.distributor.interfaces.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.utils.annotations.FilterableId;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,66 +15,70 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * Data Transfer Object for Shipment entity.
+ * Data Transfer Object for DistributorTermsAndConditions entity.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShipmentDTO {
+public class DistributorTermsAndConditionsDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @FilterableId
-    @NotNull(message = "Leasing contract ID is required")
-    private Long leasingContractId;
+    @NotNull(message = "Distributor ID is required")
+    private Long distributorId;
 
-    private LeasingContractDTO leasingContract;
+    private Long templateId;
 
-    @FilterableId
-    @NotNull(message = "Product ID is required")
-    private Long productId;
+    @NotBlank(message = "Title is required")
+    @Size(max = 255, message = "Title cannot exceed 255 characters")
+    private String title;
 
-    private ProductDTO product;
+    @NotBlank(message = "Content is required")
+    private String content;
 
-    @Size(max = 100, message = "Tracking number cannot exceed 100 characters")
-    private String trackingNumber;
+    @NotBlank(message = "Version is required")
+    @Size(max = 50, message = "Version cannot exceed 50 characters")
+    private String version;
 
-    @Size(max = 100, message = "Carrier cannot exceed 100 characters")
-    private String carrier;
-
-    @NotBlank(message = "Shipping address is required")
-    @Size(max = 500, message = "Shipping address cannot exceed 500 characters")
-    private String shippingAddress;
-    
+    @NotNull(message = "Effective date is required")
     @ValidDateTime
-    private LocalDateTime shippingDate;
+    private LocalDateTime effectiveDate;
 
     @ValidDateTime
-    private LocalDateTime estimatedDeliveryDate;
+    private LocalDateTime expirationDate;
 
     @ValidDateTime
-    private LocalDateTime actualDeliveryDate;
+    private LocalDateTime signedDate;
 
-    @Pattern(regexp = "PENDING|SHIPPED|IN_TRANSIT|DELIVERED|CANCELLED|RETURNED",
-             message = "Status must be one of: PENDING, SHIPPED, IN_TRANSIT, DELIVERED, CANCELLED, RETURNED")
+    private Long signedBy;
+
+    @Pattern(regexp = "DRAFT|PENDING_SIGNATURE|SIGNED|EXPIRED|TERMINATED", 
+             message = "Status must be one of: DRAFT, PENDING_SIGNATURE, SIGNED, EXPIRED, TERMINATED")
     private String status;
+
+    private Boolean isActive;
 
     @Size(max = 1000, message = "Notes cannot exceed 1000 characters")
     private String notes;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime createdAt;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long createdBy;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
-    
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long updatedBy;
+
+    // Related entities
+    private DistributorDTO distributor;
+    private TermsAndConditionsTemplateDTO template;
 }
