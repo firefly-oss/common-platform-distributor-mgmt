@@ -34,3 +34,4 @@ replay_pid*
 **/target/generated-test-sources/
 **/target/generated-resources/
 .refactor-backup-*/
+.metadata-backup*
