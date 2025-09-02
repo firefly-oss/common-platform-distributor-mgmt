@@ -14,7 +14,6 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import java.util.UUID;
@@ -27,6 +26,9 @@ public class DistributorSimulationServiceImplTest {
 
     private DistributorSimulation distributorSimulation;
     private DistributorSimulationDTO distributorSimulationDTO;
+    private UUID testId;
+    private UUID simulationTypeId;
+    private UUID applicationId;
 
     @BeforeEach
     void setUp() {
@@ -43,6 +45,11 @@ public class DistributorSimulationServiceImplTest {
 
             java.lang.reflect.Field mapperField = DistributorSimulationServiceImpl.class.getDeclaredField("mapper");
             mapperField.setAccessible(true);
+
+        // Initialize test UUID
+        testId = UUID.randomUUID();
+        simulationTypeId = UUID.randomUUID();
+        applicationId = UUID.randomUUID();
             mapperField.set(service, mapper);
         } catch (Exception e) {
             throw new RuntimeException("Failed to set up test", e);
@@ -50,9 +57,9 @@ public class DistributorSimulationServiceImplTest {
 
         // Initialize test data
         distributorSimulation = DistributorSimulation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .applicationId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .applicationId(testId)
                 .simulationStatus("PENDING")
                 .notes("Test simulation")
                 .isActive(true)
@@ -60,9 +67,9 @@ public class DistributorSimulationServiceImplTest {
                 .build();
 
         distributorSimulationDTO = DistributorSimulationDTO.builder()
-                .id(1L)
-                .distributorId(1L)
-                .applicationId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .applicationId(testId)
                 .simulationStatus("PENDING")
                 .notes("Test simulation")
                 .isActive(true)
@@ -90,18 +97,18 @@ public class DistributorSimulationServiceImplTest {
     @Test
     void updateDistributorSimulation_WhenSimulationExists_ShouldUpdateAndReturnSimulation() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorSimulation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorSimulation));
         when(mapper.toEntity(any(DistributorSimulationDTO.class))).thenReturn(distributorSimulation);
         when(repository.save(any(DistributorSimulation.class))).thenReturn(Mono.just(distributorSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributorSimulation(1L, distributorSimulationDTO))
+        StepVerifier.create(service.updateDistributorSimulation(testId, distributorSimulationDTO))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toEntity(distributorSimulationDTO);
         verify(repository).save(any(DistributorSimulation.class));
         verify(mapper).toDTO(distributorSimulation);
@@ -110,78 +117,78 @@ public class DistributorSimulationServiceImplTest {
     @Test
     void getDistributorSimulationById_WhenSimulationExists_ShouldReturnSimulation() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorSimulation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorSimulationById(1L))
+        StepVerifier.create(service.getDistributorSimulationById(testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toDTO(distributorSimulation);
     }
 
     @Test
     void getDistributorSimulationById_WhenSimulationDoesNotExist_ShouldReturnEmpty() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorSimulationById(1L))
+        StepVerifier.create(service.getDistributorSimulationById(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toDTO(any());
     }
 
     @Test
     void getSimulationsByDistributorId_ShouldReturnSimulations() {
         // Arrange
-        when(repository.findByDistributorId(anyLong())).thenReturn(Flux.just(distributorSimulation));
+        when(repository.findByDistributorId(any(UUID.class))).thenReturn(Flux.just(distributorSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getSimulationsByDistributorId(1L))
+        StepVerifier.create(service.getSimulationsByDistributorId(testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorId(1L);
+        verify(repository).findByDistributorId(testId);
         verify(mapper).toDTO(distributorSimulation);
     }
 
     @Test
     void getActiveSimulationsByDistributorId_ShouldReturnActiveSimulations() {
         // Arrange
-        when(repository.findByDistributorIdAndIsActiveTrue(anyLong())).thenReturn(Flux.just(distributorSimulation));
+        when(repository.findByDistributorIdAndIsActiveTrue(any(UUID.class))).thenReturn(Flux.just(distributorSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getActiveSimulationsByDistributorId(1L))
+        StepVerifier.create(service.getActiveSimulationsByDistributorId(testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorIdAndIsActiveTrue(1L);
+        verify(repository).findByDistributorIdAndIsActiveTrue(testId);
         verify(mapper).toDTO(distributorSimulation);
     }
 
     @Test
     void getSimulationByApplicationId_WhenSimulationExists_ShouldReturnSimulation() {
         // Arrange
-        when(repository.findByApplicationId(anyLong())).thenReturn(Mono.just(distributorSimulation));
+        when(repository.findByApplicationId(any(UUID.class))).thenReturn(Mono.just(distributorSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getSimulationByApplicationId(1L))
+        StepVerifier.create(service.getSimulationByApplicationId(testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByApplicationId(1L);
+        verify(repository).findByApplicationId(testId);
         verify(mapper).toDTO(distributorSimulation);
     }
 
@@ -204,17 +211,17 @@ public class DistributorSimulationServiceImplTest {
     @Test
     void getSimulationsByDistributorIdAndStatus_ShouldReturnSimulations() {
         // Arrange
-        when(repository.findByDistributorIdAndSimulationStatus(anyLong(), anyString()))
+        when(repository.findByDistributorIdAndSimulationStatus(any(UUID.class), anyString()))
                 .thenReturn(Flux.just(distributorSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getSimulationsByDistributorIdAndStatus(1L, "PENDING"))
+        StepVerifier.create(service.getSimulationsByDistributorIdAndStatus(testId, "PENDING"))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorIdAndSimulationStatus(1L, "PENDING");
+        verify(repository).findByDistributorIdAndSimulationStatus(testId, "PENDING");
         verify(mapper).toDTO(distributorSimulation);
     }
 
@@ -222,25 +229,25 @@ public class DistributorSimulationServiceImplTest {
     void updateSimulationStatus_WhenSimulationExists_ShouldUpdateStatusAndReturnSimulation() {
         // Arrange
         DistributorSimulation updatedSimulation = DistributorSimulation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .applicationId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .applicationId(testId)
                 .simulationStatus("COMPLETED")
                 .notes("Test simulation")
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorSimulation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorSimulation));
         when(repository.save(any(DistributorSimulation.class))).thenReturn(Mono.just(updatedSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateSimulationStatus(1L, "COMPLETED", 1L))
+        StepVerifier.create(service.updateSimulationStatus(testId, "COMPLETED", testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorSimulation.class));
         verify(mapper).toDTO(updatedSimulation);
     }
@@ -249,32 +256,32 @@ public class DistributorSimulationServiceImplTest {
     void activateDistributorSimulation_WhenSimulationExists_ShouldActivateAndReturnSimulation() {
         // Arrange
         DistributorSimulation inactiveSimulation = DistributorSimulation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .applicationId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .applicationId(testId)
                 .simulationStatus("PENDING")
                 .isActive(false)
                 .build();
 
         DistributorSimulation activeSimulation = DistributorSimulation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .applicationId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .applicationId(testId)
                 .simulationStatus("PENDING")
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(inactiveSimulation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(inactiveSimulation));
         when(repository.save(any(DistributorSimulation.class))).thenReturn(Mono.just(activeSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.activateDistributorSimulation(1L, 1L))
+        StepVerifier.create(service.activateDistributorSimulation(testId, testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorSimulation.class));
         verify(mapper).toDTO(activeSimulation);
     }
@@ -283,24 +290,24 @@ public class DistributorSimulationServiceImplTest {
     void deactivateDistributorSimulation_WhenSimulationExists_ShouldDeactivateAndReturnSimulation() {
         // Arrange
         DistributorSimulation inactiveSimulation = DistributorSimulation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .applicationId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .applicationId(testId)
                 .simulationStatus("PENDING")
                 .isActive(false)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorSimulation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorSimulation));
         when(repository.save(any(DistributorSimulation.class))).thenReturn(Mono.just(inactiveSimulation));
         when(mapper.toDTO(any(DistributorSimulation.class))).thenReturn(distributorSimulationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.deactivateDistributorSimulation(1L, 1L))
+        StepVerifier.create(service.deactivateDistributorSimulation(testId, testId))
                 .expectNext(distributorSimulationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorSimulation.class));
         verify(mapper).toDTO(inactiveSimulation);
     }
@@ -308,13 +315,13 @@ public class DistributorSimulationServiceImplTest {
     @Test
     void deleteDistributorSimulation_ShouldDeleteSimulation() {
         // Arrange
-        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+        when(repository.deleteById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributorSimulation(1L))
+        StepVerifier.create(service.deleteDistributorSimulation(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).deleteById(1L);
+        verify(repository).deleteById(testId);
     }
 }

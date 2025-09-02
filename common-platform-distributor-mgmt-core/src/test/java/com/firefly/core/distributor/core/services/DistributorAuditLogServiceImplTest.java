@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+import java.util.UUID;
 import java.util.UUID;
 
 public class DistributorAuditLogServiceImplTest {
@@ -25,6 +25,7 @@ public class DistributorAuditLogServiceImplTest {
     private DistributorAuditLog distributorAuditLog;
     private DistributorAuditLogDTO distributorAuditLogDTO;
     private FilterRequest<DistributorAuditLogDTO> filterRequest;
+    private UUID testId;
 
     @BeforeEach
     void setUp() {
@@ -46,12 +47,15 @@ public class DistributorAuditLogServiceImplTest {
             throw new RuntimeException("Failed to set up test", e);
         }
 
+        // Initialize test UUID
+        testId = UUID.randomUUID();
+
         // Initialize test data
         distributorAuditLog = new DistributorAuditLog();
-        distributorAuditLog.setId(1L);
+        distributorAuditLog.setId(testId);
 
         distributorAuditLogDTO = new DistributorAuditLogDTO();
-        distributorAuditLogDTO.setId(1L);
+        distributorAuditLogDTO.setId(testId);
 
         filterRequest = new FilterRequest<>();
     }
@@ -77,18 +81,18 @@ public class DistributorAuditLogServiceImplTest {
     @Test
     void updateDistributorAuditLog_WhenDistributorAuditLogExists_ShouldUpdateAndReturnDistributorAuditLog() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorAuditLog));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorAuditLog));
         when(mapper.toEntity(any(DistributorAuditLogDTO.class))).thenReturn(distributorAuditLog);
         when(repository.save(any(DistributorAuditLog.class))).thenReturn(Mono.just(distributorAuditLog));
         when(mapper.toDTO(any(DistributorAuditLog.class))).thenReturn(distributorAuditLogDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributorAuditLog(1L, distributorAuditLogDTO))
+        StepVerifier.create(service.updateDistributorAuditLog(testId, distributorAuditLogDTO))
                 .expectNext(distributorAuditLogDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toEntity(distributorAuditLogDTO);
         verify(repository).save(distributorAuditLog);
         verify(mapper).toDTO(distributorAuditLog);
@@ -97,16 +101,16 @@ public class DistributorAuditLogServiceImplTest {
     @Test
     void updateDistributorAuditLog_WhenDistributorAuditLogDoesNotExist_ShouldReturnError() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributorAuditLog(1L, distributorAuditLogDTO))
+        StepVerifier.create(service.updateDistributorAuditLog(testId, distributorAuditLogDTO))
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
-                        throwable.getMessage().equals("Distributor audit log not found with ID: 1"))
+                        throwable.getMessage().equals("Distributor audit log not found with ID: " + testId))
                 .verify();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toEntity(any());
         verify(repository, never()).save(any());
         verify(mapper, never()).toDTO(any());
@@ -115,63 +119,63 @@ public class DistributorAuditLogServiceImplTest {
     @Test
     void deleteDistributorAuditLog_WhenDistributorAuditLogExists_ShouldDeleteDistributorAuditLog() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorAuditLog));
-        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorAuditLog));
+        when(repository.deleteById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributorAuditLog(1L))
+        StepVerifier.create(service.deleteDistributorAuditLog(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
-        verify(repository).deleteById(1L);
+        verify(repository).findById(testId);
+        verify(repository).deleteById(testId);
     }
 
     @Test
     void deleteDistributorAuditLog_WhenDistributorAuditLogDoesNotExist_ShouldReturnError() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributorAuditLog(1L))
+        StepVerifier.create(service.deleteDistributorAuditLog(testId))
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
-                        throwable.getMessage().equals("Distributor audit log not found with ID: 1"))
+                        throwable.getMessage().equals("Distributor audit log not found with ID: " + testId))
                 .verify();
 
         // Verify
-        verify(repository).findById(1L);
-        verify(repository, never()).deleteById(anyLong());
+        verify(repository).findById(testId);
+        verify(repository, never()).deleteById(any(UUID.class));
     }
 
     @Test
     void getDistributorAuditLogById_WhenDistributorAuditLogExists_ShouldReturnDistributorAuditLog() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorAuditLog));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorAuditLog));
         when(mapper.toDTO(any(DistributorAuditLog.class))).thenReturn(distributorAuditLogDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorAuditLogById(1L))
+        StepVerifier.create(service.getDistributorAuditLogById(testId))
                 .expectNext(distributorAuditLogDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toDTO(distributorAuditLog);
     }
 
     @Test
     void getDistributorAuditLogById_WhenDistributorAuditLogDoesNotExist_ShouldReturnError() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorAuditLogById(1L))
+        StepVerifier.create(service.getDistributorAuditLogById(testId))
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
-                        throwable.getMessage().equals("Distributor audit log not found with ID: 1"))
+                        throwable.getMessage().equals("Distributor audit log not found with ID: " + testId))
                 .verify();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toDTO(any());
     }
 }

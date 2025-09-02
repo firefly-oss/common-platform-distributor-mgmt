@@ -14,7 +14,6 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import java.util.UUID;
@@ -27,6 +26,8 @@ public class DistributorTermsAndConditionsServiceImplTest {
 
     private DistributorTermsAndConditions distributorTermsAndConditions;
     private DistributorTermsAndConditionsDTO distributorTermsAndConditionsDTO;
+    private UUID testId;
+    private UUID templateId;
 
     @BeforeEach
     void setUp() {
@@ -43,6 +44,10 @@ public class DistributorTermsAndConditionsServiceImplTest {
 
             java.lang.reflect.Field mapperField = DistributorTermsAndConditionsServiceImpl.class.getDeclaredField("mapper");
             mapperField.setAccessible(true);
+
+        // Initialize test UUID
+        testId = UUID.randomUUID();
+        templateId = UUID.randomUUID();
             mapperField.set(service, mapper);
         } catch (Exception e) {
             throw new RuntimeException("Failed to set up test", e);
@@ -50,9 +55,9 @@ public class DistributorTermsAndConditionsServiceImplTest {
 
         // Initialize test data
         distributorTermsAndConditions = DistributorTermsAndConditions.builder()
-                .id(1L)
-                .distributorId(1L)
-                .templateId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .templateId(testId)
                 .title("Test Terms and Conditions")
                 .content("Test content")
                 .version("1.0")
@@ -63,9 +68,9 @@ public class DistributorTermsAndConditionsServiceImplTest {
                 .build();
 
         distributorTermsAndConditionsDTO = DistributorTermsAndConditionsDTO.builder()
-                .id(1L)
-                .distributorId(1L)
-                .templateId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .templateId(testId)
                 .title("Test Terms and Conditions")
                 .content("Test content")
                 .version("1.0")
@@ -96,18 +101,18 @@ public class DistributorTermsAndConditionsServiceImplTest {
     @Test
     void updateDistributorTermsAndConditions_WhenTermsAndConditionsExists_ShouldUpdateAndReturnTermsAndConditions() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorTermsAndConditions));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorTermsAndConditions));
         when(mapper.toEntity(any(DistributorTermsAndConditionsDTO.class))).thenReturn(distributorTermsAndConditions);
         when(repository.save(any(DistributorTermsAndConditions.class))).thenReturn(Mono.just(distributorTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributorTermsAndConditions(1L, distributorTermsAndConditionsDTO))
+        StepVerifier.create(service.updateDistributorTermsAndConditions(testId, distributorTermsAndConditionsDTO))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toEntity(distributorTermsAndConditionsDTO);
         verify(repository).save(any(DistributorTermsAndConditions.class));
         verify(mapper).toDTO(distributorTermsAndConditions);
@@ -116,62 +121,62 @@ public class DistributorTermsAndConditionsServiceImplTest {
     @Test
     void getDistributorTermsAndConditionsById_WhenTermsAndConditionsExists_ShouldReturnTermsAndConditions() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorTermsAndConditions));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorTermsAndConditionsById(1L))
+        StepVerifier.create(service.getDistributorTermsAndConditionsById(testId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toDTO(distributorTermsAndConditions);
     }
 
     @Test
     void getDistributorTermsAndConditionsById_WhenTermsAndConditionsDoesNotExist_ShouldReturnEmpty() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorTermsAndConditionsById(1L))
+        StepVerifier.create(service.getDistributorTermsAndConditionsById(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toDTO(any());
     }
 
     @Test
     void getTermsAndConditionsByDistributorId_ShouldReturnTermsAndConditions() {
         // Arrange
-        when(repository.findByDistributorId(anyLong())).thenReturn(Flux.just(distributorTermsAndConditions));
+        when(repository.findByDistributorId(any(UUID.class))).thenReturn(Flux.just(distributorTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getTermsAndConditionsByDistributorId(1L))
+        StepVerifier.create(service.getTermsAndConditionsByDistributorId(testId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorId(1L);
+        verify(repository).findByDistributorId(testId);
         verify(mapper).toDTO(distributorTermsAndConditions);
     }
 
     @Test
     void getActiveTermsAndConditionsByDistributorId_ShouldReturnActiveTermsAndConditions() {
         // Arrange
-        when(repository.findByDistributorIdAndIsActiveTrue(anyLong())).thenReturn(Flux.just(distributorTermsAndConditions));
+        when(repository.findByDistributorIdAndIsActiveTrue(any(UUID.class))).thenReturn(Flux.just(distributorTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getActiveTermsAndConditionsByDistributorId(1L))
+        StepVerifier.create(service.getActiveTermsAndConditionsByDistributorId(testId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorIdAndIsActiveTrue(1L);
+        verify(repository).findByDistributorIdAndIsActiveTrue(testId);
         verify(mapper).toDTO(distributorTermsAndConditions);
     }
 
@@ -195,9 +200,9 @@ public class DistributorTermsAndConditionsServiceImplTest {
     void updateStatus_WhenTermsAndConditionsExists_ShouldUpdateStatusAndReturnTermsAndConditions() {
         // Arrange
         DistributorTermsAndConditions updatedTermsAndConditions = DistributorTermsAndConditions.builder()
-                .id(1L)
-                .distributorId(1L)
-                .templateId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .templateId(testId)
                 .title("Test Terms and Conditions")
                 .content("Test content")
                 .version("1.0")
@@ -206,17 +211,17 @@ public class DistributorTermsAndConditionsServiceImplTest {
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorTermsAndConditions));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorTermsAndConditions));
         when(repository.save(any(DistributorTermsAndConditions.class))).thenReturn(Mono.just(updatedTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateStatus(1L, "SIGNED", 1L))
+        StepVerifier.create(service.updateStatus(testId, "SIGNED", testId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorTermsAndConditions.class));
         verify(mapper).toDTO(updatedTermsAndConditions);
     }
@@ -225,30 +230,30 @@ public class DistributorTermsAndConditionsServiceImplTest {
     void signTermsAndConditions_WhenTermsAndConditionsExists_ShouldSignAndReturnTermsAndConditions() {
         // Arrange
         DistributorTermsAndConditions signedTermsAndConditions = DistributorTermsAndConditions.builder()
-                .id(1L)
-                .distributorId(1L)
-                .templateId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .templateId(testId)
                 .title("Test Terms and Conditions")
                 .content("Test content")
                 .version("1.0")
                 .effectiveDate(LocalDateTime.now())
                 .status("SIGNED")
                 .signedDate(LocalDateTime.now())
-                .signedBy(1L)
+                .signedBy(testId)
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorTermsAndConditions));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorTermsAndConditions));
         when(repository.save(any(DistributorTermsAndConditions.class))).thenReturn(Mono.just(signedTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.signTermsAndConditions(1L, 1L))
+        StepVerifier.create(service.signTermsAndConditions(testId, templateId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorTermsAndConditions.class));
         verify(mapper).toDTO(signedTermsAndConditions);
     }
@@ -256,44 +261,44 @@ public class DistributorTermsAndConditionsServiceImplTest {
     @Test
     void hasActiveSignedTerms_WhenActiveSignedTermsExist_ShouldReturnTrue() {
         // Arrange
-        when(repository.existsByDistributorIdAndStatusAndIsActiveTrue(anyLong(), anyString())).thenReturn(Mono.just(true));
+        when(repository.existsByDistributorIdAndStatusAndIsActiveTrue(any(UUID.class), anyString())).thenReturn(Mono.just(true));
 
         // Act & Assert
-        StepVerifier.create(service.hasActiveSignedTerms(1L))
+        StepVerifier.create(service.hasActiveSignedTerms(testId))
                 .expectNext(true)
                 .verifyComplete();
 
         // Verify
-        verify(repository).existsByDistributorIdAndStatusAndIsActiveTrue(1L, "SIGNED");
+        verify(repository).existsByDistributorIdAndStatusAndIsActiveTrue(testId, "SIGNED");
     }
 
     @Test
     void hasActiveSignedTerms_WhenNoActiveSignedTermsExist_ShouldReturnFalse() {
         // Arrange
-        when(repository.existsByDistributorIdAndStatusAndIsActiveTrue(anyLong(), anyString())).thenReturn(Mono.just(false));
+        when(repository.existsByDistributorIdAndStatusAndIsActiveTrue(any(UUID.class), anyString())).thenReturn(Mono.just(false));
 
         // Act & Assert
-        StepVerifier.create(service.hasActiveSignedTerms(1L))
+        StepVerifier.create(service.hasActiveSignedTerms(testId))
                 .expectNext(false)
                 .verifyComplete();
 
         // Verify
-        verify(repository).existsByDistributorIdAndStatusAndIsActiveTrue(1L, "SIGNED");
+        verify(repository).existsByDistributorIdAndStatusAndIsActiveTrue(testId, "SIGNED");
     }
 
     @Test
     void getLatestTermsAndConditions_WhenTermsAndConditionsExists_ShouldReturnLatestTermsAndConditions() {
         // Arrange
-        when(repository.findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(anyLong())).thenReturn(Mono.just(distributorTermsAndConditions));
+        when(repository.findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(any(UUID.class))).thenReturn(Mono.just(distributorTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getLatestTermsAndConditions(1L))
+        StepVerifier.create(service.getLatestTermsAndConditions(testId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(1L);
+        verify(repository).findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(testId);
         verify(mapper).toDTO(distributorTermsAndConditions);
     }
 
@@ -301,9 +306,9 @@ public class DistributorTermsAndConditionsServiceImplTest {
     void activateTermsAndConditions_WhenTermsAndConditionsExists_ShouldActivateAndReturnTermsAndConditions() {
         // Arrange
         DistributorTermsAndConditions inactiveTermsAndConditions = DistributorTermsAndConditions.builder()
-                .id(1L)
-                .distributorId(1L)
-                .templateId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .templateId(testId)
                 .title("Test Terms and Conditions")
                 .content("Test content")
                 .version("1.0")
@@ -313,9 +318,9 @@ public class DistributorTermsAndConditionsServiceImplTest {
                 .build();
 
         DistributorTermsAndConditions activeTermsAndConditions = DistributorTermsAndConditions.builder()
-                .id(1L)
-                .distributorId(1L)
-                .templateId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .templateId(testId)
                 .title("Test Terms and Conditions")
                 .content("Test content")
                 .version("1.0")
@@ -324,17 +329,17 @@ public class DistributorTermsAndConditionsServiceImplTest {
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(inactiveTermsAndConditions));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(inactiveTermsAndConditions));
         when(repository.save(any(DistributorTermsAndConditions.class))).thenReturn(Mono.just(activeTermsAndConditions));
         when(mapper.toDTO(any(DistributorTermsAndConditions.class))).thenReturn(distributorTermsAndConditionsDTO);
 
         // Act & Assert
-        StepVerifier.create(service.activateTermsAndConditions(1L, 1L))
+        StepVerifier.create(service.activateTermsAndConditions(testId, templateId))
                 .expectNext(distributorTermsAndConditionsDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorTermsAndConditions.class));
         verify(mapper).toDTO(activeTermsAndConditions);
     }
@@ -342,13 +347,13 @@ public class DistributorTermsAndConditionsServiceImplTest {
     @Test
     void deleteDistributorTermsAndConditions_ShouldDeleteTermsAndConditions() {
         // Arrange
-        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+        when(repository.deleteById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributorTermsAndConditions(1L))
+        StepVerifier.create(service.deleteDistributorTermsAndConditions(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).deleteById(1L);
+        verify(repository).deleteById(testId);
     }
 }

@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import java.util.UUID;
 
@@ -25,6 +24,7 @@ public class DistributorServiceImplTest {
     private Distributor distributor;
     private DistributorDTO distributorDTO;
     private FilterRequest<DistributorDTO> filterRequest;
+    private UUID testId;
 
     @BeforeEach
     void setUp() {
@@ -41,6 +41,9 @@ public class DistributorServiceImplTest {
 
             java.lang.reflect.Field mapperField = DistributorServiceImpl.class.getDeclaredField("mapper");
             mapperField.setAccessible(true);
+
+        // Initialize test UUID
+        testId = UUID.randomUUID();
             mapperField.set(service, mapper);
         } catch (Exception e) {
             throw new RuntimeException("Failed to set up test", e);
@@ -48,11 +51,11 @@ public class DistributorServiceImplTest {
 
         // Initialize test data
         distributor = new Distributor();
-        distributor.setId(1L);
+        distributor.setId(testId);
         distributor.setName("Test Distributor");
 
         distributorDTO = new DistributorDTO();
-        distributorDTO.setId(1L);
+        distributorDTO.setId(testId);
         distributorDTO.setName("Test Distributor");
 
         filterRequest = new FilterRequest<>();
@@ -79,18 +82,18 @@ public class DistributorServiceImplTest {
     @Test
     void updateDistributor_WhenDistributorExists_ShouldUpdateAndReturnDistributor() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributor));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributor));
         when(mapper.toEntity(any(DistributorDTO.class))).thenReturn(distributor);
         when(repository.save(any(Distributor.class))).thenReturn(Mono.just(distributor));
         when(mapper.toDTO(any(Distributor.class))).thenReturn(distributorDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributor(1L, distributorDTO))
+        StepVerifier.create(service.updateDistributor(testId, distributorDTO))
                 .expectNext(distributorDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toEntity(distributorDTO);
         verify(repository).save(distributor);
         verify(mapper).toDTO(distributor);
@@ -99,16 +102,16 @@ public class DistributorServiceImplTest {
     @Test
     void updateDistributor_WhenDistributorDoesNotExist_ShouldReturnError() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributor(1L, distributorDTO))
+        StepVerifier.create(service.updateDistributor(testId, distributorDTO))
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
-                        throwable.getMessage().equals("Distributor not found with ID: 1"))
+                        throwable.getMessage().equals("Distributor not found with ID: " + testId))
                 .verify();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toEntity(any());
         verify(repository, never()).save(any());
         verify(mapper, never()).toDTO(any());
@@ -117,63 +120,63 @@ public class DistributorServiceImplTest {
     @Test
     void deleteDistributor_WhenDistributorExists_ShouldDeleteDistributor() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributor));
-        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributor));
+        when(repository.deleteById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributor(1L))
+        StepVerifier.create(service.deleteDistributor(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
-        verify(repository).deleteById(1L);
+        verify(repository).findById(testId);
+        verify(repository).deleteById(testId);
     }
 
     @Test
     void deleteDistributor_WhenDistributorDoesNotExist_ShouldReturnError() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributor(1L))
+        StepVerifier.create(service.deleteDistributor(testId))
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
-                        throwable.getMessage().equals("Distributor not found with ID: 1"))
+                        throwable.getMessage().equals("Distributor not found with ID: " + testId))
                 .verify();
 
         // Verify
-        verify(repository).findById(1L);
-        verify(repository, never()).deleteById(anyLong());
+        verify(repository).findById(testId);
+        verify(repository, never()).deleteById(any(UUID.class));
     }
 
     @Test
     void getDistributorById_WhenDistributorExists_ShouldReturnDistributor() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributor));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributor));
         when(mapper.toDTO(any(Distributor.class))).thenReturn(distributorDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorById(1L))
+        StepVerifier.create(service.getDistributorById(testId))
                 .expectNext(distributorDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toDTO(distributor);
     }
 
     @Test
     void getDistributorById_WhenDistributorDoesNotExist_ShouldReturnError() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorById(1L))
+        StepVerifier.create(service.getDistributorById(testId))
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
-                        throwable.getMessage().equals("Distributor not found with ID: 1"))
+                        throwable.getMessage().equals("Distributor not found with ID: " + testId))
                 .verify();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toDTO(any());
     }
 }

@@ -26,6 +26,10 @@ public class DistributorOperationServiceImplTest {
 
     private DistributorOperation distributorOperation;
     private DistributorOperationDTO distributorOperationDTO;
+    private UUID testId;
+    private UUID countryId;
+    private UUID administrativeDivisionId;
+    private UUID updatedBy;
 
     @BeforeEach
     void setUp() {
@@ -42,6 +46,12 @@ public class DistributorOperationServiceImplTest {
 
             java.lang.reflect.Field mapperField = DistributorOperationServiceImpl.class.getDeclaredField("mapper");
             mapperField.setAccessible(true);
+
+        // Initialize test UUIDs
+        testId = UUID.randomUUID();
+        countryId = UUID.randomUUID();
+        administrativeDivisionId = UUID.randomUUID();
+        updatedBy = UUID.randomUUID();
             mapperField.set(service, mapper);
         } catch (Exception e) {
             throw new RuntimeException("Failed to set up test", e);
@@ -49,19 +59,19 @@ public class DistributorOperationServiceImplTest {
 
         // Initialize test data
         distributorOperation = DistributorOperation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .countryId(1L)
-                .administrativeDivisionId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .countryId(testId)
+                .administrativeDivisionId(testId)
                 .isActive(true)
                 .createdAt(LocalDateTime.now())
                 .build();
 
         distributorOperationDTO = DistributorOperationDTO.builder()
-                .id(1L)
-                .distributorId(1L)
-                .countryId(1L)
-                .administrativeDivisionId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .countryId(testId)
+                .administrativeDivisionId(testId)
                 .isActive(true)
                 .build();
     }
@@ -87,18 +97,18 @@ public class DistributorOperationServiceImplTest {
     @Test
     void updateDistributorOperation_WhenOperationExists_ShouldUpdateAndReturnOperation() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorOperation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorOperation));
         when(mapper.toEntity(any(DistributorOperationDTO.class))).thenReturn(distributorOperation);
         when(repository.save(any(DistributorOperation.class))).thenReturn(Mono.just(distributorOperation));
         when(mapper.toDTO(any(DistributorOperation.class))).thenReturn(distributorOperationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateDistributorOperation(1L, distributorOperationDTO))
+        StepVerifier.create(service.updateDistributorOperation(testId, distributorOperationDTO))
                 .expectNext(distributorOperationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toEntity(distributorOperationDTO);
         verify(repository).save(any(DistributorOperation.class));
         verify(mapper).toDTO(distributorOperation);
@@ -107,62 +117,62 @@ public class DistributorOperationServiceImplTest {
     @Test
     void getDistributorOperationById_WhenOperationExists_ShouldReturnOperation() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorOperation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorOperation));
         when(mapper.toDTO(any(DistributorOperation.class))).thenReturn(distributorOperationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorOperationById(1L))
+        StepVerifier.create(service.getDistributorOperationById(testId))
                 .expectNext(distributorOperationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toDTO(distributorOperation);
     }
 
     @Test
     void getDistributorOperationById_WhenOperationDoesNotExist_ShouldReturnEmpty() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.getDistributorOperationById(1L))
+        StepVerifier.create(service.getDistributorOperationById(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toDTO(any());
     }
 
     @Test
     void getOperationsByDistributorId_ShouldReturnOperations() {
         // Arrange
-        when(repository.findByDistributorId(anyLong())).thenReturn(Flux.just(distributorOperation));
+        when(repository.findByDistributorId(any(UUID.class))).thenReturn(Flux.just(distributorOperation));
         when(mapper.toDTO(any(DistributorOperation.class))).thenReturn(distributorOperationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getOperationsByDistributorId(1L))
+        StepVerifier.create(service.getOperationsByDistributorId(testId))
                 .expectNext(distributorOperationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorId(1L);
+        verify(repository).findByDistributorId(testId);
         verify(mapper).toDTO(distributorOperation);
     }
 
     @Test
     void getActiveOperationsByDistributorId_ShouldReturnActiveOperations() {
         // Arrange
-        when(repository.findByDistributorIdAndIsActiveTrue(anyLong())).thenReturn(Flux.just(distributorOperation));
+        when(repository.findByDistributorIdAndIsActiveTrue(any(UUID.class))).thenReturn(Flux.just(distributorOperation));
         when(mapper.toDTO(any(DistributorOperation.class))).thenReturn(distributorOperationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getActiveOperationsByDistributorId(1L))
+        StepVerifier.create(service.getActiveOperationsByDistributorId(testId))
                 .expectNext(distributorOperationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findByDistributorIdAndIsActiveTrue(1L);
+        verify(repository).findByDistributorIdAndIsActiveTrue(testId);
         verify(mapper).toDTO(distributorOperation);
     }
 
@@ -170,62 +180,62 @@ public class DistributorOperationServiceImplTest {
     void canDistributorOperateInLocation_WhenOperationExists_ShouldReturnTrue() {
         // Arrange
         when(repository.existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(
-                anyLong(), anyLong(), anyLong())).thenReturn(Mono.just(true));
+                any(UUID.class), any(UUID.class), any(UUID.class))).thenReturn(Mono.just(true));
 
         // Act & Assert
-        StepVerifier.create(service.canDistributorOperateInLocation(1L, 1L, 1L))
+        StepVerifier.create(service.canDistributorOperateInLocation(testId, countryId, administrativeDivisionId))
                 .expectNext(true)
                 .verifyComplete();
 
         // Verify
-        verify(repository).existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(1L, 1L, 1L);
+        verify(repository).existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(testId, countryId, administrativeDivisionId);
     }
 
     @Test
     void canDistributorOperateInLocation_WhenOperationDoesNotExist_ShouldReturnFalse() {
         // Arrange
         when(repository.existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(
-                anyLong(), anyLong(), anyLong())).thenReturn(Mono.just(false));
+                any(UUID.class), any(UUID.class), any(UUID.class))).thenReturn(Mono.just(false));
 
         // Act & Assert
-        StepVerifier.create(service.canDistributorOperateInLocation(1L, 1L, 1L))
+        StepVerifier.create(service.canDistributorOperateInLocation(testId, countryId, administrativeDivisionId))
                 .expectNext(false)
                 .verifyComplete();
 
         // Verify
-        verify(repository).existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(1L, 1L, 1L);
+        verify(repository).existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(testId, countryId, administrativeDivisionId);
     }
 
     @Test
     void activateDistributorOperation_WhenOperationExists_ShouldActivateAndReturnOperation() {
         // Arrange
         DistributorOperation inactiveOperation = DistributorOperation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .countryId(1L)
-                .administrativeDivisionId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .countryId(testId)
+                .administrativeDivisionId(testId)
                 .isActive(false)
                 .build();
 
         DistributorOperation activeOperation = DistributorOperation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .countryId(1L)
-                .administrativeDivisionId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .countryId(testId)
+                .administrativeDivisionId(testId)
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(inactiveOperation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(inactiveOperation));
         when(repository.save(any(DistributorOperation.class))).thenReturn(Mono.just(activeOperation));
         when(mapper.toDTO(any(DistributorOperation.class))).thenReturn(distributorOperationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.activateDistributorOperation(1L, 1L))
+        StepVerifier.create(service.activateDistributorOperation(testId, updatedBy))
                 .expectNext(distributorOperationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorOperation.class));
         verify(mapper).toDTO(activeOperation);
     }
@@ -234,24 +244,24 @@ public class DistributorOperationServiceImplTest {
     void deactivateDistributorOperation_WhenOperationExists_ShouldDeactivateAndReturnOperation() {
         // Arrange
         DistributorOperation inactiveOperation = DistributorOperation.builder()
-                .id(1L)
-                .distributorId(1L)
-                .countryId(1L)
-                .administrativeDivisionId(1L)
+                .id(testId)
+                .distributorId(testId)
+                .countryId(testId)
+                .administrativeDivisionId(testId)
                 .isActive(false)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(distributorOperation));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorOperation));
         when(repository.save(any(DistributorOperation.class))).thenReturn(Mono.just(inactiveOperation));
         when(mapper.toDTO(any(DistributorOperation.class))).thenReturn(distributorOperationDTO);
 
         // Act & Assert
-        StepVerifier.create(service.deactivateDistributorOperation(1L, 1L))
+        StepVerifier.create(service.deactivateDistributorOperation(testId, updatedBy))
                 .expectNext(distributorOperationDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(DistributorOperation.class));
         verify(mapper).toDTO(inactiveOperation);
     }
@@ -259,13 +269,13 @@ public class DistributorOperationServiceImplTest {
     @Test
     void deleteDistributorOperation_ShouldDeleteOperation() {
         // Arrange
-        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+        when(repository.deleteById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteDistributorOperation(1L))
+        StepVerifier.create(service.deleteDistributorOperation(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).deleteById(1L);
+        verify(repository).deleteById(testId);
     }
 }

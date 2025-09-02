@@ -14,7 +14,6 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import java.util.UUID;
@@ -27,6 +26,8 @@ public class TermsAndConditionsTemplateServiceImplTest {
 
     private TermsAndConditionsTemplate template;
     private TermsAndConditionsTemplateDTO templateDTO;
+    private UUID testId;
+    private UUID templateId;
 
     @BeforeEach
     void setUp() {
@@ -48,9 +49,13 @@ public class TermsAndConditionsTemplateServiceImplTest {
             throw new RuntimeException("Failed to set up test", e);
         }
 
+        // Initialize test UUID
+        testId = UUID.randomUUID();
+        templateId = UUID.randomUUID();
+
         // Initialize test data
         template = TermsAndConditionsTemplate.builder()
-                .id(1L)
+                .id(testId)
                 .name("Test Template")
                 .description("Test template description")
                 .category("GENERAL")
@@ -65,7 +70,7 @@ public class TermsAndConditionsTemplateServiceImplTest {
                 .build();
 
         templateDTO = TermsAndConditionsTemplateDTO.builder()
-                .id(1L)
+                .id(testId)
                 .name("Test Template")
                 .description("Test template description")
                 .category("GENERAL")
@@ -100,18 +105,18 @@ public class TermsAndConditionsTemplateServiceImplTest {
     @Test
     void updateTemplate_WhenTemplateExists_ShouldUpdateAndReturnTemplate() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(template));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(template));
         when(mapper.toEntity(any(TermsAndConditionsTemplateDTO.class))).thenReturn(template);
         when(repository.save(any(TermsAndConditionsTemplate.class))).thenReturn(Mono.just(template));
         when(mapper.toDTO(any(TermsAndConditionsTemplate.class))).thenReturn(templateDTO);
 
         // Act & Assert
-        StepVerifier.create(service.updateTemplate(1L, templateDTO))
+        StepVerifier.create(service.updateTemplate(testId, templateDTO))
                 .expectNext(templateDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toEntity(templateDTO);
         verify(repository).save(any(TermsAndConditionsTemplate.class));
         verify(mapper).toDTO(template);
@@ -120,30 +125,30 @@ public class TermsAndConditionsTemplateServiceImplTest {
     @Test
     void getTemplateById_WhenTemplateExists_ShouldReturnTemplate() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.just(template));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(template));
         when(mapper.toDTO(any(TermsAndConditionsTemplate.class))).thenReturn(templateDTO);
 
         // Act & Assert
-        StepVerifier.create(service.getTemplateById(1L))
+        StepVerifier.create(service.getTemplateById(testId))
                 .expectNext(templateDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper).toDTO(template);
     }
 
     @Test
     void getTemplateById_WhenTemplateDoesNotExist_ShouldReturnEmpty() {
         // Arrange
-        when(repository.findById(anyLong())).thenReturn(Mono.empty());
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.getTemplateById(1L))
+        StepVerifier.create(service.getTemplateById(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(mapper, never()).toDTO(any());
     }
 
@@ -246,8 +251,9 @@ public class TermsAndConditionsTemplateServiceImplTest {
     @Test
     void activateTemplate_WhenTemplateExists_ShouldActivateAndReturnTemplate() {
         // Arrange
+        UUID updatedBy = UUID.randomUUID();
         TermsAndConditionsTemplate inactiveTemplate = TermsAndConditionsTemplate.builder()
-                .id(1L)
+                .id(testId)
                 .name("Test Template")
                 .category("GENERAL")
                 .templateContent("Test content")
@@ -256,7 +262,7 @@ public class TermsAndConditionsTemplateServiceImplTest {
                 .build();
 
         TermsAndConditionsTemplate activeTemplate = TermsAndConditionsTemplate.builder()
-                .id(1L)
+                .id(testId)
                 .name("Test Template")
                 .category("GENERAL")
                 .templateContent("Test content")
@@ -264,17 +270,17 @@ public class TermsAndConditionsTemplateServiceImplTest {
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(inactiveTemplate));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(inactiveTemplate));
         when(repository.save(any(TermsAndConditionsTemplate.class))).thenReturn(Mono.just(activeTemplate));
         when(mapper.toDTO(any(TermsAndConditionsTemplate.class))).thenReturn(templateDTO);
 
         // Act & Assert
-        StepVerifier.create(service.activateTemplate(1L, 1L))
+        StepVerifier.create(service.activateTemplate(testId, updatedBy))
                 .expectNext(templateDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(TermsAndConditionsTemplate.class));
         verify(mapper).toDTO(activeTemplate);
     }
@@ -282,8 +288,9 @@ public class TermsAndConditionsTemplateServiceImplTest {
     @Test
     void deactivateTemplate_WhenTemplateExists_ShouldDeactivateAndReturnTemplate() {
         // Arrange
+        UUID updatedBy = UUID.randomUUID();
         TermsAndConditionsTemplate inactiveTemplate = TermsAndConditionsTemplate.builder()
-                .id(1L)
+                .id(testId)
                 .name("Test Template")
                 .category("GENERAL")
                 .templateContent("Test content")
@@ -291,17 +298,17 @@ public class TermsAndConditionsTemplateServiceImplTest {
                 .isActive(false)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(template));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(template));
         when(repository.save(any(TermsAndConditionsTemplate.class))).thenReturn(Mono.just(inactiveTemplate));
         when(mapper.toDTO(any(TermsAndConditionsTemplate.class))).thenReturn(templateDTO);
 
         // Act & Assert
-        StepVerifier.create(service.deactivateTemplate(1L, 1L))
+        StepVerifier.create(service.deactivateTemplate(testId, updatedBy))
                 .expectNext(templateDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).save(any(TermsAndConditionsTemplate.class));
         verify(mapper).toDTO(inactiveTemplate);
     }
@@ -309,8 +316,9 @@ public class TermsAndConditionsTemplateServiceImplTest {
     @Test
     void setAsDefault_WhenTemplateExists_ShouldSetAsDefaultAndReturnTemplate() {
         // Arrange
+        UUID updatedBy = UUID.randomUUID();
         TermsAndConditionsTemplate defaultTemplate = TermsAndConditionsTemplate.builder()
-                .id(1L)
+                .id(testId)
                 .name("Test Template")
                 .category("GENERAL")
                 .templateContent("Test content")
@@ -319,18 +327,18 @@ public class TermsAndConditionsTemplateServiceImplTest {
                 .isActive(true)
                 .build();
 
-        when(repository.findById(anyLong())).thenReturn(Mono.just(template));
+        when(repository.findById(any(UUID.class))).thenReturn(Mono.just(template));
         when(repository.findByCategoryAndIsDefaultTrueAndIsActiveTrue(anyString())).thenReturn(Mono.empty());
         when(repository.save(any(TermsAndConditionsTemplate.class))).thenReturn(Mono.just(defaultTemplate));
         when(mapper.toDTO(any(TermsAndConditionsTemplate.class))).thenReturn(templateDTO);
 
         // Act & Assert
-        StepVerifier.create(service.setAsDefault(1L, 1L))
+        StepVerifier.create(service.setAsDefault(testId, updatedBy))
                 .expectNext(templateDTO)
                 .verifyComplete();
 
         // Verify
-        verify(repository).findById(1L);
+        verify(repository).findById(testId);
         verify(repository).findByCategoryAndIsDefaultTrueAndIsActiveTrue("GENERAL");
         verify(repository).save(any(TermsAndConditionsTemplate.class));
         verify(mapper).toDTO(defaultTemplate);
@@ -367,13 +375,13 @@ public class TermsAndConditionsTemplateServiceImplTest {
     @Test
     void deleteTemplate_ShouldDeleteTemplate() {
         // Arrange
-        when(repository.deleteById(anyLong())).thenReturn(Mono.empty());
+        when(repository.deleteById(any(UUID.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(service.deleteTemplate(1L))
+        StepVerifier.create(service.deleteTemplate(testId))
                 .verifyComplete();
 
         // Verify
-        verify(repository).deleteById(1L);
+        verify(repository).deleteById(testId);
     }
 }
