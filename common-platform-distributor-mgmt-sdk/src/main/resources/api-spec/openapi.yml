@@ -56,8 +56,8 @@ paths:
           description: ID of the template
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved template
@@ -81,8 +81,8 @@ paths:
           description: ID of the template to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -122,8 +122,8 @@ paths:
           description: ID of the template to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Template successfully deleted
@@ -144,8 +144,8 @@ paths:
           description: ID of the shipment to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: status
           in: query
           description: New status value
@@ -157,8 +157,8 @@ paths:
           description: ID of the user updating the status
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -191,8 +191,8 @@ paths:
           description: ID of the shipment to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved shipment
@@ -216,8 +216,8 @@ paths:
           description: ID of the shipment to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -255,8 +255,8 @@ paths:
           description: ID of the shipment to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Shipment successfully deleted
@@ -277,8 +277,8 @@ paths:
           description: ID of the product category to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved product category
@@ -302,8 +302,8 @@ paths:
           description: ID of the product category to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -341,8 +341,8 @@ paths:
           description: ID of the product category to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Product category successfully deleted
@@ -363,8 +363,8 @@ paths:
           description: ID of the lending type to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved lending type
@@ -388,8 +388,8 @@ paths:
           description: ID of the lending type to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -427,8 +427,8 @@ paths:
           description: ID of the lending type to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Lending type successfully deleted
@@ -449,8 +449,8 @@ paths:
           description: ID of the leasing contract to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved leasing contract
@@ -474,8 +474,8 @@ paths:
           description: ID of the leasing contract to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -513,8 +513,8 @@ paths:
           description: ID of the leasing contract to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Leasing contract successfully deleted
@@ -535,15 +535,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved terms and conditions
@@ -567,15 +567,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -613,15 +613,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Terms and conditions successfully deleted
@@ -642,15 +642,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: simulationId
           in: path
           description: ID of the distributor simulation
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor simulation
@@ -674,15 +674,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: simulationId
           in: path
           description: ID of the distributor simulation to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -720,15 +720,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: simulationId
           in: path
           description: ID of the distributor simulation to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Distributor simulation successfully deleted
@@ -749,22 +749,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: configId
           in: path
           description: ID of the lending configuration to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved lending configuration
@@ -788,22 +788,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: configId
           in: path
           description: ID of the lending configuration to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -841,22 +841,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: configId
           in: path
           description: ID of the lending configuration to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Lending configuration successfully deleted
@@ -877,15 +877,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved product
@@ -909,15 +909,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -955,15 +955,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Product successfully deleted
@@ -984,15 +984,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: operationId
           in: path
           description: ID of the distributor operation
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor operation
@@ -1016,15 +1016,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: operationId
           in: path
           description: ID of the distributor operation to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1062,15 +1062,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: operationId
           in: path
           description: ID of the distributor operation to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Distributor operation successfully deleted
@@ -1091,15 +1091,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: brandingId
           in: path
           description: ID of the distributor branding to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor branding
@@ -1123,15 +1123,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: brandingId
           in: path
           description: ID of the distributor branding to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1169,15 +1169,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: brandingId
           in: path
           description: ID of the distributor branding to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Distributor branding successfully deleted
@@ -1198,15 +1198,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: auditLogId
           in: path
           description: ID of the distributor audit log to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor audit log
@@ -1230,15 +1230,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: auditLogId
           in: path
           description: ID of the distributor audit log to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1276,15 +1276,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: auditLogId
           in: path
           description: ID of the distributor audit log to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Distributor audit log successfully deleted
@@ -1305,8 +1305,8 @@ paths:
           description: ID of the distributor to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor
@@ -1330,8 +1330,8 @@ paths:
           description: ID of the distributor to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1369,8 +1369,8 @@ paths:
           description: ID of the distributor to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '204':
           description: Distributor successfully deleted
@@ -1391,8 +1391,8 @@ paths:
           description: ID of the template
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1649,15 +1649,15 @@ paths:
           description: ID of the leasing contract to approve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: approvedBy
           in: query
           description: ID of the user approving the contract
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1752,15 +1752,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: templateId
           in: path
           description: ID of the template
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1799,8 +1799,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1837,8 +1837,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved terms and conditions
@@ -1860,8 +1860,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1898,8 +1898,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1936,8 +1936,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor simulations
@@ -1959,8 +1959,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -1999,22 +1999,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: configId
           in: path
           description: ID of the lending configuration
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2053,15 +2053,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2098,15 +2098,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved lending configurations
@@ -2130,15 +2130,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2175,8 +2175,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2213,8 +2213,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved products
@@ -2238,8 +2238,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2276,8 +2276,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2314,8 +2314,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved distributor operations
@@ -2337,8 +2337,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2377,8 +2377,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2415,8 +2415,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2455,8 +2455,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2493,8 +2493,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2595,15 +2595,15 @@ paths:
           description: ID of the template to set as default
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2634,15 +2634,15 @@ paths:
           description: ID of the template to remove default status from
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2673,15 +2673,15 @@ paths:
           description: ID of the template to deactivate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2712,15 +2712,15 @@ paths:
           description: ID of the template to activate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2751,15 +2751,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: status
           in: query
           description: New status
@@ -2771,8 +2771,8 @@ paths:
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2803,22 +2803,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions to sign
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: signedBy
           in: query
           description: ID of the user signing
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2849,22 +2849,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions to deactivate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2895,22 +2895,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: termsId
           in: path
           description: ID of the terms and conditions to activate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2941,15 +2941,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: simulationId
           in: path
           description: ID of the distributor simulation
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: status
           in: query
           description: New status for the simulation
@@ -2961,8 +2961,8 @@ paths:
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -2993,22 +2993,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: simulationId
           in: path
           description: ID of the distributor simulation to deactivate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -3039,22 +3039,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: simulationId
           in: path
           description: ID of the distributor simulation to activate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -3085,22 +3085,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: operationId
           in: path
           description: ID of the distributor operation to deactivate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -3131,22 +3131,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: operationId
           in: path
           description: ID of the distributor operation to activate
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: updatedBy
           in: query
           description: ID of the user performing the update
           required: false
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
           description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
@@ -3328,8 +3328,8 @@ paths:
           description: ID of the country
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved simulations
@@ -3352,8 +3352,8 @@ paths:
           description: ID of the application
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved simulation
@@ -3428,8 +3428,8 @@ paths:
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved shipments
@@ -3454,8 +3454,8 @@ paths:
           description: ID of the leasing contract
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved shipments
@@ -3587,8 +3587,8 @@ paths:
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved leasing contracts
@@ -3613,8 +3613,8 @@ paths:
           description: ID of the party
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved leasing contracts
@@ -3639,8 +3639,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved leasing contracts
@@ -3665,8 +3665,8 @@ paths:
           description: Contract ID of the leasing contract to retrieve
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved leasing contract
@@ -3691,8 +3691,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: status
           in: path
           description: Status of the terms and conditions
@@ -3721,8 +3721,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved latest terms and conditions
@@ -3747,8 +3747,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully checked active signed terms
@@ -3771,8 +3771,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: expirationDate
           in: query
           description: Expiration date threshold
@@ -3802,8 +3802,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved active terms and conditions
@@ -3826,8 +3826,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: status
           in: path
           description: Status of the simulations
@@ -3856,8 +3856,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved active distributor simulations
@@ -3880,22 +3880,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: lendingTypeId
           in: path
           description: ID of the lending type
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved lending configurations
@@ -3920,15 +3920,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved default lending configuration
@@ -3953,15 +3953,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: productId
           in: path
           description: ID of the product
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved active lending configurations
@@ -3986,15 +3986,15 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: categoryId
           in: path
           description: ID of the product category
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved products
@@ -4019,8 +4019,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved active products
@@ -4045,22 +4045,22 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: countryId
           in: query
           description: ID of the country
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: administrativeDivisionId
           in: query
           description: ID of the administrative division
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully checked operation capability
@@ -4083,8 +4083,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved active distributor operations
@@ -4107,8 +4107,8 @@ paths:
           description: ID of the distributor
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successfully retrieved lending configurations
@@ -4133,8 +4133,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         name:
           maxLength: 255
@@ -4171,16 +4171,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     LeasingContractDTO:
       required:
@@ -4197,24 +4197,24 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         contractId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         partyId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         productId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         lendingConfigurationId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         product:
           $ref: '#/components/schemas/ProductDTO'
         lendingConfiguration:
@@ -4238,8 +4238,8 @@ components:
           type: string
           format: date-time
         approvedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         termsConditions:
           maxLength: 5000
           minLength: 0
@@ -4255,16 +4255,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     LendingConfigurationDTO:
       required:
@@ -4277,12 +4277,12 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         productId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         name:
           maxLength: 255
           minLength: 0
@@ -4330,14 +4330,14 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         updatedAt:
           type: string
           format: date-time
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
     LendingTypeDTO:
       required:
         - code
@@ -4345,8 +4345,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         name:
           maxLength: 255
@@ -4367,16 +4367,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     ProductCategoryDTO:
       required:
@@ -4385,8 +4385,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         name:
           maxLength: 255
@@ -4407,16 +4407,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     ProductDTO:
       required:
@@ -4425,12 +4425,12 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         name:
           maxLength: 255
           minLength: 0
@@ -4465,14 +4465,14 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         updatedAt:
           type: string
           format: date-time
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
     ShipmentDTO:
       required:
         - leasingContractId
@@ -4481,17 +4481,17 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         leasingContractId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         leasingContract:
           $ref: '#/components/schemas/LeasingContractDTO'
         productId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         product:
           $ref: '#/components/schemas/ProductDTO'
         trackingNumber:
@@ -4527,16 +4527,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     DistributorDTO:
       required:
@@ -4544,8 +4544,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         externalCode:
           maxLength: 255
@@ -4616,14 +4616,14 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         updatedAt:
           type: string
           format: date-time
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
     DistributorTermsAndConditionsDTO:
       required:
         - content
@@ -4634,15 +4634,15 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         templateId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         title:
           maxLength: 255
           minLength: 0
@@ -4663,8 +4663,8 @@ components:
           type: string
           format: date-time
         signedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         status:
           pattern: DRAFT|PENDING_SIGNATURE|SIGNED|EXPIRED|TERMINATED
           type: string
@@ -4679,16 +4679,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributor:
           $ref: '#/components/schemas/DistributorDTO'
@@ -4701,15 +4701,15 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         applicationId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         simulationStatus:
           maxLength: 50
           minLength: 0
@@ -4725,16 +4725,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     DistributorOperationDTO:
       required:
@@ -4744,18 +4744,18 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         countryId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         administrativeDivisionId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         isActive:
           type: boolean
         createdAt:
@@ -4763,16 +4763,16 @@ components:
           format: date-time
           readOnly: true
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         updatedAt:
           type: string
           format: date-time
           readOnly: true
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
     DistributorBrandingDTO:
       required:
@@ -4780,12 +4780,12 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         logoUrl:
           maxLength: 255
           minLength: 0
@@ -4819,14 +4819,14 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         updatedAt:
           type: string
           format: date-time
         updatedBy:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
     DistributorAuditLogDTO:
       required:
         - action
@@ -4837,12 +4837,12 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         distributorId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         action:
           type: string
           enum:
@@ -4863,8 +4863,8 @@ components:
           pattern: ^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$
           type: string
         userId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         timestamp:
           type: string
           format: date-time
