@@ -131,7 +131,7 @@ erDiagram
     TermsAndConditionsTemplate ||--o{ DistributorTermsAndConditions : "generates"
     
     Distributor {
-        Long id PK
+        UUID id PK
         String externalCode
         String name
         String displayName
@@ -150,14 +150,14 @@ erDiagram
         String timeZone
         String defaultLocale
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     DistributorBranding {
-        Long id PK
-        Long distributorId FK
+        UUID id PK
+        UUID distributorId FK
         String logoUrl
         String faviconUrl
         String primaryColor
@@ -167,26 +167,26 @@ erDiagram
         ThemeEnum theme
         Boolean isDefault
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     DistributorAuditLog {
-        Long id PK
-        Long distributorId FK
+        UUID id PK
+        UUID distributorId FK
         DistributorActionEnum action
         String entity
         String entityId
         JsonNode metadata
         String ipAddress
-        Long userId
+        UUID userId
         LocalDateTime timestamp
     }
     
     Product {
-        Long id PK
-        Long distributorId FK
+        UUID id PK
+        UUID distributorId FK
         String name
         String description
         String sku
@@ -197,38 +197,38 @@ erDiagram
         JsonNode specifications
         Boolean isActive
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     ProductCategory {
-        Long id PK
+        UUID id PK
         String name
         String code
         String description
         Boolean isActive
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     LendingType {
-        Long id PK
+        UUID id PK
         String name
         String code
         String description
         Boolean isActive
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     LendingConfiguration {
-        Long id PK
-        Long productId FK
+        UUID id PK
+        UUID productId FK
         String name
         String description
         LendingTypeDTO lendingType
@@ -246,18 +246,18 @@ erDiagram
         Boolean isActive
         String termsConditions
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     LeasingContract {
-        Long id PK
-        Long contractId
-        Long partyId
-        Long distributorId FK
-        Long productId FK
-        Long lendingConfigurationId FK
+        UUID id PK
+        UUID contractId
+        UUID partyId
+        UUID distributorId FK
+        UUID productId FK
+        UUID lendingConfigurationId FK
         LocalDate startDate
         LocalDate endDate
         BigDecimal monthlyPayment
@@ -265,19 +265,19 @@ erDiagram
         BigDecimal totalAmount
         String status
         LocalDateTime approvalDate
-        Long approvedBy
+        UUID approvedBy
         String termsConditions
         String notes
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     Shipment {
-        Long id PK
-        Long leasingContractId FK
-        Long productId FK
+        UUID id PK
+        UUID leasingContractId FK
+        UUID productId FK
         String trackingNumber
         String carrier
         String shippingAddress
@@ -287,58 +287,58 @@ erDiagram
         String status
         String notes
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     DistributorOperation {
-        Long id PK
-        Long distributorId FK
-        Long countryId
-        Long administrativeDivisionId
+        UUID id PK
+        UUID distributorId FK
+        UUID countryId
+        UUID administrativeDivisionId
         Boolean isActive
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     DistributorSimulation {
-        Long id PK
-        Long distributorId FK
-        Long applicationId
+        UUID id PK
+        UUID distributorId FK
+        UUID applicationId
         String simulationStatus
         String notes
         Boolean isActive
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     DistributorTermsAndConditions {
-        Long id PK
-        Long distributorId FK
-        Long templateId FK
+        UUID id PK
+        UUID distributorId FK
+        UUID templateId FK
         String title
         String content
         String version
         LocalDateTime effectiveDate
         LocalDateTime expirationDate
         LocalDateTime signedDate
-        Long signedBy
+        UUID signedBy
         String status
         Boolean isActive
         String notes
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
     
     TermsAndConditionsTemplate {
-        Long id PK
+        UUID id PK
         String name
         String description
         String category
@@ -351,9 +351,9 @@ erDiagram
         Boolean autoRenewal
         Integer renewalPeriodMonths
         LocalDateTime createdAt
-        Long createdBy
+        UUID createdBy
         LocalDateTime updatedAt
-        Long updatedBy
+        UUID updatedBy
     }
 ```
 
@@ -605,7 +605,7 @@ curl -X POST "http://localhost:8080/api/v1/distributors" \
 ### 2. Configure Distributor Branding
 
 ```bash
-curl -X POST "http://localhost:8080/api/v1/distributors/1/branding" \
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/branding" \
   -H "Content-Type: application/json" \
   -d '{
     "logoUrl": "https://example.com/logo.png",
@@ -620,11 +620,11 @@ curl -X POST "http://localhost:8080/api/v1/distributors/1/branding" \
 ### 3. Add Operational Coverage
 
 ```bash
-curl -X POST "http://localhost:8080/api/v1/distributors/1/operations" \
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/operations" \
   -H "Content-Type: application/json" \
   -d '{
-    "countryId": 1,
-    "administrativeDivisionId": 5,
+    "countryId": "550e8400-e29b-41d4-a716-446655440001",
+    "administrativeDivisionId": "550e8400-e29b-41d4-a716-446655440002",
     "isActive": true
   }'
 ```
@@ -653,7 +653,7 @@ curl -X POST "http://localhost:8080/api/v1/terms-and-conditions-templates" \
 ### 5. Generate Terms and Conditions
 
 ```bash
-curl -X POST "http://localhost:8080/api/v1/distributors/1/terms-and-conditions/generate/1" \
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/terms-and-conditions/generate/550e8400-e29b-41d4-a716-446655440003" \
   -H "Content-Type: application/json" \
   -d '{
     "distributorName": "ABC Financial Services",
@@ -664,7 +664,7 @@ curl -X POST "http://localhost:8080/api/v1/distributors/1/terms-and-conditions/g
 ### 6. Add a Product
 
 ```bash
-curl -X POST "http://localhost:8080/api/v1/distributors/1/products" \
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/products" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Personal Loan",
@@ -678,10 +678,10 @@ curl -X POST "http://localhost:8080/api/v1/distributors/1/products" \
 ### 7. Track a Simulation
 
 ```bash
-curl -X POST "http://localhost:8080/api/v1/distributors/1/simulations" \
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/simulations" \
   -H "Content-Type: application/json" \
   -d '{
-    "applicationId": 12345,
+    "applicationId": "550e8400-e29b-41d4-a716-446655440004",
     "simulationStatus": "PENDING",
     "notes": "Initial loan application simulation"
   }'
@@ -887,10 +887,10 @@ curl -X POST "http://localhost:8080/api/v1/distributors/filter" \
 
 ```bash
 # Activate distributor
-curl -X PATCH "http://localhost:8080/api/v1/distributors/1/activate?updatedBy=1"
+curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/activate?updatedBy=550e8400-e29b-41d4-a716-446655440005"
 
 # Deactivate distributor
-curl -X PATCH "http://localhost:8080/api/v1/distributors/1/deactivate?updatedBy=1"
+curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/deactivate?updatedBy=550e8400-e29b-41d4-a716-446655440005"
 ```
 
 ### Multi-Country Operations Management
@@ -898,23 +898,23 @@ curl -X PATCH "http://localhost:8080/api/v1/distributors/1/deactivate?updatedBy=
 #### Check Operational Authorization
 
 ```bash
-curl -X GET "http://localhost:8080/api/v1/distributors/1/operations/can-operate?countryId=1&administrativeDivisionId=5"
+curl -X GET "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/operations/can-operate?countryId=550e8400-e29b-41d4-a716-446655440001&administrativeDivisionId=550e8400-e29b-41d4-a716-446655440002"
 ```
 
 #### Get Active Operations for Distributor
 
 ```bash
-curl -X GET "http://localhost:8080/api/v1/distributors/1/operations/active"
+curl -X GET "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/operations/active"
 ```
 
 #### Manage Operation Status
 
 ```bash
 # Activate operation
-curl -X PATCH "http://localhost:8080/api/v1/distributors/1/operations/1/activate?updatedBy=1"
+curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/operations/550e8400-e29b-41d4-a716-446655440006/activate?updatedBy=550e8400-e29b-41d4-a716-446655440005"
 
 # Deactivate operation
-curl -X PATCH "http://localhost:8080/api/v1/distributors/1/operations/1/deactivate?updatedBy=1"
+curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/operations/550e8400-e29b-41d4-a716-446655440006/deactivate?updatedBy=550e8400-e29b-41d4-a716-446655440005"
 ```
 
 ### Simulation Tracking
@@ -922,20 +922,20 @@ curl -X PATCH "http://localhost:8080/api/v1/distributors/1/operations/1/deactiva
 #### Update Simulation Status
 
 ```bash
-curl -X PATCH "http://localhost:8080/api/v1/distributors/1/simulations/1/status?status=COMPLETED&updatedBy=1"
+curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/simulations/550e8400-e29b-41d4-a716-446655440007/status?status=COMPLETED&updatedBy=550e8400-e29b-41d4-a716-446655440005"
 ```
 
 #### Get Simulations by Status
 
 ```bash
-curl -X GET "http://localhost:8080/api/v1/distributors/1/simulations/status/PENDING"
+curl -X GET "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/simulations/status/PENDING"
 ```
 
 #### Global Simulation Access
 
 ```bash
 # Get simulation by application ID (cross-distributor)
-curl -X GET "http://localhost:8080/api/v1/simulations/application/12345"
+curl -X GET "http://localhost:8080/api/v1/simulations/application/550e8400-e29b-41d4-a716-446655440004"
 
 # Get all simulations with specific status
 curl -X GET "http://localhost:8080/api/v1/simulations/status/COMPLETED"
