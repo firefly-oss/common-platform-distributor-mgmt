@@ -67,8 +67,8 @@ ON distributor_terms_and_conditions(distributor_id, template_id)
 WHERE is_active = TRUE AND status IN ('SIGNED', 'PENDING_SIGNATURE');
 
 -- Insert some default templates
-INSERT INTO terms_and_conditions_template (name, description, category, template_content, variables, version, is_default, is_active, approval_required, auto_renewal, renewal_period_months, created_by) VALUES
-('General Distributor Agreement', 'Standard terms and conditions for distributor partnerships', 'GENERAL', 
+INSERT INTO terms_and_conditions_template (id, name, description, category, template_content, variables, version, is_default, is_active, approval_required, auto_renewal, renewal_period_months, created_by) VALUES
+('550e8400-e29b-41d4-a716-446655440021', 'General Distributor Agreement', 'Standard terms and conditions for distributor partnerships', 'GENERAL',
 'DISTRIBUTOR AGREEMENT
 
 This agreement is entered into between {{companyName}} and {{distributorName}} ({{distributorTaxId}}) effective {{effectiveDate}}.
@@ -93,9 +93,9 @@ By signing below, both parties agree to these terms.
 Distributor: {{distributorName}}
 Date: {{signedDate}}', 
 '{"companyName": {"type": "string", "default": "Firefly Financial Services"}, "distributorName": {"type": "string", "required": true}, "distributorTaxId": {"type": "string", "required": true}, "effectiveDate": {"type": "date", "required": true}, "expirationDate": {"type": "date", "required": true}, "operationalTerritory": {"type": "string", "required": true}, "commissionRate": {"type": "number", "default": 5.0}, "paymentTerms": {"type": "string", "default": "Net 30 days"}, "signedDate": {"type": "date", "required": true}}',
-'1.0', TRUE, TRUE, TRUE, TRUE, 12, 1),
+'1.0', TRUE, TRUE, TRUE, TRUE, 12, '550e8400-e29b-41d4-a716-446655440020'),
 
-('Lending Terms Agreement', 'Specific terms for lending product distribution', 'LENDING',
+('550e8400-e29b-41d4-a716-446655440022', 'Lending Terms Agreement', 'Specific terms for lending product distribution', 'LENDING',
 'LENDING DISTRIBUTION AGREEMENT
 
 This lending agreement supplements the general distributor agreement for {{distributorName}}.
@@ -117,7 +117,7 @@ Debt-to-income ratio maximum: {{maxDebtToIncomeRatio}}%
 Effective: {{effectiveDate}}
 Expires: {{expirationDate}}',
 '{"distributorName": {"type": "string", "required": true}, "maxLoanAmount": {"type": "number", "required": true}, "minInterestRate": {"type": "number", "required": true}, "maxInterestRate": {"type": "number", "required": true}, "maxLoanTermMonths": {"type": "number", "required": true}, "minCreditScore": {"type": "number", "default": 650}, "maxDebtToIncomeRatio": {"type": "number", "default": 40}, "effectiveDate": {"type": "date", "required": true}, "expirationDate": {"type": "date", "required": true}}',
-'1.0', FALSE, TRUE, TRUE, TRUE, 12, 1);
+'1.0', FALSE, TRUE, TRUE, TRUE, 12, '550e8400-e29b-41d4-a716-446655440020');
 
 -- Add constraint to ensure valid status values
 ALTER TABLE distributor_terms_and_conditions 
