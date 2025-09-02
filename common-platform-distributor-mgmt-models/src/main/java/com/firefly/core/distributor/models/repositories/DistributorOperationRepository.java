@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.UUID;
+import java.util.UUID;
 
 /**
  * Repository interface for managing {@link DistributorOperation} entities.
@@ -32,7 +33,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
     /**
      * Find operations by country ID.
      *
-     * @param countryId the country ID to search for
+erro     * @param countryId the country ID to search for
      * @return a Flux of distributor operations
      */
     Flux<DistributorOperation> findByCountryId(UUID countryId);
@@ -55,7 +56,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      */
     Mono<DistributorOperation> findByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(
             UUID distributorId, UUID countryId, UUID administrativeDivisionId);
-    
+
     /**
      * Check if a distributor can operate in a specific country and administrative division.
      *
