@@ -1,27 +1,27 @@
 -- Create product_category table
 CREATE TABLE IF NOT EXISTS product_category (
-    id BIGSERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     code VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT
+    updated_by UUID
 );
 
 -- Create lending_type table
 CREATE TABLE IF NOT EXISTS lending_type (
-    id BIGSERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     code VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT
+    updated_by UUID
 );
 
 -- Create indexes

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class DistributorBrandingServiceImpl implements DistributorBrandingServic
     }
 
     @Override
-    public Mono<DistributorBrandingDTO> updateDistributorBranding(Long distributorBrandingId, DistributorBrandingDTO distributorBrandingDTO) {
+    public Mono<DistributorBrandingDTO> updateDistributorBranding(UUID distributorBrandingId, DistributorBrandingDTO distributorBrandingDTO) {
         return repository.findById(distributorBrandingId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor branding not found with ID: " + distributorBrandingId)))
                 .flatMap(existingDistributorBranding -> {
@@ -54,14 +55,14 @@ public class DistributorBrandingServiceImpl implements DistributorBrandingServic
     }
 
     @Override
-    public Mono<Void> deleteDistributorBranding(Long distributorBrandingId) {
+    public Mono<Void> deleteDistributorBranding(UUID distributorBrandingId) {
         return repository.findById(distributorBrandingId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor branding not found with ID: " + distributorBrandingId)))
                 .flatMap(distributorBranding -> repository.deleteById(distributorBrandingId));
     }
 
     @Override
-    public Mono<DistributorBrandingDTO> getDistributorBrandingById(Long distributorBrandingId) {
+    public Mono<DistributorBrandingDTO> getDistributorBrandingById(UUID distributorBrandingId) {
         return repository.findById(distributorBrandingId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor branding not found with ID: " + distributorBrandingId)))
                 .map(mapper::toDTO);

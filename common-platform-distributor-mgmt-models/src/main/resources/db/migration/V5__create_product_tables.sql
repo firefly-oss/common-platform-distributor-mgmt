@@ -1,7 +1,7 @@
 -- Create product table
 CREATE TABLE IF NOT EXISTS product (
-    id BIGSERIAL PRIMARY KEY,
-    distributor_id BIGINT NOT NULL,
+    id UUID PRIMARY KEY,
+    distributor_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     sku VARCHAR(100),
@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS product (
     specifications JSONB,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT,
+    updated_by UUID,
     CONSTRAINT fk_product_distributor
         FOREIGN KEY (distributor_id)
         REFERENCES distributor (id)
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS product (
 
 -- Create lending_configuration table
 CREATE TABLE IF NOT EXISTS lending_configuration (
-    id BIGSERIAL PRIMARY KEY,
-    product_id BIGINT NOT NULL,
+    id UUID PRIMARY KEY,
+    product_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     lending_type lending_type_enum NOT NULL,
@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS lending_configuration (
     is_active BOOLEAN DEFAULT TRUE,
     terms_conditions TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT,
+    updated_by UUID,
     CONSTRAINT fk_lending_configuration_product
         FOREIGN KEY (product_id)
         REFERENCES product (id)

@@ -6,6 +6,7 @@ import com.firefly.core.distributor.interfaces.dtos.LendingConfigurationDTO;
 import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing lending configurations.
@@ -35,7 +36,7 @@ public interface LendingConfigurationService {
      * @param lendingConfigurationDTO the updated lending configuration data
      * @return the updated lending configuration
      */
-    Mono<LendingConfigurationDTO> updateLendingConfiguration(Long lendingConfigurationId, LendingConfigurationDTO lendingConfigurationDTO);
+    Mono<LendingConfigurationDTO> updateLendingConfiguration(UUID lendingConfigurationId, LendingConfigurationDTO lendingConfigurationDTO);
 
     /**
      * Delete a lending configuration.
@@ -43,7 +44,7 @@ public interface LendingConfigurationService {
      * @param lendingConfigurationId the ID of the lending configuration to delete
      * @return void
      */
-    Mono<Void> deleteLendingConfiguration(Long lendingConfigurationId);
+    Mono<Void> deleteLendingConfiguration(UUID lendingConfigurationId);
 
     /**
      * Get a lending configuration by ID.
@@ -51,7 +52,7 @@ public interface LendingConfigurationService {
      * @param lendingConfigurationId the ID of the lending configuration to retrieve
      * @return the lending configuration
      */
-    Mono<LendingConfigurationDTO> getLendingConfigurationById(Long lendingConfigurationId);
+    Mono<LendingConfigurationDTO> getLendingConfigurationById(UUID lendingConfigurationId);
 
     /**
      * Get all lending configurations for a product.
@@ -59,7 +60,7 @@ public interface LendingConfigurationService {
      * @param productId the ID of the product
      * @return a flux of lending configurations
      */
-    Flux<LendingConfigurationDTO> getLendingConfigurationsByProductId(Long productId);
+    Flux<LendingConfigurationDTO> getLendingConfigurationsByProductId(UUID productId);
 
     /**
      * Get all active lending configurations for a product.
@@ -67,7 +68,7 @@ public interface LendingConfigurationService {
      * @param productId the ID of the product
      * @return a flux of active lending configurations
      */
-    Flux<LendingConfigurationDTO> getActiveLendingConfigurationsByProductId(Long productId);
+    Flux<LendingConfigurationDTO> getActiveLendingConfigurationsByProductId(UUID productId);
 
     /**
      * Get all lending configurations for a product by lending type.
@@ -76,7 +77,7 @@ public interface LendingConfigurationService {
      * @param lendingType the lending type
      * @return a flux of lending configurations
      */
-    Flux<LendingConfigurationDTO> getLendingConfigurationsByProductIdAndLendingType(Long productId, LendingTypeDTO lendingType);
+    Flux<LendingConfigurationDTO> getLendingConfigurationsByProductIdAndLendingType(UUID productId, LendingTypeDTO lendingType);
 
     /**
      * Get the default lending configuration for a product.
@@ -84,7 +85,7 @@ public interface LendingConfigurationService {
      * @param productId the ID of the product
      * @return the default lending configuration
      */
-    Mono<LendingConfigurationDTO> getDefaultLendingConfigurationByProductId(Long productId);
+    Mono<LendingConfigurationDTO> getDefaultLendingConfigurationByProductId(UUID productId);
 
     /**
      * Get all lending configurations for products belonging to a distributor.
@@ -92,5 +93,5 @@ public interface LendingConfigurationService {
      * @param distributorId the ID of the distributor
      * @return a flux of lending configurations
      */
-    Flux<LendingConfigurationDTO> getLendingConfigurationsByDistributorId(Long distributorId);
+    Flux<LendingConfigurationDTO> getLendingConfigurationsByDistributorId(UUID distributorId);
 }

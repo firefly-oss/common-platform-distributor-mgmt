@@ -64,7 +64,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     @Transactional
-    public Mono<ShipmentDTO> updateShipment(Long id, ShipmentDTO shipmentDTO) {
+    public Mono<ShipmentDTO> updateShipment(UUID id, ShipmentDTO shipmentDTO) {
         return shipmentRepository.findById(id)
                 .flatMap(existingShipment -> {
                     Shipment updatedShipment = shipmentMapper.toEntity(shipmentDTO);
@@ -80,12 +80,12 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     @Transactional
-    public Mono<Void> deleteShipment(Long id) {
+    public Mono<Void> deleteShipment(UUID id) {
         return shipmentRepository.deleteById(id);
     }
 
     @Override
-    public Mono<ShipmentDTO> getShipmentById(Long id) {
+    public Mono<ShipmentDTO> getShipmentById(UUID id) {
         return shipmentRepository.findById(id)
                 .map(shipmentMapper::toDto)
                 .flatMap(this::enrichShipmentDTO);
@@ -99,14 +99,14 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Flux<ShipmentDTO> getShipmentsByLeasingContractId(Long leasingContractId) {
+    public Flux<ShipmentDTO> getShipmentsByLeasingContractId(UUID leasingContractId) {
         return shipmentRepository.findByLeasingContractId(leasingContractId)
                 .map(shipmentMapper::toDto)
                 .flatMap(this::enrichShipmentDTO);
     }
 
     @Override
-    public Flux<ShipmentDTO> getShipmentsByProductId(Long productId) {
+    public Flux<ShipmentDTO> getShipmentsByProductId(UUID productId) {
         return shipmentRepository.findByProductId(productId)
                 .map(shipmentMapper::toDto)
                 .flatMap(this::enrichShipmentDTO);
@@ -121,7 +121,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     @Transactional
-    public Mono<ShipmentDTO> updateShipmentStatus(Long id, String status, Long updatedBy) {
+    public Mono<ShipmentDTO> updateShipmentStatus(UUID id, String status, UUID updatedBy) {
         return shipmentRepository.findById(id)
                 .flatMap(shipment -> {
                     shipment.setStatus(status);

@@ -4,6 +4,7 @@ import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.DistributorBrandingDTO;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing distributor branding.
@@ -32,7 +33,7 @@ public interface DistributorBrandingService {
      * @param distributorBrandingDTO the data transfer object containing the updated details of the distributor branding
      * @return a reactive Mono containing the updated DistributorBrandingDTO
      */
-    Mono<DistributorBrandingDTO> updateDistributorBranding(Long distributorBrandingId, DistributorBrandingDTO distributorBrandingDTO);
+    Mono<DistributorBrandingDTO> updateDistributorBranding(UUID distributorBrandingId, DistributorBrandingDTO distributorBrandingDTO);
     
     /**
      * Deletes a distributor branding identified by its unique ID.
@@ -40,7 +41,7 @@ public interface DistributorBrandingService {
      * @param distributorBrandingId the unique identifier of the distributor branding to be deleted
      * @return a Mono that completes when the distributor branding is successfully deleted or errors if the deletion fails
      */
-    Mono<Void> deleteDistributorBranding(Long distributorBrandingId);
+    Mono<Void> deleteDistributorBranding(UUID distributorBrandingId);
     
     /**
      * Retrieves a distributor branding by its unique identifier.
@@ -49,5 +50,5 @@ public interface DistributorBrandingService {
      * @return a Mono emitting the {@link DistributorBrandingDTO} representing the distributor branding if found,
      *         or an empty Mono if the distributor branding does not exist
      */
-    Mono<DistributorBrandingDTO> getDistributorBrandingById(Long distributorBrandingId);
+    Mono<DistributorBrandingDTO> getDistributorBrandingById(UUID distributorBrandingId);
 }

@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * DTO representing branding information for a distributor.
@@ -24,11 +25,11 @@ import java.time.LocalDateTime;
 public class DistributorBrandingDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Distributor ID is required")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Size(max = 255, message = "Logo URL cannot exceed 255 characters")
     private String logoUrl;
@@ -52,8 +53,8 @@ public class DistributorBrandingDTO {
     private Boolean isDefault;
     @ValidDateTime
     private LocalDateTime createdAt;
-    private Long createdBy;
+    private UUID createdBy;
     @ValidDateTime
     private LocalDateTime updatedAt;
-    private Long updatedBy;
+    private UUID updatedBy;
 }

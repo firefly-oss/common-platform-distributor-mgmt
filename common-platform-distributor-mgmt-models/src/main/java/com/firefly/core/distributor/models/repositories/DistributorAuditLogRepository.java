@@ -7,13 +7,14 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Repository interface for managing {@link DistributorAuditLog} entities.
  * Extends {@link BaseRepository} to inherit common CRUD operations.
  */
 @Repository
-public interface DistributorAuditLogRepository extends BaseRepository<DistributorAuditLog, Long> {
+public interface DistributorAuditLogRepository extends BaseRepository<DistributorAuditLog, UUID> {
     
     /**
      * Find all audit logs for a specific distributor.
@@ -21,7 +22,7 @@ public interface DistributorAuditLogRepository extends BaseRepository<Distributo
      * @param distributorId the ID of the distributor
      * @return a Flux of audit logs for the distributor
      */
-    Flux<DistributorAuditLog> findByDistributorId(Long distributorId);
+    Flux<DistributorAuditLog> findByDistributorId(UUID distributorId);
     
     /**
      * Find all audit logs for a specific distributor with pagination.
@@ -30,7 +31,7 @@ public interface DistributorAuditLogRepository extends BaseRepository<Distributo
      * @param pageable pagination information
      * @return a Flux of audit logs for the distributor with pagination
      */
-    Flux<DistributorAuditLog> findByDistributorId(Long distributorId, Pageable pageable);
+    Flux<DistributorAuditLog> findByDistributorId(UUID distributorId, Pageable pageable);
     
     /**
      * Find all audit logs for a specific action type.
@@ -74,5 +75,5 @@ public interface DistributorAuditLogRepository extends BaseRepository<Distributo
      * @return a Flux of audit logs for the distributor within the specified time range
      */
     Flux<DistributorAuditLog> findByDistributorIdAndTimestampBetween(
-            Long distributorId, LocalDateTime startTime, LocalDateTime endTime);
+            UUID distributorId, LocalDateTime startTime, LocalDateTime endTime);
 }

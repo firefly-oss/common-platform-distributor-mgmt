@@ -1,6 +1,6 @@
 -- Create distributor table
 CREATE TABLE IF NOT EXISTS distributor (
-    id BIGSERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     external_code VARCHAR(255),
     name VARCHAR(255) NOT NULL,
     display_name VARCHAR(255),
@@ -22,15 +22,15 @@ CREATE TABLE IF NOT EXISTS distributor (
     onboarded_at TIMESTAMP,
     terminated_at TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT
+    updated_by UUID
 );
 
 -- Create distributor_branding table
 CREATE TABLE IF NOT EXISTS distributor_branding (
-    id BIGSERIAL PRIMARY KEY,
-    distributor_id BIGINT NOT NULL,
+    id UUID PRIMARY KEY,
+    distributor_id UUID NOT NULL,
     logo_url VARCHAR(255),
     favicon_url VARCHAR(255),
     primary_color VARCHAR(20),
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS distributor_branding (
     theme theme_enum,
     is_default BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT,
+    updated_by UUID,
     CONSTRAINT fk_distributor_branding_distributor
         FOREIGN KEY (distributor_id)
         REFERENCES distributor (id)
@@ -50,14 +50,14 @@ CREATE TABLE IF NOT EXISTS distributor_branding (
 
 -- Create distributor_audit_log table
 CREATE TABLE IF NOT EXISTS distributor_audit_log (
-    id BIGSERIAL PRIMARY KEY,
-    distributor_id BIGINT NOT NULL,
+    id UUID PRIMARY KEY,
+    distributor_id UUID NOT NULL,
     action distributor_action_enum NOT NULL,
     entity VARCHAR(50) NOT NULL,
     entity_id VARCHAR(50) NOT NULL,
     metadata JSONB,
     ip_address VARCHAR(45),
-    user_id BIGINT,
+    user_id UUID,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_distributor_audit_log_distributor
         FOREIGN KEY (distributor_id)

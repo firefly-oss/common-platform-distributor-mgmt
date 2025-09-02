@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * REST controller for managing distributor terms and conditions.
@@ -50,7 +51,7 @@ public class DistributorTermsAndConditionsController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<PaginationResponse<DistributorTermsAndConditionsDTO>>> filterDistributorTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorTermsAndConditionsDTO> filterRequest) {
         return ResponseEntity.ok(distributorTermsAndConditionsService.filterDistributorTermsAndConditions(filterRequest));
     }
@@ -68,7 +69,7 @@ public class DistributorTermsAndConditionsController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> createDistributorTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorTermsAndConditionsDTO distributorTermsAndConditionsDTO) {
         
         distributorTermsAndConditionsDTO.setDistributorId(distributorId);
@@ -90,9 +91,9 @@ public class DistributorTermsAndConditionsController {
     @PostMapping(value = "/generate/{templateId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> generateFromTemplate(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the template", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @RequestBody Map<String, Object> variables) {
         
         return generationService.generateFromTemplate(templateId, distributorId, variables)
@@ -112,9 +113,9 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(value = "/{termsId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> getDistributorTermsAndConditionsById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions", required = true)
-            @PathVariable Long termsId) {
+            @PathVariable UUID termsId) {
         return distributorTermsAndConditionsService.getDistributorTermsAndConditionsById(termsId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -135,9 +136,9 @@ public class DistributorTermsAndConditionsController {
     @PutMapping(value = "/{termsId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> updateDistributorTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions to update", required = true)
-            @PathVariable Long termsId,
+            @PathVariable UUID termsId,
             @Valid @RequestBody DistributorTermsAndConditionsDTO distributorTermsAndConditionsDTO) {
         
         distributorTermsAndConditionsDTO.setDistributorId(distributorId);
@@ -158,9 +159,9 @@ public class DistributorTermsAndConditionsController {
     @DeleteMapping("/{termsId}")
     public Mono<ResponseEntity<Void>> deleteDistributorTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions to delete", required = true)
-            @PathVariable Long termsId) {
+            @PathVariable UUID termsId) {
         return distributorTermsAndConditionsService.deleteDistributorTermsAndConditions(termsId)
                 .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
@@ -176,7 +177,7 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getTermsAndConditionsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorTermsAndConditionsService.getTermsAndConditionsByDistributorId(distributorId));
     }
 
@@ -191,7 +192,7 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getActiveTermsAndConditionsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorTermsAndConditionsService.getActiveTermsAndConditionsByDistributorId(distributorId));
     }
 
@@ -206,7 +207,7 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getTermsAndConditionsByDistributorIdAndStatus(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "Status of the terms and conditions", required = true)
             @PathVariable String status) {
         return ResponseEntity.ok(distributorTermsAndConditionsService.getTermsAndConditionsByDistributorIdAndStatus(distributorId, status));
@@ -225,13 +226,13 @@ public class DistributorTermsAndConditionsController {
     @PatchMapping(value = "/{termsId}/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> updateStatus(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions", required = true)
-            @PathVariable Long termsId,
+            @PathVariable UUID termsId,
             @Parameter(description = "New status", required = true)
             @RequestParam String status,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorTermsAndConditionsService.updateStatus(termsId, status, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -250,11 +251,11 @@ public class DistributorTermsAndConditionsController {
     @PatchMapping(value = "/{termsId}/sign", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> signTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions to sign", required = true)
-            @PathVariable Long termsId,
+            @PathVariable UUID termsId,
             @Parameter(description = "ID of the user signing", required = true)
-            @RequestParam Long signedBy) {
+            @RequestParam UUID signedBy) {
         return distributorTermsAndConditionsService.signTermsAndConditions(termsId, signedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -271,7 +272,7 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(value = "/has-active-signed", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<Boolean>> hasActiveSignedTerms(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorTermsAndConditionsService.hasActiveSignedTerms(distributorId));
     }
 
@@ -288,7 +289,7 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(value = "/latest", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> getLatestTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return distributorTermsAndConditionsService.getLatestTermsAndConditions(distributorId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -305,7 +306,7 @@ public class DistributorTermsAndConditionsController {
     @GetMapping(value = "/expiring", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getExpiringTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "Expiration date threshold", required = true)
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expirationDate) {
         return ResponseEntity.ok(distributorTermsAndConditionsService.getExpiringTermsAndConditions(expirationDate)
@@ -325,11 +326,11 @@ public class DistributorTermsAndConditionsController {
     @PatchMapping(value = "/{termsId}/activate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> activateTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions to activate", required = true)
-            @PathVariable Long termsId,
+            @PathVariable UUID termsId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorTermsAndConditionsService.activateTermsAndConditions(termsId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -348,11 +349,11 @@ public class DistributorTermsAndConditionsController {
     @PatchMapping(value = "/{termsId}/deactivate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorTermsAndConditionsDTO>> deactivateTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the terms and conditions to deactivate", required = true)
-            @PathVariable Long termsId,
+            @PathVariable UUID termsId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorTermsAndConditionsService.deactivateTermsAndConditions(termsId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());

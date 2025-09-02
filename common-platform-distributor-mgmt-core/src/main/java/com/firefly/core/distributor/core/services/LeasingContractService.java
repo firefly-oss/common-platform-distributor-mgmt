@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service for managing leasing contracts.
@@ -26,7 +27,7 @@ public interface LeasingContractService {
      * @param leasingContractDTO the leasing contract data to update
      * @return the updated leasing contract
      */
-    Mono<LeasingContractDTO> updateLeasingContract(Long id, LeasingContractDTO leasingContractDTO);
+    Mono<LeasingContractDTO> updateLeasingContract(UUID id, LeasingContractDTO leasingContractDTO);
 
     /**
      * Delete a leasing contract.
@@ -34,7 +35,7 @@ public interface LeasingContractService {
      * @param id the ID of the leasing contract to delete
      * @return a Mono completing when the operation is done
      */
-    Mono<Void> deleteLeasingContract(Long id);
+    Mono<Void> deleteLeasingContract(UUID id);
 
     /**
      * Get a leasing contract by ID.
@@ -42,7 +43,7 @@ public interface LeasingContractService {
      * @param id the ID of the leasing contract to retrieve
      * @return the leasing contract
      */
-    Mono<LeasingContractDTO> getLeasingContractById(Long id);
+    Mono<LeasingContractDTO> getLeasingContractById(UUID id);
 
     /**
      * Get a leasing contract by contract ID.
@@ -50,7 +51,7 @@ public interface LeasingContractService {
      * @param contractId the contract ID of the leasing contract to retrieve
      * @return the leasing contract
      */
-    Mono<LeasingContractDTO> getLeasingContractByContractId(Long contractId);
+    Mono<LeasingContractDTO> getLeasingContractByContractId(UUID contractId);
 
     /**
      * Get all leasing contracts for a distributor.
@@ -58,7 +59,7 @@ public interface LeasingContractService {
      * @param distributorId the ID of the distributor
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContractDTO> getLeasingContractsByDistributorId(Long distributorId);
+    Flux<LeasingContractDTO> getLeasingContractsByDistributorId(UUID distributorId);
 
     /**
      * Get all leasing contracts for a product.
@@ -66,7 +67,7 @@ public interface LeasingContractService {
      * @param productId the ID of the product
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContractDTO> getLeasingContractsByProductId(Long productId);
+    Flux<LeasingContractDTO> getLeasingContractsByProductId(UUID productId);
 
     /**
      * Get all leasing contracts for a party.
@@ -74,7 +75,7 @@ public interface LeasingContractService {
      * @param partyId the ID of the party
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContractDTO> getLeasingContractsByPartyId(Long partyId);
+    Flux<LeasingContractDTO> getLeasingContractsByPartyId(UUID partyId);
 
     /**
      * Get all leasing contracts with a specific status.
@@ -91,7 +92,7 @@ public interface LeasingContractService {
      * @param approvedBy the ID of the user approving the contract
      * @return the approved leasing contract
      */
-    Mono<LeasingContractDTO> approveLeasingContract(Long id, Long approvedBy);
+    Mono<LeasingContractDTO> approveLeasingContract(UUID id, UUID approvedBy);
 
     /**
      * Filter leasing contracts based on criteria.

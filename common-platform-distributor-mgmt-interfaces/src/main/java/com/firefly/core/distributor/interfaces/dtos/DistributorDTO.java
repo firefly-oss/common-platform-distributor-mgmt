@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * DTO representing a distributor in the system.
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 public class DistributorDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @Size(max = 255, message = "External code cannot exceed 255 characters")
     private String externalCode;
@@ -80,8 +81,8 @@ public class DistributorDTO {
     private LocalDateTime terminatedAt;
     @ValidDateTime
     private LocalDateTime createdAt;
-    private Long createdBy;
+    private UUID createdBy;
     @ValidDateTime
     private LocalDateTime updatedAt;
-    private Long updatedBy;
+    private UUID updatedBy;
 }

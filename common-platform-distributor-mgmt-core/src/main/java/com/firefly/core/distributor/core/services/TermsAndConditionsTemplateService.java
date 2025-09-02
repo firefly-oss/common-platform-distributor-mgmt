@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.TermsAndConditionsTemplateDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing terms and conditions templates.
@@ -34,7 +35,7 @@ public interface TermsAndConditionsTemplateService {
      * @param templateDTO the updated template data
      * @return a reactive {@code Mono} emitting the updated template
      */
-    Mono<TermsAndConditionsTemplateDTO> updateTemplate(Long id, TermsAndConditionsTemplateDTO templateDTO);
+    Mono<TermsAndConditionsTemplateDTO> updateTemplate(UUID id, TermsAndConditionsTemplateDTO templateDTO);
 
     /**
      * Deletes a terms and conditions template by its ID.
@@ -42,7 +43,7 @@ public interface TermsAndConditionsTemplateService {
      * @param id the ID of the template to delete
      * @return a reactive {@code Mono} that completes when the template is deleted
      */
-    Mono<Void> deleteTemplate(Long id);
+    Mono<Void> deleteTemplate(UUID id);
 
     /**
      * Retrieves a terms and conditions template by its ID.
@@ -50,7 +51,7 @@ public interface TermsAndConditionsTemplateService {
      * @param id the ID of the template to retrieve
      * @return a reactive {@code Mono} emitting the template if found
      */
-    Mono<TermsAndConditionsTemplateDTO> getTemplateById(Long id);
+    Mono<TermsAndConditionsTemplateDTO> getTemplateById(UUID id);
 
     /**
      * Retrieves all active templates.
@@ -134,7 +135,7 @@ public interface TermsAndConditionsTemplateService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated template
      */
-    Mono<TermsAndConditionsTemplateDTO> activateTemplate(Long id, Long updatedBy);
+    Mono<TermsAndConditionsTemplateDTO> activateTemplate(UUID id, UUID updatedBy);
 
     /**
      * Deactivates a template.
@@ -143,7 +144,7 @@ public interface TermsAndConditionsTemplateService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated template
      */
-    Mono<TermsAndConditionsTemplateDTO> deactivateTemplate(Long id, Long updatedBy);
+    Mono<TermsAndConditionsTemplateDTO> deactivateTemplate(UUID id, UUID updatedBy);
 
     /**
      * Sets a template as default for its category.
@@ -152,7 +153,7 @@ public interface TermsAndConditionsTemplateService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated template
      */
-    Mono<TermsAndConditionsTemplateDTO> setAsDefault(Long id, Long updatedBy);
+    Mono<TermsAndConditionsTemplateDTO> setAsDefault(UUID id, UUID updatedBy);
 
     /**
      * Removes default status from a template.
@@ -161,7 +162,7 @@ public interface TermsAndConditionsTemplateService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated template
      */
-    Mono<TermsAndConditionsTemplateDTO> removeDefault(Long id, Long updatedBy);
+    Mono<TermsAndConditionsTemplateDTO> removeDefault(UUID id, UUID updatedBy);
 
     /**
      * Checks if a template name already exists.
@@ -178,5 +179,5 @@ public interface TermsAndConditionsTemplateService {
      * @param excludeId the template ID to exclude from the check
      * @return a reactive {@code Mono} emitting true if the name exists for a different template
      */
-    Mono<Boolean> templateNameExistsForDifferentTemplate(String name, Long excludeId);
+    Mono<Boolean> templateNameExistsForDifferentTemplate(String name, UUID excludeId);
 }

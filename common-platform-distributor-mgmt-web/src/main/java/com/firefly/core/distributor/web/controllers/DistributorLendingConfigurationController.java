@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing distributor-level lending configurations.
@@ -46,7 +47,7 @@ public class DistributorLendingConfigurationController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getLendingConfigurationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         
         return Mono.just(ResponseEntity.ok(lendingConfigurationService.getLendingConfigurationsByDistributorId(distributorId)));
     }

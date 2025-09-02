@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing a distributor's operational coverage in specific countries and administrative divisions.
@@ -24,16 +25,16 @@ import java.time.LocalDateTime;
 public class DistributorOperation {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("distributor_id")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Column("country_id")
-    private Long countryId;
+    private UUID countryId;
 
     @Column("administrative_division_id")
-    private Long administrativeDivisionId;
+    private UUID administrativeDivisionId;
 
     @Column("is_active")
     private Boolean isActive;
@@ -43,12 +44,12 @@ public class DistributorOperation {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

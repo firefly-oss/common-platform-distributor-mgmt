@@ -3,6 +3,7 @@ package com.firefly.core.distributor.core.services;
 import com.firefly.core.distributor.interfaces.dtos.ProductCategoryDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing product categories.
@@ -29,7 +30,7 @@ public interface ProductCategoryService {
      * @param id The ID of the product category
      * @return A Mono containing the product category if found
      */
-    Mono<ProductCategoryDTO> getProductCategoryById(Long id);
+    Mono<ProductCategoryDTO> getProductCategoryById(UUID id);
 
     /**
      * Get a product category by its code.
@@ -54,7 +55,7 @@ public interface ProductCategoryService {
      * @param productCategoryDTO The updated product category data
      * @return A Mono containing the updated product category
      */
-    Mono<ProductCategoryDTO> updateProductCategory(Long id, ProductCategoryDTO productCategoryDTO);
+    Mono<ProductCategoryDTO> updateProductCategory(UUID id, ProductCategoryDTO productCategoryDTO);
 
     /**
      * Delete a product category by its ID.
@@ -62,5 +63,5 @@ public interface ProductCategoryService {
      * @param id The ID of the product category to delete
      * @return A Mono that completes when the product category is deleted
      */
-    Mono<Void> deleteProductCategory(Long id);
+    Mono<Void> deleteProductCategory(UUID id);
 }

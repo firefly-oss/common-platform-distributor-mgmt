@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing product categories.
@@ -84,7 +85,7 @@ public class ProductCategoryController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ProductCategoryDTO> getProductCategoryById(
             @Parameter(description = "ID of the product category to retrieve", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         return productCategoryService.getProductCategoryById(id);
     }
 
@@ -156,7 +157,7 @@ public class ProductCategoryController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ProductCategoryDTO> updateProductCategory(
             @Parameter(description = "ID of the product category to update", required = true)
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody ProductCategoryDTO productCategoryDTO) {
         return productCategoryService.updateProductCategory(id, productCategoryDTO);
     }
@@ -180,7 +181,7 @@ public class ProductCategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteProductCategory(
             @Parameter(description = "ID of the product category to delete", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         return productCategoryService.deleteProductCategory(id);
     }
 }

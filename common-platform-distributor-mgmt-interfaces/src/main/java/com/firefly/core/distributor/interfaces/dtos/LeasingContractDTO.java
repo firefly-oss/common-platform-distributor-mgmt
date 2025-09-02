@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for LeasingContract entity.
@@ -27,24 +28,24 @@ import java.time.LocalDateTime;
 public class LeasingContractDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @NotNull(message = "Contract ID is required")
-    private Long contractId;
+    private UUID contractId;
 
     @NotNull(message = "Party ID is required")
-    private Long partyId;
+    private UUID partyId;
 
     @FilterableId
     @NotNull(message = "Distributor ID is required")
-    private Long distributorId;
+    private UUID distributorId;
 
     @FilterableId
     @NotNull(message = "Product ID is required")
-    private Long productId;
+    private UUID productId;
 
     @NotNull(message = "Lending configuration ID is required")
-    private Long lendingConfigurationId;
+    private UUID lendingConfigurationId;
 
     private ProductDTO product;
 
@@ -77,7 +78,7 @@ public class LeasingContractDTO {
     @ValidDateTime
     private LocalDateTime approvalDate;
 
-    private Long approvedBy;
+    private UUID approvedBy;
 
     @Size(max = 5000, message = "Terms and conditions cannot exceed 5000 characters")
     private String termsConditions;
@@ -92,12 +93,12 @@ public class LeasingContractDTO {
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long createdBy;
+    private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long updatedBy;
+    private UUID updatedBy;
 }

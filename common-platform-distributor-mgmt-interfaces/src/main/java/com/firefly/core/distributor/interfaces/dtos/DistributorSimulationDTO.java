@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for DistributorSimulation entity.
@@ -23,15 +24,15 @@ import java.time.LocalDateTime;
 public class DistributorSimulationDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Distributor ID is required")
-    private Long distributorId;
+    private UUID distributorId;
 
     @NotNull(message = "Application ID is required")
     @Positive(message = "Application ID must be positive")
-    private Long applicationId;
+    private UUID applicationId;
 
     @Size(max = 50, message = "Simulation status cannot exceed 50 characters")
     private String simulationStatus;
@@ -46,12 +47,12 @@ public class DistributorSimulationDTO {
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long createdBy;
+    private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long updatedBy;
+    private UUID updatedBy;
 }

@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for Shipment entity.
@@ -24,17 +25,17 @@ import java.time.LocalDateTime;
 public class ShipmentDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Leasing contract ID is required")
-    private Long leasingContractId;
+    private UUID leasingContractId;
 
     private LeasingContractDTO leasingContract;
 
     @FilterableId
     @NotNull(message = "Product ID is required")
-    private Long productId;
+    private UUID productId;
 
     private ProductDTO product;
 
@@ -69,12 +70,12 @@ public class ShipmentDTO {
     private LocalDateTime createdAt;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long createdBy;
+    private UUID createdBy;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long updatedBy;
+    private UUID updatedBy;
 }

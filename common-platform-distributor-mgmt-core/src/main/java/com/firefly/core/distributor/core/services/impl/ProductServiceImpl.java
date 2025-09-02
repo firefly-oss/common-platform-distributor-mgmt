@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Implementation of the ProductService interface.
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Mono<ProductDTO> updateProduct(Long productId, ProductDTO productDTO) {
+    public Mono<ProductDTO> updateProduct(UUID productId, ProductDTO productDTO) {
         return repository.findById(productId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Product not found with ID: " + productId)))
                 .flatMap(existingProduct -> {
@@ -59,33 +60,33 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Mono<Void> deleteProduct(Long productId) {
+    public Mono<Void> deleteProduct(UUID productId) {
         return repository.findById(productId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Product not found with ID: " + productId)))
                 .flatMap(product -> repository.deleteById(productId));
     }
 
     @Override
-    public Mono<ProductDTO> getProductById(Long productId) {
+    public Mono<ProductDTO> getProductById(UUID productId) {
         return repository.findById(productId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Product not found with ID: " + productId)))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<ProductDTO> getProductsByDistributorId(Long distributorId) {
+    public Flux<ProductDTO> getProductsByDistributorId(UUID distributorId) {
         return repository.findByDistributorId(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<ProductDTO> getActiveProductsByDistributorId(Long distributorId) {
+    public Flux<ProductDTO> getActiveProductsByDistributorId(UUID distributorId) {
         return repository.findByDistributorIdAndIsActive(distributorId, true)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<ProductDTO> getProductsByDistributorIdAndCategory(Long distributorId, ProductCategoryDTO category) {
+    public Flux<ProductDTO> getProductsByDistributorIdAndCategory(UUID distributorId, ProductCategoryDTO category) {
         return repository.findByDistributorIdAndCategoryId(distributorId, category.getId())
                 .map(mapper::toDTO);
     }

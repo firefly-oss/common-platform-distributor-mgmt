@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for global simulation access.
@@ -40,7 +41,7 @@ public class SimulationController {
     @GetMapping(value = "/application/{applicationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> getSimulationByApplicationId(
             @Parameter(description = "ID of the application", required = true)
-            @PathVariable Long applicationId) {
+            @PathVariable UUID applicationId) {
         return distributorSimulationService.getSimulationByApplicationId(applicationId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -72,7 +73,7 @@ public class SimulationController {
     @GetMapping(value = "/country/{countryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorSimulationDTO>> getSimulationsByCountry(
             @Parameter(description = "ID of the country", required = true)
-            @PathVariable Long countryId) {
+            @PathVariable UUID countryId) {
         // This would require a more complex query joining with distributor operations
         // For now, we'll return an empty flux as this would need additional service methods
         return ResponseEntity.ok(Flux.empty());

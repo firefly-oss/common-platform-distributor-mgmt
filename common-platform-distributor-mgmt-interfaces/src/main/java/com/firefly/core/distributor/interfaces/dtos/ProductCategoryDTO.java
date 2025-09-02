@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for ProductCategory entity.
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 public class ProductCategoryDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "Product category name is required")
     @Size(max = 255, message = "Product category name cannot exceed 255 characters")
@@ -41,12 +42,12 @@ public class ProductCategoryDTO {
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long createdBy;
+    private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long updatedBy;
+    private UUID updatedBy;
 }

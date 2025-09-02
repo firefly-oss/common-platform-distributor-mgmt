@@ -4,6 +4,7 @@ import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.DistributorAuditLogDTO;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing distributor audit logs.
@@ -32,7 +33,7 @@ public interface DistributorAuditLogService {
      * @param distributorAuditLogDTO the data transfer object containing the updated details of the distributor audit log
      * @return a reactive Mono containing the updated DistributorAuditLogDTO
      */
-    Mono<DistributorAuditLogDTO> updateDistributorAuditLog(Long distributorAuditLogId, DistributorAuditLogDTO distributorAuditLogDTO);
+    Mono<DistributorAuditLogDTO> updateDistributorAuditLog(UUID distributorAuditLogId, DistributorAuditLogDTO distributorAuditLogDTO);
     
     /**
      * Deletes a distributor audit log identified by its unique ID.
@@ -40,7 +41,7 @@ public interface DistributorAuditLogService {
      * @param distributorAuditLogId the unique identifier of the distributor audit log to be deleted
      * @return a Mono that completes when the distributor audit log is successfully deleted or errors if the deletion fails
      */
-    Mono<Void> deleteDistributorAuditLog(Long distributorAuditLogId);
+    Mono<Void> deleteDistributorAuditLog(UUID distributorAuditLogId);
     
     /**
      * Retrieves a distributor audit log by its unique identifier.
@@ -49,5 +50,5 @@ public interface DistributorAuditLogService {
      * @return a Mono emitting the {@link DistributorAuditLogDTO} representing the distributor audit log if found,
      *         or an empty Mono if the distributor audit log does not exist
      */
-    Mono<DistributorAuditLogDTO> getDistributorAuditLogById(Long distributorAuditLogId);
+    Mono<DistributorAuditLogDTO> getDistributorAuditLogById(UUID distributorAuditLogId);
 }

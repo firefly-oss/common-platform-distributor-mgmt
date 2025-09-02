@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing leasing contracts.
@@ -101,7 +102,7 @@ public class LeasingContractController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LeasingContractDTO>> updateLeasingContract(
             @Parameter(description = "ID of the leasing contract to update", required = true)
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody LeasingContractDTO leasingContractDTO) {
         
         return leasingContractService.updateLeasingContract(id, leasingContractDTO)
@@ -127,7 +128,7 @@ public class LeasingContractController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteLeasingContract(
             @Parameter(description = "ID of the leasing contract to delete", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         
         return leasingContractService.deleteLeasingContract(id)
                 .then(Mono.just(ResponseEntity.noContent().build()));
@@ -152,7 +153,7 @@ public class LeasingContractController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LeasingContractDTO>> getLeasingContractById(
             @Parameter(description = "ID of the leasing contract to retrieve", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         
         return leasingContractService.getLeasingContractById(id)
                 .map(ResponseEntity::ok)
@@ -178,7 +179,7 @@ public class LeasingContractController {
     @GetMapping(value = "/contract/{contractId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LeasingContractDTO>> getLeasingContractByContractId(
             @Parameter(description = "Contract ID of the leasing contract to retrieve", required = true)
-            @PathVariable Long contractId) {
+            @PathVariable UUID contractId) {
         
         return leasingContractService.getLeasingContractByContractId(contractId)
                 .map(ResponseEntity::ok)
@@ -204,7 +205,7 @@ public class LeasingContractController {
     @GetMapping(value = "/distributor/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         
         Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByDistributorId(distributorId);
         return Mono.just(ResponseEntity.ok(contracts));
@@ -229,7 +230,7 @@ public class LeasingContractController {
     @GetMapping(value = "/product/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByProductId(
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByProductId(productId);
         return Mono.just(ResponseEntity.ok(contracts));
@@ -254,7 +255,7 @@ public class LeasingContractController {
     @GetMapping(value = "/party/{partyId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByPartyId(
             @Parameter(description = "ID of the party", required = true)
-            @PathVariable Long partyId) {
+            @PathVariable UUID partyId) {
         
         Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByPartyId(partyId);
         return Mono.just(ResponseEntity.ok(contracts));
@@ -307,9 +308,9 @@ public class LeasingContractController {
     @PostMapping(value = "/{id}/approve", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LeasingContractDTO>> approveLeasingContract(
             @Parameter(description = "ID of the leasing contract to approve", required = true)
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Parameter(description = "ID of the user approving the contract", required = true)
-            @RequestParam Long approvedBy) {
+            @RequestParam UUID approvedBy) {
         
         return leasingContractService.approveLeasingContract(id, approvedBy)
                 .map(ResponseEntity::ok)

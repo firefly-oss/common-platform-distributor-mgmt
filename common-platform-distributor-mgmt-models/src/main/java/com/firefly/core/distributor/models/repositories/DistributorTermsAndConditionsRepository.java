@@ -6,13 +6,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Repository interface for managing {@link DistributorTermsAndConditions} entities.
  * Extends {@link BaseRepository} to inherit common CRUD operations.
  */
 @Repository
-public interface DistributorTermsAndConditionsRepository extends BaseRepository<DistributorTermsAndConditions, Long> {
+public interface DistributorTermsAndConditionsRepository extends BaseRepository<DistributorTermsAndConditions, UUID> {
     
     /**
      * Find all terms and conditions for a specific distributor.
@@ -20,7 +21,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param distributorId the distributor ID to search for
      * @return a Flux of distributor terms and conditions
      */
-    Flux<DistributorTermsAndConditions> findByDistributorId(Long distributorId);
+    Flux<DistributorTermsAndConditions> findByDistributorId(UUID distributorId);
     
     /**
      * Find all active terms and conditions for a specific distributor.
@@ -28,7 +29,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param distributorId the distributor ID to search for
      * @return a Flux of active distributor terms and conditions
      */
-    Flux<DistributorTermsAndConditions> findByDistributorIdAndIsActiveTrue(Long distributorId);
+    Flux<DistributorTermsAndConditions> findByDistributorIdAndIsActiveTrue(UUID distributorId);
     
     /**
      * Find terms and conditions by status.
@@ -45,7 +46,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param status the status
      * @return a Flux of distributor terms and conditions
      */
-    Flux<DistributorTermsAndConditions> findByDistributorIdAndStatus(Long distributorId, String status);
+    Flux<DistributorTermsAndConditions> findByDistributorIdAndStatus(UUID distributorId, String status);
     
     /**
      * Find terms and conditions by template ID.
@@ -53,7 +54,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param templateId the template ID
      * @return a Flux of distributor terms and conditions
      */
-    Flux<DistributorTermsAndConditions> findByTemplateId(Long templateId);
+    Flux<DistributorTermsAndConditions> findByTemplateId(UUID templateId);
     
     /**
      * Find active terms and conditions for a distributor and template.
@@ -62,7 +63,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param templateId the template ID
      * @return a Mono containing the active terms and conditions if found
      */
-    Mono<DistributorTermsAndConditions> findByDistributorIdAndTemplateIdAndIsActiveTrue(Long distributorId, Long templateId);
+    Mono<DistributorTermsAndConditions> findByDistributorIdAndTemplateIdAndIsActiveTrue(UUID distributorId, UUID templateId);
     
     /**
      * Find terms and conditions expiring before a certain date.
@@ -86,7 +87,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param distributorId the distributor ID
      * @return a Flux of signed terms and conditions
      */
-    Flux<DistributorTermsAndConditions> findByDistributorIdAndStatusAndIsActiveTrue(Long distributorId, String status);
+    Flux<DistributorTermsAndConditions> findByDistributorIdAndStatusAndIsActiveTrue(UUID distributorId, String status);
     
     /**
      * Check if a distributor has active terms and conditions.
@@ -94,7 +95,7 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param distributorId the distributor ID
      * @return a Mono containing true if active terms exist
      */
-    Mono<Boolean> existsByDistributorIdAndStatusAndIsActiveTrue(Long distributorId, String status);
+    Mono<Boolean> existsByDistributorIdAndStatusAndIsActiveTrue(UUID distributorId, String status);
     
     /**
      * Find terms and conditions by version.
@@ -110,5 +111,5 @@ public interface DistributorTermsAndConditionsRepository extends BaseRepository<
      * @param distributorId the distributor ID
      * @return a Mono containing the latest terms and conditions
      */
-    Mono<DistributorTermsAndConditions> findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(Long distributorId);
+    Mono<DistributorTermsAndConditions> findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(UUID distributorId);
 }

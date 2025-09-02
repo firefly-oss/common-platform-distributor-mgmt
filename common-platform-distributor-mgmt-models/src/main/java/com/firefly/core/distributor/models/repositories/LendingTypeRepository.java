@@ -4,12 +4,13 @@ import com.firefly.core.distributor.models.entities.LendingType;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository for managing LendingType entities.
  */
 @Repository
-public interface LendingTypeRepository extends BaseRepository<LendingType, Long> {
+public interface LendingTypeRepository extends BaseRepository<LendingType, UUID> {
 
     /**
      * Find a lending type by its code.

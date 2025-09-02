@@ -5,6 +5,7 @@ import com.firefly.core.distributor.interfaces.dtos.TermsAndConditionsTemplateDT
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Service interface for generating terms and conditions from templates.
@@ -19,7 +20,7 @@ public interface TermsAndConditionsGenerationService {
      * @param variables the variables to substitute in the template
      * @return a reactive {@code Mono} emitting the generated terms and conditions
      */
-    Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(Long templateId, Long distributorId, Map<String, Object> variables);
+    Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(UUID templateId, UUID distributorId, Map<String, Object> variables);
 
     /**
      * Generate terms and conditions from a template DTO with provided variables.
@@ -29,7 +30,7 @@ public interface TermsAndConditionsGenerationService {
      * @param variables the variables to substitute in the template
      * @return a reactive {@code Mono} emitting the generated terms and conditions
      */
-    Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(TermsAndConditionsTemplateDTO template, Long distributorId, Map<String, Object> variables);
+    Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(TermsAndConditionsTemplateDTO template, UUID distributorId, Map<String, Object> variables);
 
     /**
      * Validate template variables against the template's variable definitions.
@@ -55,7 +56,7 @@ public interface TermsAndConditionsGenerationService {
      * @param distributorId the distributor ID
      * @return a reactive {@code Mono} emitting the default variables
      */
-    Mono<Map<String, Object>> getDefaultVariablesForDistributor(Long distributorId);
+    Mono<Map<String, Object>> getDefaultVariablesForDistributor(UUID distributorId);
 
     /**
      * Preview generated content without creating a terms and conditions record.
@@ -64,7 +65,7 @@ public interface TermsAndConditionsGenerationService {
      * @param variables the variables to substitute
      * @return a reactive {@code Mono} emitting the preview content
      */
-    Mono<String> previewGeneration(Long templateId, Map<String, Object> variables);
+    Mono<String> previewGeneration(UUID templateId, Map<String, Object> variables);
 
     /**
      * Auto-renew terms and conditions based on template settings.
@@ -72,7 +73,7 @@ public interface TermsAndConditionsGenerationService {
      * @param termsAndConditionsId the existing terms and conditions ID
      * @return a reactive {@code Mono} emitting the renewed terms and conditions
      */
-    Mono<DistributorTermsAndConditionsDTO> autoRenewTermsAndConditions(Long termsAndConditionsId);
+    Mono<DistributorTermsAndConditionsDTO> autoRenewTermsAndConditions(UUID termsAndConditionsId);
 
     /**
      * Check if terms and conditions need renewal.
@@ -80,5 +81,5 @@ public interface TermsAndConditionsGenerationService {
      * @param termsAndConditionsId the terms and conditions ID
      * @return a reactive {@code Mono} emitting true if renewal is needed
      */
-    Mono<Boolean> needsRenewal(Long termsAndConditionsId);
+    Mono<Boolean> needsRenewal(UUID termsAndConditionsId);
 }

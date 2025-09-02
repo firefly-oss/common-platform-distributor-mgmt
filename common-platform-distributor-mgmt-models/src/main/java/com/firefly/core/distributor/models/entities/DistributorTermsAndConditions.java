@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing specific terms and conditions agreed between a distributor and the company.
@@ -24,13 +25,13 @@ import java.time.LocalDateTime;
 public class DistributorTermsAndConditions {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("distributor_id")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Column("template_id")
-    private Long templateId;
+    private UUID templateId;
 
     @Column("title")
     private String title;
@@ -51,7 +52,7 @@ public class DistributorTermsAndConditions {
     private LocalDateTime signedDate;
 
     @Column("signed_by")
-    private Long signedBy;
+    private UUID signedBy;
 
     @Column("status")
     private String status; // DRAFT, PENDING_SIGNATURE, SIGNED, EXPIRED, TERMINATED
@@ -67,12 +68,12 @@ public class DistributorTermsAndConditions {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

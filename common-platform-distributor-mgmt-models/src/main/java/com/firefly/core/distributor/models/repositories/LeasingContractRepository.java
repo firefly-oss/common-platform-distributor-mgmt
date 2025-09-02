@@ -5,12 +5,13 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository for managing LeasingContract entities.
  */
 @Repository
-public interface LeasingContractRepository extends BaseRepository<LeasingContract, Long> {
+public interface LeasingContractRepository extends BaseRepository<LeasingContract, UUID> {
 
     /**
      * Find all leasing contracts by distributor ID.
@@ -18,7 +19,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param distributorId the distributor ID
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContract> findByDistributorId(Long distributorId);
+    Flux<LeasingContract> findByDistributorId(UUID distributorId);
 
     /**
      * Find all leasing contracts by product ID.
@@ -26,7 +27,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param productId the product ID
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContract> findByProductId(Long productId);
+    Flux<LeasingContract> findByProductId(UUID productId);
 
     /**
      * Find all leasing contracts by party ID.
@@ -34,7 +35,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param partyId the party ID
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContract> findByPartyId(Long partyId);
+    Flux<LeasingContract> findByPartyId(UUID partyId);
 
     /**
      * Find a leasing contract by contract ID.
@@ -42,7 +43,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param contractId the contract ID
      * @return a Mono of leasing contract
      */
-    Mono<LeasingContract> findByContractId(Long contractId);
+    Mono<LeasingContract> findByContractId(UUID contractId);
 
     /**
      * Find all active leasing contracts by distributor ID.
@@ -50,7 +51,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param distributorId the distributor ID
      * @return a Flux of active leasing contracts
      */
-    Flux<LeasingContract> findByDistributorIdAndIsActiveTrue(Long distributorId);
+    Flux<LeasingContract> findByDistributorIdAndIsActiveTrue(UUID distributorId);
 
     /**
      * Find all leasing contracts by status.
@@ -67,7 +68,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param status the status
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContract> findByDistributorIdAndStatus(Long distributorId, String status);
+    Flux<LeasingContract> findByDistributorIdAndStatus(UUID distributorId, String status);
 
     /**
      * Find all leasing contracts by product ID and status.
@@ -76,7 +77,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param status the status
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContract> findByProductIdAndStatus(Long productId, String status);
+    Flux<LeasingContract> findByProductIdAndStatus(UUID productId, String status);
 
     /**
      * Find all leasing contracts by party ID and status.
@@ -85,7 +86,7 @@ public interface LeasingContractRepository extends BaseRepository<LeasingContrac
      * @param status the status
      * @return a Flux of leasing contracts
      */
-    Flux<LeasingContract> findByPartyIdAndStatus(Long partyId, String status);
+    Flux<LeasingContract> findByPartyIdAndStatus(UUID partyId, String status);
 
     /**
      * Find all leasing contracts approved after a specific date.

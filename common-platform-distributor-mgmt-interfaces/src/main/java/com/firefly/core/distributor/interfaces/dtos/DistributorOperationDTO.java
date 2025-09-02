@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for DistributorOperation entity.
@@ -22,19 +23,19 @@ import java.time.LocalDateTime;
 public class DistributorOperationDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Distributor ID is required")
-    private Long distributorId;
+    private UUID distributorId;
 
     @NotNull(message = "Country ID is required")
     @Positive(message = "Country ID must be positive")
-    private Long countryId;
+    private UUID countryId;
 
     @NotNull(message = "Administrative Division ID is required")
     @Positive(message = "Administrative Division ID must be positive")
-    private Long administrativeDivisionId;
+    private UUID administrativeDivisionId;
 
     private Boolean isActive;
 
@@ -43,12 +44,12 @@ public class DistributorOperationDTO {
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long createdBy;
+    private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long updatedBy;
+    private UUID updatedBy;
 }

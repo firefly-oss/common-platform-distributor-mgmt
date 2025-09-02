@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.DistributorSimulationDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing distributor simulations.
@@ -34,7 +35,7 @@ public interface DistributorSimulationService {
      * @param distributorSimulationDTO the updated distributor simulation data
      * @return a reactive {@code Mono} emitting the updated distributor simulation
      */
-    Mono<DistributorSimulationDTO> updateDistributorSimulation(Long id, DistributorSimulationDTO distributorSimulationDTO);
+    Mono<DistributorSimulationDTO> updateDistributorSimulation(UUID id, DistributorSimulationDTO distributorSimulationDTO);
 
     /**
      * Deletes a distributor simulation by its ID.
@@ -42,7 +43,7 @@ public interface DistributorSimulationService {
      * @param id the ID of the distributor simulation to delete
      * @return a reactive {@code Mono} that completes when the simulation is deleted
      */
-    Mono<Void> deleteDistributorSimulation(Long id);
+    Mono<Void> deleteDistributorSimulation(UUID id);
 
     /**
      * Retrieves a distributor simulation by its ID.
@@ -50,7 +51,7 @@ public interface DistributorSimulationService {
      * @param id the ID of the distributor simulation to retrieve
      * @return a reactive {@code Mono} emitting the distributor simulation if found
      */
-    Mono<DistributorSimulationDTO> getDistributorSimulationById(Long id);
+    Mono<DistributorSimulationDTO> getDistributorSimulationById(UUID id);
 
     /**
      * Retrieves all simulations for a specific distributor.
@@ -58,7 +59,7 @@ public interface DistributorSimulationService {
      * @param distributorId the distributor ID
      * @return a reactive {@code Flux} emitting all simulations for the distributor
      */
-    Flux<DistributorSimulationDTO> getSimulationsByDistributorId(Long distributorId);
+    Flux<DistributorSimulationDTO> getSimulationsByDistributorId(UUID distributorId);
 
     /**
      * Retrieves all active simulations for a specific distributor.
@@ -66,7 +67,7 @@ public interface DistributorSimulationService {
      * @param distributorId the distributor ID
      * @return a reactive {@code Flux} emitting all active simulations for the distributor
      */
-    Flux<DistributorSimulationDTO> getActiveSimulationsByDistributorId(Long distributorId);
+    Flux<DistributorSimulationDTO> getActiveSimulationsByDistributorId(UUID distributorId);
 
     /**
      * Retrieves a simulation by application ID.
@@ -74,7 +75,7 @@ public interface DistributorSimulationService {
      * @param applicationId the application ID
      * @return a reactive {@code Mono} emitting the simulation if found
      */
-    Mono<DistributorSimulationDTO> getSimulationByApplicationId(Long applicationId);
+    Mono<DistributorSimulationDTO> getSimulationByApplicationId(UUID applicationId);
 
     /**
      * Retrieves simulations by status.
@@ -91,7 +92,7 @@ public interface DistributorSimulationService {
      * @param simulationStatus the simulation status
      * @return a reactive {@code Flux} emitting simulations for the distributor with the specified status
      */
-    Flux<DistributorSimulationDTO> getSimulationsByDistributorIdAndStatus(Long distributorId, String simulationStatus);
+    Flux<DistributorSimulationDTO> getSimulationsByDistributorIdAndStatus(UUID distributorId, String simulationStatus);
 
     /**
      * Updates the status of a distributor simulation.
@@ -101,7 +102,7 @@ public interface DistributorSimulationService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated distributor simulation
      */
-    Mono<DistributorSimulationDTO> updateSimulationStatus(Long id, String simulationStatus, Long updatedBy);
+    Mono<DistributorSimulationDTO> updateSimulationStatus(UUID id, String simulationStatus, UUID updatedBy);
 
     /**
      * Activates a distributor simulation.
@@ -110,7 +111,7 @@ public interface DistributorSimulationService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated distributor simulation
      */
-    Mono<DistributorSimulationDTO> activateDistributorSimulation(Long id, Long updatedBy);
+    Mono<DistributorSimulationDTO> activateDistributorSimulation(UUID id, UUID updatedBy);
 
     /**
      * Deactivates a distributor simulation.
@@ -119,5 +120,5 @@ public interface DistributorSimulationService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated distributor simulation
      */
-    Mono<DistributorSimulationDTO> deactivateDistributorSimulation(Long id, Long updatedBy);
+    Mono<DistributorSimulationDTO> deactivateDistributorSimulation(UUID id, UUID updatedBy);
 }

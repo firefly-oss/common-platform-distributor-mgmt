@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing lending types.
@@ -84,7 +85,7 @@ public class LendingTypeController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<LendingTypeDTO>> getLendingTypeById(
             @Parameter(description = "ID of the lending type to retrieve", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         return ResponseEntity.ok(lendingTypeService.getLendingTypeById(id));
     }
 
@@ -156,7 +157,7 @@ public class LendingTypeController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<LendingTypeDTO>> updateLendingType(
             @Parameter(description = "ID of the lending type to update", required = true)
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody LendingTypeDTO lendingTypeDTO) {
         return ResponseEntity.ok(lendingTypeService.updateLendingType(id, lendingTypeDTO));
     }
@@ -179,7 +180,7 @@ public class LendingTypeController {
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Void>> deleteLendingType(
             @Parameter(description = "ID of the lending type to delete", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         return lendingTypeService.deleteLendingType(id)
                 .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class DistributorServiceImpl implements DistributorService {
     }
 
     @Override
-    public Mono<DistributorDTO> updateDistributor(Long distributorId, DistributorDTO distributorDTO) {
+    public Mono<DistributorDTO> updateDistributor(UUID distributorId, DistributorDTO distributorDTO) {
         return repository.findById(distributorId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor not found with ID: " + distributorId)))
                 .flatMap(existingDistributor -> {
@@ -54,14 +55,14 @@ public class DistributorServiceImpl implements DistributorService {
     }
 
     @Override
-    public Mono<Void> deleteDistributor(Long distributorId) {
+    public Mono<Void> deleteDistributor(UUID distributorId) {
         return repository.findById(distributorId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor not found with ID: " + distributorId)))
                 .flatMap(distributor -> repository.deleteById(distributorId));
     }
 
     @Override
-    public Mono<DistributorDTO> getDistributorById(Long distributorId) {
+    public Mono<DistributorDTO> getDistributorById(UUID distributorId) {
         return repository.findById(distributorId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor not found with ID: " + distributorId)))
                 .map(mapper::toDTO);

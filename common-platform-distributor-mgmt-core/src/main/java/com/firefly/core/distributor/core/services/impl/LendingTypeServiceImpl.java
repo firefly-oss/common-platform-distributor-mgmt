@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the LendingTypeService interface.
@@ -35,7 +36,7 @@ public class LendingTypeServiceImpl implements LendingTypeService {
     }
 
     @Override
-    public Mono<LendingTypeDTO> getLendingTypeById(Long id) {
+    public Mono<LendingTypeDTO> getLendingTypeById(UUID id) {
         return lendingTypeRepository.findById(id)
                 .map(lendingTypeMapper::toDto);
     }
@@ -57,7 +58,7 @@ public class LendingTypeServiceImpl implements LendingTypeService {
     }
 
     @Override
-    public Mono<LendingTypeDTO> updateLendingType(Long id, LendingTypeDTO lendingTypeDTO) {
+    public Mono<LendingTypeDTO> updateLendingType(UUID id, LendingTypeDTO lendingTypeDTO) {
         return lendingTypeRepository.findById(id)
                 .flatMap(existingType -> {
                     LendingType updatedType = lendingTypeMapper.toEntity(lendingTypeDTO);
@@ -72,7 +73,7 @@ public class LendingTypeServiceImpl implements LendingTypeService {
     }
 
     @Override
-    public Mono<Void> deleteLendingType(Long id) {
+    public Mono<Void> deleteLendingType(UUID id) {
         return lendingTypeRepository.deleteById(id);
     }
 }

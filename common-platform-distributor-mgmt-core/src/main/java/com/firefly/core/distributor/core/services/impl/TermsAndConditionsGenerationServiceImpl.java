@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.UUID;
 
 /**
  * Implementation of the TermsAndConditionsGenerationService interface.
@@ -39,13 +40,13 @@ public class TermsAndConditionsGenerationServiceImpl implements TermsAndConditio
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(Long templateId, Long distributorId, Map<String, Object> variables) {
+    public Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(UUID templateId, UUID distributorId, Map<String, Object> variables) {
         return templateService.getTemplateById(templateId)
                 .flatMap(template -> generateFromTemplate(template, distributorId, variables));
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(TermsAndConditionsTemplateDTO template, Long distributorId, Map<String, Object> variables) {
+    public Mono<DistributorTermsAndConditionsDTO> generateFromTemplate(TermsAndConditionsTemplateDTO template, UUID distributorId, Map<String, Object> variables) {
         return validateVariables(template, variables)
                 .flatMap(isValid -> {
                     if (!isValid) {
@@ -133,20 +134,20 @@ public class TermsAndConditionsGenerationServiceImpl implements TermsAndConditio
     }
 
     @Override
-    public Mono<Map<String, Object>> getDefaultVariablesForDistributor(Long distributorId) {
+    public Mono<Map<String, Object>> getDefaultVariablesForDistributor(UUID distributorId) {
         return distributorService.getDistributorById(distributorId)
                 .map(this::extractDefaultVariables)
                 .defaultIfEmpty(new HashMap<>());
     }
 
     @Override
-    public Mono<String> previewGeneration(Long templateId, Map<String, Object> variables) {
+    public Mono<String> previewGeneration(UUID templateId, Map<String, Object> variables) {
         return templateService.getTemplateById(templateId)
                 .map(template -> processTemplate(template.getTemplateContent(), variables));
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> autoRenewTermsAndConditions(Long termsAndConditionsId) {
+    public Mono<DistributorTermsAndConditionsDTO> autoRenewTermsAndConditions(UUID termsAndConditionsId) {
         return distributorTermsAndConditionsService.getDistributorTermsAndConditionsById(termsAndConditionsId)
                 .flatMap(existingTerms -> {
                     if (existingTerms.getTemplateId() == null) {
@@ -173,7 +174,7 @@ public class TermsAndConditionsGenerationServiceImpl implements TermsAndConditio
     }
 
     @Override
-    public Mono<Boolean> needsRenewal(Long termsAndConditionsId) {
+    public Mono<Boolean> needsRenewal(UUID termsAndConditionsId) {
         return distributorTermsAndConditionsService.getDistributorTermsAndConditionsById(termsAndConditionsId)
                 .map(terms -> {
                     if (terms.getExpirationDate() == null) {

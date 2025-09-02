@@ -4,12 +4,13 @@ import com.firefly.core.distributor.models.entities.ProductCategory;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository for managing ProductCategory entities.
  */
 @Repository
-public interface ProductCategoryRepository extends BaseRepository<ProductCategory, Long> {
+public interface ProductCategoryRepository extends BaseRepository<ProductCategory, UUID> {
 
     /**
      * Find a product category by its code.

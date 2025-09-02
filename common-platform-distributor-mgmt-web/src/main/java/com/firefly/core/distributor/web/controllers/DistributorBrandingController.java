@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/distributors/{distributorId}/brandings")
@@ -40,7 +41,7 @@ public class DistributorBrandingController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<PaginationResponse<DistributorBrandingDTO>>> filterDistributorBrandings(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorBrandingDTO> filterRequest) {
         return ResponseEntity.ok(distributorBrandingService.filterDistributorBranding(filterRequest));
     }
@@ -60,7 +61,7 @@ public class DistributorBrandingController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorBrandingDTO>> createDistributorBranding(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorBrandingDTO distributorBrandingDTO) {
         // Ensure the distributorId in the path is used
         distributorBrandingDTO.setDistributorId(distributorId);
@@ -81,9 +82,9 @@ public class DistributorBrandingController {
     @GetMapping(value = "/{brandingId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorBrandingDTO>> getDistributorBrandingById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor branding to retrieve", required = true)
-            @PathVariable Long brandingId) {
+            @PathVariable UUID brandingId) {
         return ResponseEntity.ok(distributorBrandingService.getDistributorBrandingById(brandingId)
                 .filter(branding -> branding.getDistributorId().equals(distributorId)));
     }
@@ -103,9 +104,9 @@ public class DistributorBrandingController {
     @PutMapping(value = "/{brandingId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorBrandingDTO>> updateDistributorBranding(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor branding to update", required = true)
-            @PathVariable Long brandingId,
+            @PathVariable UUID brandingId,
             @Valid @RequestBody DistributorBrandingDTO distributorBrandingDTO) {
         // Ensure the distributorId and brandingId in the path are used
         distributorBrandingDTO.setDistributorId(distributorId);
@@ -124,9 +125,9 @@ public class DistributorBrandingController {
     @DeleteMapping("/{brandingId}")
     public Mono<ResponseEntity<Void>> deleteDistributorBranding(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor branding to delete", required = true)
-            @PathVariable Long brandingId) {
+            @PathVariable UUID brandingId) {
         return distributorBrandingService.getDistributorBrandingById(brandingId)
                 .filter(branding -> branding.getDistributorId().equals(distributorId))
                 .flatMap(branding -> distributorBrandingService.deleteDistributorBranding(brandingId))

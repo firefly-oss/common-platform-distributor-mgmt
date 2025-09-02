@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/distributors/{distributorId}/audit-logs")
@@ -40,7 +41,7 @@ public class DistributorAuditLogController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<PaginationResponse<DistributorAuditLogDTO>>> filterDistributorAuditLogs(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorAuditLogDTO> filterRequest) {
         return ResponseEntity.ok(distributorAuditLogService.filterDistributorAuditLogs(filterRequest));
     }
@@ -60,7 +61,7 @@ public class DistributorAuditLogController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorAuditLogDTO>> createDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorAuditLogDTO distributorAuditLogDTO) {
         // Ensure the distributorId in the path is used
         distributorAuditLogDTO.setDistributorId(distributorId);
@@ -81,9 +82,9 @@ public class DistributorAuditLogController {
     @GetMapping(value = "/{auditLogId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorAuditLogDTO>> getDistributorAuditLogById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor audit log to retrieve", required = true)
-            @PathVariable Long auditLogId) {
+            @PathVariable UUID auditLogId) {
         return ResponseEntity.ok(distributorAuditLogService.getDistributorAuditLogById(auditLogId)
                 .filter(auditLog -> auditLog.getDistributorId().equals(distributorId)));
     }
@@ -103,9 +104,9 @@ public class DistributorAuditLogController {
     @PutMapping(value = "/{auditLogId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorAuditLogDTO>> updateDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor audit log to update", required = true)
-            @PathVariable Long auditLogId,
+            @PathVariable UUID auditLogId,
             @Valid @RequestBody DistributorAuditLogDTO distributorAuditLogDTO) {
         // Ensure the distributorId in the path is used
         distributorAuditLogDTO.setDistributorId(distributorId);
@@ -124,9 +125,9 @@ public class DistributorAuditLogController {
     @DeleteMapping("/{auditLogId}")
     public Mono<ResponseEntity<Void>> deleteDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor audit log to delete", required = true)
-            @PathVariable Long auditLogId) {
+            @PathVariable UUID auditLogId) {
         return distributorAuditLogService.getDistributorAuditLogById(auditLogId)
                 .filter(auditLog -> auditLog.getDistributorId().equals(distributorId))
                 .flatMap(auditLog -> distributorAuditLogService.deleteDistributorAuditLog(auditLogId))

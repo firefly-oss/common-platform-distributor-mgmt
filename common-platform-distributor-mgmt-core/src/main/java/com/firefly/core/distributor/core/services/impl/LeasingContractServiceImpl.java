@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the LeasingContractService interface.
@@ -49,7 +50,7 @@ public class LeasingContractServiceImpl implements LeasingContractService {
 
     @Override
     @Transactional
-    public Mono<LeasingContractDTO> updateLeasingContract(Long id, LeasingContractDTO leasingContractDTO) {
+    public Mono<LeasingContractDTO> updateLeasingContract(UUID id, LeasingContractDTO leasingContractDTO) {
         return leasingContractRepository.findById(id)
                 .flatMap(existingContract -> {
                     LeasingContract updatedContract = leasingContractMapper.toEntity(leasingContractDTO);
@@ -66,40 +67,40 @@ public class LeasingContractServiceImpl implements LeasingContractService {
 
     @Override
     @Transactional
-    public Mono<Void> deleteLeasingContract(Long id) {
+    public Mono<Void> deleteLeasingContract(UUID id) {
         return leasingContractRepository.deleteById(id);
     }
 
     @Override
-    public Mono<LeasingContractDTO> getLeasingContractById(Long id) {
+    public Mono<LeasingContractDTO> getLeasingContractById(UUID id) {
         return leasingContractRepository.findById(id)
                 .map(leasingContractMapper::toDto)
                 .flatMap(this::enrichLeasingContractDTO);
     }
 
     @Override
-    public Mono<LeasingContractDTO> getLeasingContractByContractId(Long contractId) {
+    public Mono<LeasingContractDTO> getLeasingContractByContractId(UUID contractId) {
         return leasingContractRepository.findByContractId(contractId)
                 .map(leasingContractMapper::toDto)
                 .flatMap(this::enrichLeasingContractDTO);
     }
 
     @Override
-    public Flux<LeasingContractDTO> getLeasingContractsByDistributorId(Long distributorId) {
+    public Flux<LeasingContractDTO> getLeasingContractsByDistributorId(UUID distributorId) {
         return leasingContractRepository.findByDistributorId(distributorId)
                 .map(leasingContractMapper::toDto)
                 .flatMap(this::enrichLeasingContractDTO);
     }
 
     @Override
-    public Flux<LeasingContractDTO> getLeasingContractsByProductId(Long productId) {
+    public Flux<LeasingContractDTO> getLeasingContractsByProductId(UUID productId) {
         return leasingContractRepository.findByProductId(productId)
                 .map(leasingContractMapper::toDto)
                 .flatMap(this::enrichLeasingContractDTO);
     }
 
     @Override
-    public Flux<LeasingContractDTO> getLeasingContractsByPartyId(Long partyId) {
+    public Flux<LeasingContractDTO> getLeasingContractsByPartyId(UUID partyId) {
         return leasingContractRepository.findByPartyId(partyId)
                 .map(leasingContractMapper::toDto)
                 .flatMap(this::enrichLeasingContractDTO);
@@ -114,7 +115,7 @@ public class LeasingContractServiceImpl implements LeasingContractService {
 
     @Override
     @Transactional
-    public Mono<LeasingContractDTO> approveLeasingContract(Long id, Long approvedBy) {
+    public Mono<LeasingContractDTO> approveLeasingContract(UUID id, UUID approvedBy) {
         return leasingContractRepository.findById(id)
                 .flatMap(contract -> {
                     contract.setStatus("APPROVED");

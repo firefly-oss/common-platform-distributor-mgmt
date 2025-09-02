@@ -12,6 +12,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing branding information for a distributor.
@@ -25,10 +26,10 @@ import java.time.LocalDateTime;
 public class DistributorBranding {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("distributor_id")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Column("logo_url")
     private String logoUrl;
@@ -59,12 +60,12 @@ public class DistributorBranding {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

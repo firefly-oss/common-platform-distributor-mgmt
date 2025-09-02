@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing distributor operations.
@@ -44,7 +45,7 @@ public class DistributorOperationController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<PaginationResponse<DistributorOperationDTO>>> filterDistributorOperations(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorOperationDTO> filterRequest) {
         return ResponseEntity.ok(distributorOperationService.filterDistributorOperations(filterRequest));
     }
@@ -64,7 +65,7 @@ public class DistributorOperationController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorOperationDTO>> createDistributorOperation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorOperationDTO distributorOperationDTO) {
         
         distributorOperationDTO.setDistributorId(distributorId);
@@ -86,9 +87,9 @@ public class DistributorOperationController {
     @GetMapping(value = "/{operationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorOperationDTO>> getDistributorOperationById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor operation", required = true)
-            @PathVariable Long operationId) {
+            @PathVariable UUID operationId) {
         return distributorOperationService.getDistributorOperationById(operationId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -109,9 +110,9 @@ public class DistributorOperationController {
     @PutMapping(value = "/{operationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorOperationDTO>> updateDistributorOperation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor operation to update", required = true)
-            @PathVariable Long operationId,
+            @PathVariable UUID operationId,
             @Valid @RequestBody DistributorOperationDTO distributorOperationDTO) {
         
         distributorOperationDTO.setDistributorId(distributorId);
@@ -132,9 +133,9 @@ public class DistributorOperationController {
     @DeleteMapping("/{operationId}")
     public Mono<ResponseEntity<Void>> deleteDistributorOperation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor operation to delete", required = true)
-            @PathVariable Long operationId) {
+            @PathVariable UUID operationId) {
         return distributorOperationService.deleteDistributorOperation(operationId)
                 .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
@@ -150,7 +151,7 @@ public class DistributorOperationController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorOperationDTO>> getOperationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorOperationService.getOperationsByDistributorId(distributorId));
     }
 
@@ -165,7 +166,7 @@ public class DistributorOperationController {
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorOperationDTO>> getActiveOperationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorOperationService.getActiveOperationsByDistributorId(distributorId));
     }
 
@@ -180,11 +181,11 @@ public class DistributorOperationController {
     @GetMapping(value = "/can-operate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<Boolean>> canDistributorOperateInLocation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the country", required = true)
-            @RequestParam Long countryId,
+            @RequestParam UUID countryId,
             @Parameter(description = "ID of the administrative division", required = true)
-            @RequestParam Long administrativeDivisionId) {
+            @RequestParam UUID administrativeDivisionId) {
         return ResponseEntity.ok(distributorOperationService.canDistributorOperateInLocation(
                 distributorId, countryId, administrativeDivisionId));
     }
@@ -202,11 +203,11 @@ public class DistributorOperationController {
     @PatchMapping(value = "/{operationId}/activate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorOperationDTO>> activateDistributorOperation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor operation to activate", required = true)
-            @PathVariable Long operationId,
+            @PathVariable UUID operationId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorOperationService.activateDistributorOperation(operationId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -225,11 +226,11 @@ public class DistributorOperationController {
     @PatchMapping(value = "/{operationId}/deactivate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorOperationDTO>> deactivateDistributorOperation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor operation to deactivate", required = true)
-            @PathVariable Long operationId,
+            @PathVariable UUID operationId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorOperationService.deactivateDistributorOperation(operationId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());

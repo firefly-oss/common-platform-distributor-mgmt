@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for LendingConfiguration entity.
@@ -27,11 +28,11 @@ import java.time.LocalDateTime;
 public class LendingConfigurationDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Product ID is required")
-    private Long productId;
+    private UUID productId;
 
     @NotBlank(message = "Lending configuration name is required")
     @Size(max = 255, message = "Name cannot exceed 255 characters")
@@ -76,8 +77,8 @@ public class LendingConfigurationDTO {
     private String termsConditions;
     @ValidDateTime
     private LocalDateTime createdAt;
-    private Long createdBy;
+    private UUID createdBy;
     @ValidDateTime
     private LocalDateTime updatedAt;
-    private Long updatedBy;
+    private UUID updatedBy;
 }

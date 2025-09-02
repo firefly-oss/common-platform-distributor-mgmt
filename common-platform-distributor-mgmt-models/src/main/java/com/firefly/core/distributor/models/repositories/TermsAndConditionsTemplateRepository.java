@@ -4,13 +4,14 @@ import com.firefly.core.distributor.models.entities.TermsAndConditionsTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository interface for managing {@link TermsAndConditionsTemplate} entities.
  * Extends {@link BaseRepository} to inherit common CRUD operations.
  */
 @Repository
-public interface TermsAndConditionsTemplateRepository extends BaseRepository<TermsAndConditionsTemplate, Long> {
+public interface TermsAndConditionsTemplateRepository extends BaseRepository<TermsAndConditionsTemplate, UUID> {
     
     /**
      * Find all active templates.
@@ -118,5 +119,5 @@ public interface TermsAndConditionsTemplateRepository extends BaseRepository<Ter
      * @param id the template ID to exclude
      * @return a Mono containing true if the name exists for a different template
      */
-    Mono<Boolean> existsByNameAndIdNot(String name, Long id);
+    Mono<Boolean> existsByNameAndIdNot(String name, UUID id);
 }

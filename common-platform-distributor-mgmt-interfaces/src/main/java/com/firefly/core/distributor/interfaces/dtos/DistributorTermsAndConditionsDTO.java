@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Data Transfer Object for DistributorTermsAndConditions entity.
@@ -24,13 +25,13 @@ import java.time.LocalDateTime;
 public class DistributorTermsAndConditionsDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Distributor ID is required")
-    private Long distributorId;
+    private UUID distributorId;
 
-    private Long templateId;
+    private UUID templateId;
 
     @NotBlank(message = "Title is required")
     @Size(max = 255, message = "Title cannot exceed 255 characters")
@@ -53,7 +54,7 @@ public class DistributorTermsAndConditionsDTO {
     @ValidDateTime
     private LocalDateTime signedDate;
 
-    private Long signedBy;
+    private UUID signedBy;
 
     @Pattern(regexp = "DRAFT|PENDING_SIGNATURE|SIGNED|EXPIRED|TERMINATED", 
              message = "Status must be one of: DRAFT, PENDING_SIGNATURE, SIGNED, EXPIRED, TERMINATED")
@@ -69,14 +70,14 @@ public class DistributorTermsAndConditionsDTO {
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long createdBy;
+    private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long updatedBy;
+    private UUID updatedBy;
 
     // Related entities
     private DistributorDTO distributor;

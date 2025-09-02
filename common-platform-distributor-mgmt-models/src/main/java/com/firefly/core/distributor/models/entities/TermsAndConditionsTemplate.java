@@ -12,6 +12,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing a template for dynamically creating terms and conditions.
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 public class TermsAndConditionsTemplate {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("name")
     private String name;
@@ -65,12 +66,12 @@ public class TermsAndConditionsTemplate {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

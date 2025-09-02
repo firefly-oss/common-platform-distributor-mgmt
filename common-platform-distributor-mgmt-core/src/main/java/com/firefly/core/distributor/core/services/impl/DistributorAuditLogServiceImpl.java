@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class DistributorAuditLogServiceImpl implements DistributorAuditLogServic
     }
 
     @Override
-    public Mono<DistributorAuditLogDTO> updateDistributorAuditLog(Long distributorAuditLogId, DistributorAuditLogDTO distributorAuditLogDTO) {
+    public Mono<DistributorAuditLogDTO> updateDistributorAuditLog(UUID distributorAuditLogId, DistributorAuditLogDTO distributorAuditLogDTO) {
         return repository.findById(distributorAuditLogId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor audit log not found with ID: " + distributorAuditLogId)))
                 .flatMap(existingDistributorAuditLog -> {
@@ -54,14 +55,14 @@ public class DistributorAuditLogServiceImpl implements DistributorAuditLogServic
     }
 
     @Override
-    public Mono<Void> deleteDistributorAuditLog(Long distributorAuditLogId) {
+    public Mono<Void> deleteDistributorAuditLog(UUID distributorAuditLogId) {
         return repository.findById(distributorAuditLogId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor audit log not found with ID: " + distributorAuditLogId)))
                 .flatMap(distributorAuditLog -> repository.deleteById(distributorAuditLogId));
     }
 
     @Override
-    public Mono<DistributorAuditLogDTO> getDistributorAuditLogById(Long distributorAuditLogId) {
+    public Mono<DistributorAuditLogDTO> getDistributorAuditLogById(UUID distributorAuditLogId) {
         return repository.findById(distributorAuditLogId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor audit log not found with ID: " + distributorAuditLogId)))
                 .map(mapper::toDTO);

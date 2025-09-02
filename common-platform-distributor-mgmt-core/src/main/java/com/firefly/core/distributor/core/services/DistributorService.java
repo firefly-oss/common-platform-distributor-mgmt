@@ -4,6 +4,7 @@ import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.DistributorDTO;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing distributors.
@@ -32,7 +33,7 @@ public interface DistributorService {
      * @param distributorDTO the data transfer object containing the updated details of the distributor
      * @return a reactive Mono containing the updated DistributorDTO
      */
-    Mono<DistributorDTO> updateDistributor(Long distributorId, DistributorDTO distributorDTO);
+    Mono<DistributorDTO> updateDistributor(UUID distributorId, DistributorDTO distributorDTO);
     
     /**
      * Deletes a distributor identified by its unique ID.
@@ -40,7 +41,7 @@ public interface DistributorService {
      * @param distributorId the unique identifier of the distributor to be deleted
      * @return a Mono that completes when the distributor is successfully deleted or errors if the deletion fails
      */
-    Mono<Void> deleteDistributor(Long distributorId);
+    Mono<Void> deleteDistributor(UUID distributorId);
     
     /**
      * Retrieves a distributor by its unique identifier.
@@ -49,5 +50,5 @@ public interface DistributorService {
      * @return a Mono emitting the {@link DistributorDTO} representing the distributor if found,
      *         or an empty Mono if the distributor does not exist
      */
-    Mono<DistributorDTO> getDistributorById(Long distributorId);
+    Mono<DistributorDTO> getDistributorById(UUID distributorId);
 }

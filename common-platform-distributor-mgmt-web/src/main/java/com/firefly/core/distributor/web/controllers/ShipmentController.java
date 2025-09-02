@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing shipments.
@@ -101,7 +102,7 @@ public class ShipmentController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ShipmentDTO>> updateShipment(
             @Parameter(description = "ID of the shipment to update", required = true)
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody ShipmentDTO shipmentDTO) {
         
         return shipmentService.updateShipment(id, shipmentDTO)
@@ -127,7 +128,7 @@ public class ShipmentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteShipment(
             @Parameter(description = "ID of the shipment to delete", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         
         return shipmentService.deleteShipment(id)
                 .then(Mono.just(ResponseEntity.noContent().build()));
@@ -152,7 +153,7 @@ public class ShipmentController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ShipmentDTO>> getShipmentById(
             @Parameter(description = "ID of the shipment to retrieve", required = true)
-            @PathVariable Long id) {
+            @PathVariable UUID id) {
         
         return shipmentService.getShipmentById(id)
                 .map(ResponseEntity::ok)
@@ -204,7 +205,7 @@ public class ShipmentController {
     @GetMapping(value = "/leasing-contract/{leasingContractId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ShipmentDTO>>> getShipmentsByLeasingContractId(
             @Parameter(description = "ID of the leasing contract", required = true)
-            @PathVariable Long leasingContractId) {
+            @PathVariable UUID leasingContractId) {
         
         Flux<ShipmentDTO> shipments = shipmentService.getShipmentsByLeasingContractId(leasingContractId);
         return Mono.just(ResponseEntity.ok(shipments));
@@ -229,7 +230,7 @@ public class ShipmentController {
     @GetMapping(value = "/product/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ShipmentDTO>>> getShipmentsByProductId(
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         Flux<ShipmentDTO> shipments = shipmentService.getShipmentsByProductId(productId);
         return Mono.just(ResponseEntity.ok(shipments));
@@ -283,11 +284,11 @@ public class ShipmentController {
     @PutMapping(value = "/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ShipmentDTO>> updateShipmentStatus(
             @Parameter(description = "ID of the shipment to update", required = true)
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Parameter(description = "New status value", required = true)
             @RequestParam String status,
             @Parameter(description = "ID of the user updating the status", required = true)
-            @RequestParam Long updatedBy) {
+            @RequestParam UUID updatedBy) {
         
         return shipmentService.updateShipmentStatus(id, status, updatedBy)
                 .map(ResponseEntity::ok)

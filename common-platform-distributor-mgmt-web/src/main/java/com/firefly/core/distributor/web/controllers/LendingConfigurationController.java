@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing lending configurations.
@@ -62,9 +63,9 @@ public class LendingConfigurationController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<PaginationResponse<LendingConfigurationDTO>>> filterLendingConfigurations(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Valid @RequestBody FilterRequest<LendingConfigurationDTO> filterRequest) {
         
         // Ensure we're only filtering lending configurations for the specified product
@@ -98,9 +99,9 @@ public class LendingConfigurationController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> createLendingConfiguration(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Valid @RequestBody LendingConfigurationDTO lendingConfigurationDTO) {
         
         lendingConfigurationDTO.setProductId(productId);
@@ -133,11 +134,11 @@ public class LendingConfigurationController {
     @PutMapping(value = "/{configId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> updateLendingConfiguration(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Parameter(description = "ID of the lending configuration to update", required = true)
-            @PathVariable Long configId,
+            @PathVariable UUID configId,
             @Valid @RequestBody LendingConfigurationDTO lendingConfigurationDTO) {
         
         lendingConfigurationDTO.setProductId(productId);
@@ -167,11 +168,11 @@ public class LendingConfigurationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteLendingConfiguration(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Parameter(description = "ID of the lending configuration to delete", required = true)
-            @PathVariable Long configId) {
+            @PathVariable UUID configId) {
         
         return lendingConfigurationService.deleteLendingConfiguration(configId)
                 .then(Mono.just(ResponseEntity.noContent().build()));
@@ -198,11 +199,11 @@ public class LendingConfigurationController {
     @GetMapping(value = "/{configId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> getLendingConfigurationById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Parameter(description = "ID of the lending configuration to retrieve", required = true)
-            @PathVariable Long configId) {
+            @PathVariable UUID configId) {
         
         return lendingConfigurationService.getLendingConfigurationById(configId)
                 .map(ResponseEntity::ok);
@@ -228,9 +229,9 @@ public class LendingConfigurationController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getLendingConfigurationsByProductId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         return Mono.just(ResponseEntity.ok(lendingConfigurationService.getLendingConfigurationsByProductId(productId)));
     }
@@ -255,9 +256,9 @@ public class LendingConfigurationController {
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getActiveLendingConfigurationsByProductId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         return Mono.just(ResponseEntity.ok(lendingConfigurationService.getActiveLendingConfigurationsByProductId(productId)));
     }
@@ -283,11 +284,11 @@ public class LendingConfigurationController {
     @GetMapping(value = "/type/{lendingTypeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<LendingConfigurationDTO>>> getLendingConfigurationsByProductIdAndLendingType(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Parameter(description = "ID of the lending type", required = true)
-            @PathVariable Long lendingTypeId) {
+            @PathVariable UUID lendingTypeId) {
         
         return lendingTypeService.getLendingTypeById(lendingTypeId)
                 .map(lendingType -> ResponseEntity.ok(lendingConfigurationService.getLendingConfigurationsByProductIdAndLendingType(productId, lendingType)))
@@ -314,9 +315,9 @@ public class LendingConfigurationController {
     @GetMapping(value = "/default", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LendingConfigurationDTO>> getDefaultLendingConfigurationByProductId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         return lendingConfigurationService.getDefaultLendingConfigurationByProductId(productId)
                 .map(ResponseEntity::ok);
@@ -346,11 +347,11 @@ public class LendingConfigurationController {
     @PostMapping(value = "/{configId}/create-contract", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<LeasingContractDTO>> createLeasingContractFromConfiguration(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Parameter(description = "ID of the lending configuration", required = true)
-            @PathVariable Long configId,
+            @PathVariable UUID configId,
             @Valid @RequestBody LeasingContractDTO leasingContractDTO) {
         
         // Set the required fields from the path variables

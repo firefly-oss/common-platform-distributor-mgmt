@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/distributors")
@@ -73,7 +74,7 @@ public class DistributorController {
     @GetMapping(value = "/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorDTO>> getDistributorById(
             @Parameter(description = "ID of the distributor to retrieve", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorService.getDistributorById(distributorId));
     }
 
@@ -92,7 +93,7 @@ public class DistributorController {
     @PutMapping(value = "/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<DistributorDTO>> updateDistributor(
             @Parameter(description = "ID of the distributor to update", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorDTO distributorDTO) {
         return ResponseEntity.ok(distributorService.updateDistributor(distributorId, distributorDTO));
     }
@@ -109,7 +110,7 @@ public class DistributorController {
     @DeleteMapping("/{distributorId}")
     public Mono<ResponseEntity<Void>> deleteDistributor(
             @Parameter(description = "ID of the distributor to delete", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return distributorService.deleteDistributor(distributorId)
                 .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }

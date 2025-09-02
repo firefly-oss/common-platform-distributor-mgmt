@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing a simulation tracked by a distributor and its associated application.
@@ -24,13 +25,13 @@ import java.time.LocalDateTime;
 public class DistributorSimulation {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("distributor_id")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Column("application_id")
-    private Long applicationId;
+    private UUID applicationId;
 
     @Column("simulation_status")
     private String simulationStatus;
@@ -46,12 +47,12 @@ public class DistributorSimulation {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

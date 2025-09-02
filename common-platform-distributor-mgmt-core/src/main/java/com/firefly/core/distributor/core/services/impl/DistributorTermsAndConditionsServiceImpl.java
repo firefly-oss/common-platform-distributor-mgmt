@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the DistributorTermsAndConditionsService interface.
@@ -57,7 +58,7 @@ public class DistributorTermsAndConditionsServiceImpl implements DistributorTerm
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> updateDistributorTermsAndConditions(Long id, DistributorTermsAndConditionsDTO distributorTermsAndConditionsDTO) {
+    public Mono<DistributorTermsAndConditionsDTO> updateDistributorTermsAndConditions(UUID id, DistributorTermsAndConditionsDTO distributorTermsAndConditionsDTO) {
         return repository.findById(id)
                 .flatMap(existingTermsAndConditions -> {
                     DistributorTermsAndConditions updatedTermsAndConditions = mapper.toEntity(distributorTermsAndConditionsDTO);
@@ -71,24 +72,24 @@ public class DistributorTermsAndConditionsServiceImpl implements DistributorTerm
     }
 
     @Override
-    public Mono<Void> deleteDistributorTermsAndConditions(Long id) {
+    public Mono<Void> deleteDistributorTermsAndConditions(UUID id) {
         return repository.deleteById(id);
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> getDistributorTermsAndConditionsById(Long id) {
+    public Mono<DistributorTermsAndConditionsDTO> getDistributorTermsAndConditionsById(UUID id) {
         return repository.findById(id)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorTermsAndConditionsDTO> getTermsAndConditionsByDistributorId(Long distributorId) {
+    public Flux<DistributorTermsAndConditionsDTO> getTermsAndConditionsByDistributorId(UUID distributorId) {
         return repository.findByDistributorId(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorTermsAndConditionsDTO> getActiveTermsAndConditionsByDistributorId(Long distributorId) {
+    public Flux<DistributorTermsAndConditionsDTO> getActiveTermsAndConditionsByDistributorId(UUID distributorId) {
         return repository.findByDistributorIdAndIsActiveTrue(distributorId)
                 .map(mapper::toDTO);
     }
@@ -100,19 +101,19 @@ public class DistributorTermsAndConditionsServiceImpl implements DistributorTerm
     }
 
     @Override
-    public Flux<DistributorTermsAndConditionsDTO> getTermsAndConditionsByDistributorIdAndStatus(Long distributorId, String status) {
+    public Flux<DistributorTermsAndConditionsDTO> getTermsAndConditionsByDistributorIdAndStatus(UUID distributorId, String status) {
         return repository.findByDistributorIdAndStatus(distributorId, status)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorTermsAndConditionsDTO> getTermsAndConditionsByTemplateId(Long templateId) {
+    public Flux<DistributorTermsAndConditionsDTO> getTermsAndConditionsByTemplateId(UUID templateId) {
         return repository.findByTemplateId(templateId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> updateStatus(Long id, String status, Long updatedBy) {
+    public Mono<DistributorTermsAndConditionsDTO> updateStatus(UUID id, String status, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(termsAndConditions -> {
                     termsAndConditions.setStatus(status);
@@ -124,7 +125,7 @@ public class DistributorTermsAndConditionsServiceImpl implements DistributorTerm
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> signTermsAndConditions(Long id, Long signedBy) {
+    public Mono<DistributorTermsAndConditionsDTO> signTermsAndConditions(UUID id, UUID signedBy) {
         return repository.findById(id)
                 .flatMap(termsAndConditions -> {
                     termsAndConditions.setStatus("SIGNED");
@@ -144,18 +145,18 @@ public class DistributorTermsAndConditionsServiceImpl implements DistributorTerm
     }
 
     @Override
-    public Mono<Boolean> hasActiveSignedTerms(Long distributorId) {
+    public Mono<Boolean> hasActiveSignedTerms(UUID distributorId) {
         return repository.existsByDistributorIdAndStatusAndIsActiveTrue(distributorId, "SIGNED");
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> getLatestTermsAndConditions(Long distributorId) {
+    public Mono<DistributorTermsAndConditionsDTO> getLatestTermsAndConditions(UUID distributorId) {
         return repository.findTopByDistributorIdAndIsActiveTrueOrderByCreatedAtDesc(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> activateTermsAndConditions(Long id, Long updatedBy) {
+    public Mono<DistributorTermsAndConditionsDTO> activateTermsAndConditions(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(termsAndConditions -> {
                     termsAndConditions.setIsActive(true);
@@ -167,7 +168,7 @@ public class DistributorTermsAndConditionsServiceImpl implements DistributorTerm
     }
 
     @Override
-    public Mono<DistributorTermsAndConditionsDTO> deactivateTermsAndConditions(Long id, Long updatedBy) {
+    public Mono<DistributorTermsAndConditionsDTO> deactivateTermsAndConditions(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(termsAndConditions -> {
                     termsAndConditions.setIsActive(false);

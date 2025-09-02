@@ -4,13 +4,14 @@ import com.firefly.core.distributor.models.entities.DistributorOperation;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository interface for managing {@link DistributorOperation} entities.
  * Extends {@link BaseRepository} to inherit common CRUD operations.
  */
 @Repository
-public interface DistributorOperationRepository extends BaseRepository<DistributorOperation, Long> {
+public interface DistributorOperationRepository extends BaseRepository<DistributorOperation, UUID> {
     
     /**
      * Find all operations for a specific distributor.
@@ -18,7 +19,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      * @param distributorId the distributor ID to search for
      * @return a Flux of distributor operations
      */
-    Flux<DistributorOperation> findByDistributorId(Long distributorId);
+    Flux<DistributorOperation> findByDistributorId(UUID distributorId);
     
     /**
      * Find all active operations for a specific distributor.
@@ -26,7 +27,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      * @param distributorId the distributor ID to search for
      * @return a Flux of active distributor operations
      */
-    Flux<DistributorOperation> findByDistributorIdAndIsActiveTrue(Long distributorId);
+    Flux<DistributorOperation> findByDistributorIdAndIsActiveTrue(UUID distributorId);
     
     /**
      * Find operations by country ID.
@@ -34,7 +35,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      * @param countryId the country ID to search for
      * @return a Flux of distributor operations
      */
-    Flux<DistributorOperation> findByCountryId(Long countryId);
+    Flux<DistributorOperation> findByCountryId(UUID countryId);
     
     /**
      * Find operations by administrative division ID.
@@ -42,7 +43,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      * @param administrativeDivisionId the administrative division ID to search for
      * @return a Flux of distributor operations
      */
-    Flux<DistributorOperation> findByAdministrativeDivisionId(Long administrativeDivisionId);
+    Flux<DistributorOperation> findByAdministrativeDivisionId(UUID administrativeDivisionId);
     
     /**
      * Find a specific operation by distributor, country, and administrative division.
@@ -53,7 +54,7 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      * @return a Mono containing the distributor operation if found
      */
     Mono<DistributorOperation> findByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(
-            Long distributorId, Long countryId, Long administrativeDivisionId);
+            UUID distributorId, UUID countryId, UUID administrativeDivisionId);
     
     /**
      * Check if a distributor can operate in a specific country and administrative division.
@@ -64,5 +65,5 @@ public interface DistributorOperationRepository extends BaseRepository<Distribut
      * @return a Mono containing true if the operation exists and is active
      */
     Mono<Boolean> existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(
-            Long distributorId, Long countryId, Long administrativeDivisionId);
+            UUID distributorId, UUID countryId, UUID administrativeDivisionId);
 }

@@ -22,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * REST controller for managing terms and conditions templates.
@@ -90,7 +91,7 @@ public class TermsAndConditionsTemplateController {
     @GetMapping(value = "/{templateId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<TermsAndConditionsTemplateDTO>> getTemplateById(
             @Parameter(description = "ID of the template", required = true)
-            @PathVariable Long templateId) {
+            @PathVariable UUID templateId) {
         return templateService.getTemplateById(templateId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -113,7 +114,7 @@ public class TermsAndConditionsTemplateController {
     @PutMapping(value = "/{templateId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<TermsAndConditionsTemplateDTO>> updateTemplate(
             @Parameter(description = "ID of the template to update", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @Valid @RequestBody TermsAndConditionsTemplateDTO templateDTO) {
         
         return templateService.templateNameExistsForDifferentTemplate(templateDTO.getName(), templateId)
@@ -138,7 +139,7 @@ public class TermsAndConditionsTemplateController {
     @DeleteMapping("/{templateId}")
     public Mono<ResponseEntity<Void>> deleteTemplate(
             @Parameter(description = "ID of the template to delete", required = true)
-            @PathVariable Long templateId) {
+            @PathVariable UUID templateId) {
         return templateService.deleteTemplate(templateId)
                 .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
@@ -251,7 +252,7 @@ public class TermsAndConditionsTemplateController {
     @PostMapping(value = "/{templateId}/preview", produces = MediaType.TEXT_PLAIN_VALUE)
     public Mono<ResponseEntity<String>> previewGeneration(
             @Parameter(description = "ID of the template", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @RequestBody Map<String, Object> variables) {
         
         return generationService.previewGeneration(templateId, variables)
@@ -272,9 +273,9 @@ public class TermsAndConditionsTemplateController {
     @PatchMapping(value = "/{templateId}/activate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<TermsAndConditionsTemplateDTO>> activateTemplate(
             @Parameter(description = "ID of the template to activate", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return templateService.activateTemplate(templateId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -293,9 +294,9 @@ public class TermsAndConditionsTemplateController {
     @PatchMapping(value = "/{templateId}/deactivate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<TermsAndConditionsTemplateDTO>> deactivateTemplate(
             @Parameter(description = "ID of the template to deactivate", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return templateService.deactivateTemplate(templateId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -314,9 +315,9 @@ public class TermsAndConditionsTemplateController {
     @PatchMapping(value = "/{templateId}/set-default", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<TermsAndConditionsTemplateDTO>> setAsDefault(
             @Parameter(description = "ID of the template to set as default", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return templateService.setAsDefault(templateId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -335,9 +336,9 @@ public class TermsAndConditionsTemplateController {
     @PatchMapping(value = "/{templateId}/remove-default", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<TermsAndConditionsTemplateDTO>> removeDefault(
             @Parameter(description = "ID of the template to remove default status from", required = true)
-            @PathVariable Long templateId,
+            @PathVariable UUID templateId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return templateService.removeDefault(templateId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());

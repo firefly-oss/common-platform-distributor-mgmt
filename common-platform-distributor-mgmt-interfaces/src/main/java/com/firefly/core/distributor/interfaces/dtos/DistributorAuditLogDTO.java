@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * DTO representing an audit log entry for distributor-related actions.
@@ -26,11 +27,11 @@ import java.time.LocalDateTime;
 public class DistributorAuditLogDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private UUID id;
 
     @FilterableId
     @NotNull(message = "Distributor ID is required")
-    private Long distributorId;
+    private UUID distributorId;
 
     @NotNull(message = "Action is required")
     private DistributorActionEnum action;
@@ -50,7 +51,7 @@ public class DistributorAuditLogDTO {
              message = "IP address must be a valid IPv4 or IPv6 address")
     private String ipAddress;
 
-    private Long userId;
+    private UUID userId;
 
     @ValidDateTime
     @NotNull(message = "Timestamp is required")

@@ -5,12 +5,13 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository for managing Shipment entities.
  */
 @Repository
-public interface ShipmentRepository extends BaseRepository<Shipment, Long> {
+public interface ShipmentRepository extends BaseRepository<Shipment, UUID> {
 
     /**
      * Find all shipments by leasing contract ID.
@@ -18,7 +19,7 @@ public interface ShipmentRepository extends BaseRepository<Shipment, Long> {
      * @param leasingContractId the leasing contract ID
      * @return a Flux of shipments
      */
-    Flux<Shipment> findByLeasingContractId(Long leasingContractId);
+    Flux<Shipment> findByLeasingContractId(UUID leasingContractId);
 
     /**
      * Find all shipments by product ID.
@@ -26,7 +27,7 @@ public interface ShipmentRepository extends BaseRepository<Shipment, Long> {
      * @param productId the product ID
      * @return a Flux of shipments
      */
-    Flux<Shipment> findByProductId(Long productId);
+    Flux<Shipment> findByProductId(UUID productId);
 
     /**
      * Find a shipment by tracking number.
@@ -51,7 +52,7 @@ public interface ShipmentRepository extends BaseRepository<Shipment, Long> {
      * @param status the status
      * @return a Flux of shipments
      */
-    Flux<Shipment> findByLeasingContractIdAndStatus(Long leasingContractId, String status);
+    Flux<Shipment> findByLeasingContractIdAndStatus(UUID leasingContractId, String status);
 
     /**
      * Find all shipments by product ID and status.
@@ -60,7 +61,7 @@ public interface ShipmentRepository extends BaseRepository<Shipment, Long> {
      * @param status the status
      * @return a Flux of shipments
      */
-    Flux<Shipment> findByProductIdAndStatus(Long productId, String status);
+    Flux<Shipment> findByProductIdAndStatus(UUID productId, String status);
 
     /**
      * Find all shipments by carrier.

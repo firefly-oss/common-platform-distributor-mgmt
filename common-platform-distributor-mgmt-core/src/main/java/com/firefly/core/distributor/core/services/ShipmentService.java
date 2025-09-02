@@ -6,6 +6,7 @@ import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
 import com.firefly.core.distributor.interfaces.dtos.ShipmentDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service for managing shipments.
@@ -35,7 +36,7 @@ public interface ShipmentService {
      * @param shipmentDTO the shipment data to update
      * @return the updated shipment
      */
-    Mono<ShipmentDTO> updateShipment(Long id, ShipmentDTO shipmentDTO);
+    Mono<ShipmentDTO> updateShipment(UUID id, ShipmentDTO shipmentDTO);
 
     /**
      * Delete a shipment.
@@ -43,7 +44,7 @@ public interface ShipmentService {
      * @param id the ID of the shipment to delete
      * @return a Mono completing when the operation is done
      */
-    Mono<Void> deleteShipment(Long id);
+    Mono<Void> deleteShipment(UUID id);
 
     /**
      * Get a shipment by ID.
@@ -51,7 +52,7 @@ public interface ShipmentService {
      * @param id the ID of the shipment to retrieve
      * @return the shipment
      */
-    Mono<ShipmentDTO> getShipmentById(Long id);
+    Mono<ShipmentDTO> getShipmentById(UUID id);
 
     /**
      * Get a shipment by tracking number.
@@ -67,7 +68,7 @@ public interface ShipmentService {
      * @param leasingContractId the ID of the leasing contract
      * @return a Flux of shipments
      */
-    Flux<ShipmentDTO> getShipmentsByLeasingContractId(Long leasingContractId);
+    Flux<ShipmentDTO> getShipmentsByLeasingContractId(UUID leasingContractId);
 
     /**
      * Get all shipments for a product.
@@ -75,7 +76,7 @@ public interface ShipmentService {
      * @param productId the ID of the product
      * @return a Flux of shipments
      */
-    Flux<ShipmentDTO> getShipmentsByProductId(Long productId);
+    Flux<ShipmentDTO> getShipmentsByProductId(UUID productId);
 
     /**
      * Get all shipments with a specific status.
@@ -93,7 +94,7 @@ public interface ShipmentService {
      * @param updatedBy the ID of the user updating the status
      * @return the updated shipment
      */
-    Mono<ShipmentDTO> updateShipmentStatus(Long id, String status, Long updatedBy);
+    Mono<ShipmentDTO> updateShipmentStatus(UUID id, String status, UUID updatedBy);
 
     /**
      * Filter shipments based on criteria.

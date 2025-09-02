@@ -4,13 +4,14 @@ import com.firefly.core.distributor.models.entities.Distributor;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository interface for managing {@link Distributor} entities.
  * Extends {@link BaseRepository} to inherit common CRUD operations.
  */
 @Repository
-public interface DistributorRepository extends BaseRepository<Distributor, Long> {
+public interface DistributorRepository extends BaseRepository<Distributor, UUID> {
     
     /**
      * Find a distributor by its external code.

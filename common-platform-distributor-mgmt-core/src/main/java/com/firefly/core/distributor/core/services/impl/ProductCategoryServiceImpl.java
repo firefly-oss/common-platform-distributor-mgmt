@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the ProductCategoryService interface.
@@ -35,7 +36,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public Mono<ProductCategoryDTO> getProductCategoryById(Long id) {
+    public Mono<ProductCategoryDTO> getProductCategoryById(UUID id) {
         return productCategoryRepository.findById(id)
                 .map(productCategoryMapper::toDto);
     }
@@ -57,7 +58,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public Mono<ProductCategoryDTO> updateProductCategory(Long id, ProductCategoryDTO productCategoryDTO) {
+    public Mono<ProductCategoryDTO> updateProductCategory(UUID id, ProductCategoryDTO productCategoryDTO) {
         return productCategoryRepository.findById(id)
                 .flatMap(existingCategory -> {
                     ProductCategory updatedCategory = productCategoryMapper.toEntity(productCategoryDTO);
@@ -72,7 +73,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public Mono<Void> deleteProductCategory(Long id) {
+    public Mono<Void> deleteProductCategory(UUID id) {
         return productCategoryRepository.deleteById(id);
     }
 }

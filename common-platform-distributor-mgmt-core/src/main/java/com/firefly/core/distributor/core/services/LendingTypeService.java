@@ -3,6 +3,7 @@ package com.firefly.core.distributor.core.services;
 import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing lending types.
@@ -29,7 +30,7 @@ public interface LendingTypeService {
      * @param id The ID of the lending type
      * @return A Mono containing the lending type if found
      */
-    Mono<LendingTypeDTO> getLendingTypeById(Long id);
+    Mono<LendingTypeDTO> getLendingTypeById(UUID id);
 
     /**
      * Get a lending type by its code.
@@ -54,7 +55,7 @@ public interface LendingTypeService {
      * @param lendingTypeDTO The updated lending type data
      * @return A Mono containing the updated lending type
      */
-    Mono<LendingTypeDTO> updateLendingType(Long id, LendingTypeDTO lendingTypeDTO);
+    Mono<LendingTypeDTO> updateLendingType(UUID id, LendingTypeDTO lendingTypeDTO);
 
     /**
      * Delete a lending type by its ID.
@@ -62,5 +63,5 @@ public interface LendingTypeService {
      * @param id The ID of the lending type to delete
      * @return A Mono that completes when the lending type is deleted
      */
-    Mono<Void> deleteLendingType(Long id);
+    Mono<Void> deleteLendingType(UUID id);
 }

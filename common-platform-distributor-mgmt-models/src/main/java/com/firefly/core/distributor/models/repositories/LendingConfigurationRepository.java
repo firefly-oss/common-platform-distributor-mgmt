@@ -5,12 +5,13 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Repository for managing LendingConfiguration entities.
  */
 @Repository
-public interface LendingConfigurationRepository extends BaseRepository<LendingConfiguration, Long> {
+public interface LendingConfigurationRepository extends BaseRepository<LendingConfiguration, UUID> {
 
     /**
      * Find all lending configurations for a specific product.
@@ -18,7 +19,7 @@ public interface LendingConfigurationRepository extends BaseRepository<LendingCo
      * @param productId the ID of the product
      * @return a Flux of lending configurations
      */
-    Flux<LendingConfiguration> findByProductId(Long productId);
+    Flux<LendingConfiguration> findByProductId(UUID productId);
 
     /**
      * Find all active lending configurations for a specific product.
@@ -27,7 +28,7 @@ public interface LendingConfigurationRepository extends BaseRepository<LendingCo
      * @param isActive the active status
      * @return a Flux of lending configurations
      */
-    Flux<LendingConfiguration> findByProductIdAndIsActive(Long productId, Boolean isActive);
+    Flux<LendingConfiguration> findByProductIdAndIsActive(UUID productId, Boolean isActive);
 
     /**
      * Find all lending configurations for a specific product and lending type.
@@ -36,7 +37,7 @@ public interface LendingConfigurationRepository extends BaseRepository<LendingCo
      * @param lendingTypeId the ID of the lending type
      * @return a Flux of lending configurations
      */
-    Flux<LendingConfiguration> findByProductIdAndLendingTypeId(Long productId, Long lendingTypeId);
+    Flux<LendingConfiguration> findByProductIdAndLendingTypeId(UUID productId, UUID lendingTypeId);
 
     /**
      * Find the default lending configuration for a specific product.
@@ -45,7 +46,7 @@ public interface LendingConfigurationRepository extends BaseRepository<LendingCo
      * @param isDefault the default status
      * @return a Mono of the default lending configuration
      */
-    Mono<LendingConfiguration> findByProductIdAndIsDefault(Long productId, Boolean isDefault);
+    Mono<LendingConfiguration> findByProductIdAndIsDefault(UUID productId, Boolean isDefault);
 
     /**
      * Find all lending configurations for products belonging to a specific distributor.
@@ -54,5 +55,5 @@ public interface LendingConfigurationRepository extends BaseRepository<LendingCo
      * @return a Flux of lending configurations
      */
     @Query("SELECT lc.* FROM lending_configuration lc JOIN product p ON lc.product_id = p.id WHERE p.distributor_id = :distributorId")
-    Flux<LendingConfiguration> findByProductDistributorId(Long distributorId);
+    Flux<LendingConfiguration> findByProductDistributorId(UUID distributorId);
 }

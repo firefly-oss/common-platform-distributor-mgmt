@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the DistributorOperationService interface.
@@ -54,7 +55,7 @@ public class DistributorOperationServiceImpl implements DistributorOperationServ
     }
 
     @Override
-    public Mono<DistributorOperationDTO> updateDistributorOperation(Long id, DistributorOperationDTO distributorOperationDTO) {
+    public Mono<DistributorOperationDTO> updateDistributorOperation(UUID id, DistributorOperationDTO distributorOperationDTO) {
         return repository.findById(id)
                 .flatMap(existingOperation -> {
                     DistributorOperation updatedOperation = mapper.toEntity(distributorOperationDTO);
@@ -68,48 +69,48 @@ public class DistributorOperationServiceImpl implements DistributorOperationServ
     }
 
     @Override
-    public Mono<Void> deleteDistributorOperation(Long id) {
+    public Mono<Void> deleteDistributorOperation(UUID id) {
         return repository.deleteById(id);
     }
 
     @Override
-    public Mono<DistributorOperationDTO> getDistributorOperationById(Long id) {
+    public Mono<DistributorOperationDTO> getDistributorOperationById(UUID id) {
         return repository.findById(id)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorOperationDTO> getOperationsByDistributorId(Long distributorId) {
+    public Flux<DistributorOperationDTO> getOperationsByDistributorId(UUID distributorId) {
         return repository.findByDistributorId(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorOperationDTO> getActiveOperationsByDistributorId(Long distributorId) {
+    public Flux<DistributorOperationDTO> getActiveOperationsByDistributorId(UUID distributorId) {
         return repository.findByDistributorIdAndIsActiveTrue(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorOperationDTO> getOperationsByCountryId(Long countryId) {
+    public Flux<DistributorOperationDTO> getOperationsByCountryId(UUID countryId) {
         return repository.findByCountryId(countryId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorOperationDTO> getOperationsByAdministrativeDivisionId(Long administrativeDivisionId) {
+    public Flux<DistributorOperationDTO> getOperationsByAdministrativeDivisionId(UUID administrativeDivisionId) {
         return repository.findByAdministrativeDivisionId(administrativeDivisionId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<Boolean> canDistributorOperateInLocation(Long distributorId, Long countryId, Long administrativeDivisionId) {
+    public Mono<Boolean> canDistributorOperateInLocation(UUID distributorId, UUID countryId, UUID administrativeDivisionId) {
         return repository.existsByDistributorIdAndCountryIdAndAdministrativeDivisionIdAndIsActiveTrue(
                 distributorId, countryId, administrativeDivisionId);
     }
 
     @Override
-    public Mono<DistributorOperationDTO> activateDistributorOperation(Long id, Long updatedBy) {
+    public Mono<DistributorOperationDTO> activateDistributorOperation(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(operation -> {
                     operation.setIsActive(true);
@@ -121,7 +122,7 @@ public class DistributorOperationServiceImpl implements DistributorOperationServ
     }
 
     @Override
-    public Mono<DistributorOperationDTO> deactivateDistributorOperation(Long id, Long updatedBy) {
+    public Mono<DistributorOperationDTO> deactivateDistributorOperation(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(operation -> {
                     operation.setIsActive(false);

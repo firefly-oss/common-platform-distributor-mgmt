@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the DistributorSimulationService interface.
@@ -57,7 +58,7 @@ public class DistributorSimulationServiceImpl implements DistributorSimulationSe
     }
 
     @Override
-    public Mono<DistributorSimulationDTO> updateDistributorSimulation(Long id, DistributorSimulationDTO distributorSimulationDTO) {
+    public Mono<DistributorSimulationDTO> updateDistributorSimulation(UUID id, DistributorSimulationDTO distributorSimulationDTO) {
         return repository.findById(id)
                 .flatMap(existingSimulation -> {
                     DistributorSimulation updatedSimulation = mapper.toEntity(distributorSimulationDTO);
@@ -71,30 +72,30 @@ public class DistributorSimulationServiceImpl implements DistributorSimulationSe
     }
 
     @Override
-    public Mono<Void> deleteDistributorSimulation(Long id) {
+    public Mono<Void> deleteDistributorSimulation(UUID id) {
         return repository.deleteById(id);
     }
 
     @Override
-    public Mono<DistributorSimulationDTO> getDistributorSimulationById(Long id) {
+    public Mono<DistributorSimulationDTO> getDistributorSimulationById(UUID id) {
         return repository.findById(id)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorSimulationDTO> getSimulationsByDistributorId(Long distributorId) {
+    public Flux<DistributorSimulationDTO> getSimulationsByDistributorId(UUID distributorId) {
         return repository.findByDistributorId(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Flux<DistributorSimulationDTO> getActiveSimulationsByDistributorId(Long distributorId) {
+    public Flux<DistributorSimulationDTO> getActiveSimulationsByDistributorId(UUID distributorId) {
         return repository.findByDistributorIdAndIsActiveTrue(distributorId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<DistributorSimulationDTO> getSimulationByApplicationId(Long applicationId) {
+    public Mono<DistributorSimulationDTO> getSimulationByApplicationId(UUID applicationId) {
         return repository.findByApplicationId(applicationId)
                 .map(mapper::toDTO);
     }
@@ -106,13 +107,13 @@ public class DistributorSimulationServiceImpl implements DistributorSimulationSe
     }
 
     @Override
-    public Flux<DistributorSimulationDTO> getSimulationsByDistributorIdAndStatus(Long distributorId, String simulationStatus) {
+    public Flux<DistributorSimulationDTO> getSimulationsByDistributorIdAndStatus(UUID distributorId, String simulationStatus) {
         return repository.findByDistributorIdAndSimulationStatus(distributorId, simulationStatus)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<DistributorSimulationDTO> updateSimulationStatus(Long id, String simulationStatus, Long updatedBy) {
+    public Mono<DistributorSimulationDTO> updateSimulationStatus(UUID id, String simulationStatus, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(simulation -> {
                     simulation.setSimulationStatus(simulationStatus);
@@ -124,7 +125,7 @@ public class DistributorSimulationServiceImpl implements DistributorSimulationSe
     }
 
     @Override
-    public Mono<DistributorSimulationDTO> activateDistributorSimulation(Long id, Long updatedBy) {
+    public Mono<DistributorSimulationDTO> activateDistributorSimulation(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(simulation -> {
                     simulation.setIsActive(true);
@@ -136,7 +137,7 @@ public class DistributorSimulationServiceImpl implements DistributorSimulationSe
     }
 
     @Override
-    public Mono<DistributorSimulationDTO> deactivateDistributorSimulation(Long id, Long updatedBy) {
+    public Mono<DistributorSimulationDTO> deactivateDistributorSimulation(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(simulation -> {
                     simulation.setIsActive(false);

@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing products.
@@ -56,7 +57,7 @@ public class ProductController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<PaginationResponse<ProductDTO>>> filterProducts(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<ProductDTO> filterRequest) {
         
         // Ensure we're only filtering products for the specified distributor
@@ -89,7 +90,7 @@ public class ProductController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ProductDTO>> createProduct(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody ProductDTO productDTO) {
         
         productDTO.setDistributorId(distributorId);
@@ -121,9 +122,9 @@ public class ProductController {
     @PutMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ProductDTO>> updateProduct(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product to update", required = true)
-            @PathVariable Long productId,
+            @PathVariable UUID productId,
             @Valid @RequestBody ProductDTO productDTO) {
         
         productDTO.setDistributorId(distributorId);
@@ -152,9 +153,9 @@ public class ProductController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteProduct(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product to delete", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         return productService.deleteProduct(productId)
                 .then(Mono.just(ResponseEntity.noContent().build()));
@@ -180,9 +181,9 @@ public class ProductController {
     @GetMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<ProductDTO>> getProductById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product to retrieve", required = true)
-            @PathVariable Long productId) {
+            @PathVariable UUID productId) {
         
         return productService.getProductById(productId)
                 .map(ResponseEntity::ok);
@@ -207,7 +208,7 @@ public class ProductController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getProductsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         
         return Mono.just(ResponseEntity.ok(productService.getProductsByDistributorId(distributorId)));
     }
@@ -231,7 +232,7 @@ public class ProductController {
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getActiveProductsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         
         return Mono.just(ResponseEntity.ok(productService.getActiveProductsByDistributorId(distributorId)));
     }
@@ -256,9 +257,9 @@ public class ProductController {
     @GetMapping(value = "/category/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getProductsByDistributorIdAndCategory(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product category", required = true)
-            @PathVariable Long categoryId) {
+            @PathVariable UUID categoryId) {
         
         return productCategoryService.getProductCategoryById(categoryId)
                 .map(category -> ResponseEntity.ok(productService.getProductsByDistributorIdAndCategory(distributorId, category)))

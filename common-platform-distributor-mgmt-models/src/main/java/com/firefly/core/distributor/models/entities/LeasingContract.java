@@ -13,6 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing a leasing contract between a customer and a distributor.
@@ -26,22 +27,22 @@ import java.time.LocalDateTime;
 public class LeasingContract {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("contract_id")
-    private Long contractId;
+    private UUID contractId;
 
     @Column("party_id")
-    private Long partyId;
+    private UUID partyId;
 
     @Column("distributor_id")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Column("product_id")
-    private Long productId;
+    private UUID productId;
 
     @Column("lending_configuration_id")
-    private Long lendingConfigurationId;
+    private UUID lendingConfigurationId;
 
     @Column("start_date")
     private LocalDate startDate;
@@ -65,7 +66,7 @@ public class LeasingContract {
     private LocalDateTime approvalDate;
 
     @Column("approved_by")
-    private Long approvedBy;
+    private UUID approvedBy;
 
     @Column("terms_conditions")
     private String termsConditions;
@@ -81,12 +82,12 @@ public class LeasingContract {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

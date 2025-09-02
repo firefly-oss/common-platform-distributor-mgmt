@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * REST controller for managing distributor simulations.
@@ -44,7 +45,7 @@ public class DistributorSimulationController {
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<PaginationResponse<DistributorSimulationDTO>>> filterDistributorSimulations(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorSimulationDTO> filterRequest) {
         return ResponseEntity.ok(distributorSimulationService.filterDistributorSimulations(filterRequest));
     }
@@ -64,7 +65,7 @@ public class DistributorSimulationController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> createDistributorSimulation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorSimulationDTO distributorSimulationDTO) {
         
         distributorSimulationDTO.setDistributorId(distributorId);
@@ -86,9 +87,9 @@ public class DistributorSimulationController {
     @GetMapping(value = "/{simulationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> getDistributorSimulationById(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor simulation", required = true)
-            @PathVariable Long simulationId) {
+            @PathVariable UUID simulationId) {
         return distributorSimulationService.getDistributorSimulationById(simulationId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -109,9 +110,9 @@ public class DistributorSimulationController {
     @PutMapping(value = "/{simulationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> updateDistributorSimulation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor simulation to update", required = true)
-            @PathVariable Long simulationId,
+            @PathVariable UUID simulationId,
             @Valid @RequestBody DistributorSimulationDTO distributorSimulationDTO) {
         
         distributorSimulationDTO.setDistributorId(distributorId);
@@ -132,9 +133,9 @@ public class DistributorSimulationController {
     @DeleteMapping("/{simulationId}")
     public Mono<ResponseEntity<Void>> deleteDistributorSimulation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor simulation to delete", required = true)
-            @PathVariable Long simulationId) {
+            @PathVariable UUID simulationId) {
         return distributorSimulationService.deleteDistributorSimulation(simulationId)
                 .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
@@ -150,7 +151,7 @@ public class DistributorSimulationController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorSimulationDTO>> getSimulationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorSimulationService.getSimulationsByDistributorId(distributorId));
     }
 
@@ -165,7 +166,7 @@ public class DistributorSimulationController {
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorSimulationDTO>> getActiveSimulationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId) {
+            @PathVariable UUID distributorId) {
         return ResponseEntity.ok(distributorSimulationService.getActiveSimulationsByDistributorId(distributorId));
     }
 
@@ -180,7 +181,7 @@ public class DistributorSimulationController {
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flux<DistributorSimulationDTO>> getSimulationsByDistributorIdAndStatus(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "Status of the simulations", required = true)
             @PathVariable String status) {
         return ResponseEntity.ok(distributorSimulationService.getSimulationsByDistributorIdAndStatus(distributorId, status));
@@ -199,13 +200,13 @@ public class DistributorSimulationController {
     @PatchMapping(value = "/{simulationId}/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> updateSimulationStatus(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor simulation", required = true)
-            @PathVariable Long simulationId,
+            @PathVariable UUID simulationId,
             @Parameter(description = "New status for the simulation", required = true)
             @RequestParam String status,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorSimulationService.updateSimulationStatus(simulationId, status, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -224,11 +225,11 @@ public class DistributorSimulationController {
     @PatchMapping(value = "/{simulationId}/activate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> activateDistributorSimulation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor simulation to activate", required = true)
-            @PathVariable Long simulationId,
+            @PathVariable UUID simulationId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorSimulationService.activateDistributorSimulation(simulationId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -247,11 +248,11 @@ public class DistributorSimulationController {
     @PatchMapping(value = "/{simulationId}/deactivate", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<DistributorSimulationDTO>> deactivateDistributorSimulation(
             @Parameter(description = "ID of the distributor", required = true)
-            @PathVariable Long distributorId,
+            @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor simulation to deactivate", required = true)
-            @PathVariable Long simulationId,
+            @PathVariable UUID simulationId,
             @Parameter(description = "ID of the user performing the update")
-            @RequestParam(required = false) Long updatedBy) {
+            @RequestParam(required = false) UUID updatedBy) {
         return distributorSimulationService.deactivateDistributorSimulation(simulationId, updatedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());

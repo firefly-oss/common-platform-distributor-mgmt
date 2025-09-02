@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementation of the TermsAndConditionsTemplateService interface.
@@ -63,7 +64,7 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<TermsAndConditionsTemplateDTO> updateTemplate(Long id, TermsAndConditionsTemplateDTO templateDTO) {
+    public Mono<TermsAndConditionsTemplateDTO> updateTemplate(UUID id, TermsAndConditionsTemplateDTO templateDTO) {
         return repository.findById(id)
                 .flatMap(existingTemplate -> {
                     TermsAndConditionsTemplate updatedTemplate = mapper.toEntity(templateDTO);
@@ -77,12 +78,12 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<Void> deleteTemplate(Long id) {
+    public Mono<Void> deleteTemplate(UUID id) {
         return repository.deleteById(id);
     }
 
     @Override
-    public Mono<TermsAndConditionsTemplateDTO> getTemplateById(Long id) {
+    public Mono<TermsAndConditionsTemplateDTO> getTemplateById(UUID id) {
         return repository.findById(id)
                 .map(mapper::toDTO);
     }
@@ -148,7 +149,7 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<TermsAndConditionsTemplateDTO> activateTemplate(Long id, Long updatedBy) {
+    public Mono<TermsAndConditionsTemplateDTO> activateTemplate(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(template -> {
                     template.setIsActive(true);
@@ -160,7 +161,7 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<TermsAndConditionsTemplateDTO> deactivateTemplate(Long id, Long updatedBy) {
+    public Mono<TermsAndConditionsTemplateDTO> deactivateTemplate(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(template -> {
                     template.setIsActive(false);
@@ -172,7 +173,7 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<TermsAndConditionsTemplateDTO> setAsDefault(Long id, Long updatedBy) {
+    public Mono<TermsAndConditionsTemplateDTO> setAsDefault(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(template -> {
                     // First, remove default status from other templates in the same category
@@ -195,7 +196,7 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<TermsAndConditionsTemplateDTO> removeDefault(Long id, Long updatedBy) {
+    public Mono<TermsAndConditionsTemplateDTO> removeDefault(UUID id, UUID updatedBy) {
         return repository.findById(id)
                 .flatMap(template -> {
                     template.setIsDefault(false);
@@ -212,7 +213,7 @@ public class TermsAndConditionsTemplateServiceImpl implements TermsAndConditions
     }
 
     @Override
-    public Mono<Boolean> templateNameExistsForDifferentTemplate(String name, Long excludeId) {
+    public Mono<Boolean> templateNameExistsForDifferentTemplate(String name, UUID excludeId) {
         return repository.existsByNameAndIdNot(name, excludeId);
     }
 }

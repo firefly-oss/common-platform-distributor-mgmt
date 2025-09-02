@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing a lending configuration for a product.
@@ -24,10 +25,10 @@ import java.time.LocalDateTime;
 public class LendingConfiguration {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("product_id")
-    private Long productId;
+    private UUID productId;
 
     @Column("name")
     private String name;
@@ -82,12 +83,12 @@ public class LendingConfiguration {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

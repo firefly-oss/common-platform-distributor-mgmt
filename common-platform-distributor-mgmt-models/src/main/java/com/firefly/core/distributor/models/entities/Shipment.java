@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing a shipment of a product after a leasing contract is approved.
@@ -24,13 +25,13 @@ import java.time.LocalDateTime;
 public class Shipment {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("leasing_contract_id")
-    private Long leasingContractId;
+    private UUID leasingContractId;
 
     @Column("product_id")
-    private Long productId;
+    private UUID productId;
 
     @Column("tracking_number")
     private String trackingNumber;
@@ -61,12 +62,12 @@ public class Shipment {
     private LocalDateTime createdAt;
 
     @Column("created_by")
-    private Long createdBy;
+    private UUID createdBy;
 
     @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 
     @Column("updated_by")
-    private Long updatedBy;
+    private UUID updatedBy;
 }

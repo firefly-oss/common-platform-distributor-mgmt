@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.DistributorOperationDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing distributor operations.
@@ -34,7 +35,7 @@ public interface DistributorOperationService {
      * @param distributorOperationDTO the updated distributor operation data
      * @return a reactive {@code Mono} emitting the updated distributor operation
      */
-    Mono<DistributorOperationDTO> updateDistributorOperation(Long id, DistributorOperationDTO distributorOperationDTO);
+    Mono<DistributorOperationDTO> updateDistributorOperation(UUID id, DistributorOperationDTO distributorOperationDTO);
 
     /**
      * Deletes a distributor operation by its ID.
@@ -42,7 +43,7 @@ public interface DistributorOperationService {
      * @param id the ID of the distributor operation to delete
      * @return a reactive {@code Mono} that completes when the operation is deleted
      */
-    Mono<Void> deleteDistributorOperation(Long id);
+    Mono<Void> deleteDistributorOperation(UUID id);
 
     /**
      * Retrieves a distributor operation by its ID.
@@ -50,7 +51,7 @@ public interface DistributorOperationService {
      * @param id the ID of the distributor operation to retrieve
      * @return a reactive {@code Mono} emitting the distributor operation if found
      */
-    Mono<DistributorOperationDTO> getDistributorOperationById(Long id);
+    Mono<DistributorOperationDTO> getDistributorOperationById(UUID id);
 
     /**
      * Retrieves all operations for a specific distributor.
@@ -58,7 +59,7 @@ public interface DistributorOperationService {
      * @param distributorId the distributor ID
      * @return a reactive {@code Flux} emitting all operations for the distributor
      */
-    Flux<DistributorOperationDTO> getOperationsByDistributorId(Long distributorId);
+    Flux<DistributorOperationDTO> getOperationsByDistributorId(UUID distributorId);
 
     /**
      * Retrieves all active operations for a specific distributor.
@@ -66,7 +67,7 @@ public interface DistributorOperationService {
      * @param distributorId the distributor ID
      * @return a reactive {@code Flux} emitting all active operations for the distributor
      */
-    Flux<DistributorOperationDTO> getActiveOperationsByDistributorId(Long distributorId);
+    Flux<DistributorOperationDTO> getActiveOperationsByDistributorId(UUID distributorId);
 
     /**
      * Retrieves operations by country ID.
@@ -74,7 +75,7 @@ public interface DistributorOperationService {
      * @param countryId the country ID
      * @return a reactive {@code Flux} emitting operations for the country
      */
-    Flux<DistributorOperationDTO> getOperationsByCountryId(Long countryId);
+    Flux<DistributorOperationDTO> getOperationsByCountryId(UUID countryId);
 
     /**
      * Retrieves operations by administrative division ID.
@@ -82,7 +83,7 @@ public interface DistributorOperationService {
      * @param administrativeDivisionId the administrative division ID
      * @return a reactive {@code Flux} emitting operations for the administrative division
      */
-    Flux<DistributorOperationDTO> getOperationsByAdministrativeDivisionId(Long administrativeDivisionId);
+    Flux<DistributorOperationDTO> getOperationsByAdministrativeDivisionId(UUID administrativeDivisionId);
 
     /**
      * Checks if a distributor can operate in a specific country and administrative division.
@@ -92,7 +93,7 @@ public interface DistributorOperationService {
      * @param administrativeDivisionId the administrative division ID
      * @return a reactive {@code Mono} emitting true if the distributor can operate in the specified location
      */
-    Mono<Boolean> canDistributorOperateInLocation(Long distributorId, Long countryId, Long administrativeDivisionId);
+    Mono<Boolean> canDistributorOperateInLocation(UUID distributorId, UUID countryId, UUID administrativeDivisionId);
 
     /**
      * Activates a distributor operation.
@@ -101,7 +102,7 @@ public interface DistributorOperationService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated distributor operation
      */
-    Mono<DistributorOperationDTO> activateDistributorOperation(Long id, Long updatedBy);
+    Mono<DistributorOperationDTO> activateDistributorOperation(UUID id, UUID updatedBy);
 
     /**
      * Deactivates a distributor operation.
@@ -110,5 +111,5 @@ public interface DistributorOperationService {
      * @param updatedBy the ID of the user performing the update
      * @return a reactive {@code Mono} emitting the updated distributor operation
      */
-    Mono<DistributorOperationDTO> deactivateDistributorOperation(Long id, Long updatedBy);
+    Mono<DistributorOperationDTO> deactivateDistributorOperation(UUID id, UUID updatedBy);
 }

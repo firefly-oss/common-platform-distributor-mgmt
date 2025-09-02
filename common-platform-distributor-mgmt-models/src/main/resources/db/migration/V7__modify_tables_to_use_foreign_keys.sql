@@ -1,11 +1,11 @@
 -- First, add new columns to the product table
-ALTER TABLE product ADD COLUMN category_id BIGINT;
+ALTER TABLE product ADD COLUMN category_id UUID;
 
 -- Create a temporary function to help with the migration
 CREATE OR REPLACE FUNCTION migrate_product_categories() RETURNS void AS $$
 DECLARE
     product_record RECORD;
-    category_id BIGINT;
+    category_id UUID;
 BEGIN
     FOR product_record IN SELECT id, category FROM product LOOP
         SELECT pc.id INTO category_id FROM product_category pc WHERE pc.code = product_record.category::text;
@@ -29,13 +29,13 @@ ALTER TABLE product ADD CONSTRAINT fk_product_category
 CREATE INDEX idx_product_category_id ON product(category_id);
 
 -- Now do the same for lending_configuration table
-ALTER TABLE lending_configuration ADD COLUMN lending_type_id BIGINT;
+ALTER TABLE lending_configuration ADD COLUMN lending_type_id UUID;
 
 -- Create a temporary function to help with the migration
 CREATE OR REPLACE FUNCTION migrate_lending_types() RETURNS void AS $$
 DECLARE
     lending_record RECORD;
-    type_id BIGINT;
+    type_id UUID;
 BEGIN
     FOR lending_record IN SELECT id, lending_type FROM lending_configuration LOOP
         SELECT lt.id INTO type_id FROM lending_type lt WHERE lt.code = lending_record.lending_type::text;

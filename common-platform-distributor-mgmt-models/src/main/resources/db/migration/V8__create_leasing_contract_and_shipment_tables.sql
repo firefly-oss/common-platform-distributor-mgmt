@@ -1,11 +1,11 @@
 -- Create leasing_contract table
 CREATE TABLE IF NOT EXISTS leasing_contract (
-    id BIGSERIAL PRIMARY KEY,
-    contract_id BIGINT NOT NULL,
-    party_id BIGINT NOT NULL,
-    distributor_id BIGINT NOT NULL,
-    product_id BIGINT NOT NULL,
-    lending_configuration_id BIGINT NOT NULL,
+    id UUID PRIMARY KEY,
+    contract_id UUID NOT NULL,
+    party_id UUID NOT NULL,
+    distributor_id UUID NOT NULL,
+    product_id UUID NOT NULL,
+    lending_configuration_id UUID NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     monthly_payment DECIMAL(10,2) NOT NULL,
@@ -13,14 +13,14 @@ CREATE TABLE IF NOT EXISTS leasing_contract (
     total_amount DECIMAL(10,2) NOT NULL,
     status VARCHAR(50) NOT NULL,
     approval_date TIMESTAMP,
-    approved_by BIGINT,
+    approved_by UUID,
     terms_conditions TEXT,
     notes TEXT,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT,
+    updated_by UUID,
     CONSTRAINT fk_leasing_contract_distributor
         FOREIGN KEY (distributor_id)
         REFERENCES distributor (id),
@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS leasing_contract (
 
 -- Create shipment table
 CREATE TABLE IF NOT EXISTS shipment (
-    id BIGSERIAL PRIMARY KEY,
-    leasing_contract_id BIGINT NOT NULL,
-    product_id BIGINT NOT NULL,
+    id UUID PRIMARY KEY,
+    leasing_contract_id UUID NOT NULL,
+    product_id UUID NOT NULL,
     tracking_number VARCHAR(100),
     carrier VARCHAR(100),
     shipping_address TEXT NOT NULL,
@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS shipment (
     status VARCHAR(50) NOT NULL,
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT,
+    updated_by UUID,
     CONSTRAINT fk_shipment_leasing_contract
         FOREIGN KEY (leasing_contract_id)
         REFERENCES leasing_contract (id),

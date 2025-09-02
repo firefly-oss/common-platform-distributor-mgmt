@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing an audit log entry for distributor-related actions.
@@ -24,10 +25,10 @@ import java.time.LocalDateTime;
 public class DistributorAuditLog {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Column("distributor_id")
-    private Long distributorId;
+    private UUID distributorId;
 
     @Column("action")
     private DistributorActionEnum action;
@@ -45,7 +46,7 @@ public class DistributorAuditLog {
     private String ipAddress;
 
     @Column("user_id")
-    private Long userId;
+    private UUID userId;
 
     @Column("timestamp")
     private LocalDateTime timestamp;

@@ -1,6 +1,6 @@
 -- Create terms_and_conditions_template table
 CREATE TABLE IF NOT EXISTS terms_and_conditions_template (
-    id BIGSERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     category VARCHAR(50) NOT NULL,
@@ -13,30 +13,30 @@ CREATE TABLE IF NOT EXISTS terms_and_conditions_template (
     auto_renewal BOOLEAN DEFAULT FALSE,
     renewal_period_months INTEGER,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT
+    updated_by UUID
 );
 
 -- Create distributor_terms_and_conditions table
 CREATE TABLE IF NOT EXISTS distributor_terms_and_conditions (
-    id BIGSERIAL PRIMARY KEY,
-    distributor_id BIGINT NOT NULL,
-    template_id BIGINT,
+    id UUID PRIMARY KEY,
+    distributor_id UUID NOT NULL,
+    template_id UUID,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     version VARCHAR(50) NOT NULL,
     effective_date TIMESTAMP NOT NULL,
     expiration_date TIMESTAMP,
     signed_date TIMESTAMP,
-    signed_by BIGINT,
+    signed_by UUID,
     status VARCHAR(50) NOT NULL DEFAULT 'DRAFT',
     is_active BOOLEAN DEFAULT TRUE,
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by BIGINT,
+    created_by UUID,
     updated_at TIMESTAMP,
-    updated_by BIGINT,
+    updated_by UUID,
     CONSTRAINT fk_distributor_terms_distributor
         FOREIGN KEY (distributor_id)
         REFERENCES distributor (id),

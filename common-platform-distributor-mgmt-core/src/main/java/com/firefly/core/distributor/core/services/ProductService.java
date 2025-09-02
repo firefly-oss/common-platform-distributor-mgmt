@@ -6,6 +6,7 @@ import com.firefly.core.distributor.interfaces.dtos.ProductCategoryDTO;
 import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.UUID;
 
 /**
  * Service interface for managing products.
@@ -35,7 +36,7 @@ public interface ProductService {
      * @param productDTO the updated product data
      * @return the updated product
      */
-    Mono<ProductDTO> updateProduct(Long productId, ProductDTO productDTO);
+    Mono<ProductDTO> updateProduct(UUID productId, ProductDTO productDTO);
 
     /**
      * Delete a product.
@@ -43,7 +44,7 @@ public interface ProductService {
      * @param productId the ID of the product to delete
      * @return void
      */
-    Mono<Void> deleteProduct(Long productId);
+    Mono<Void> deleteProduct(UUID productId);
 
     /**
      * Get a product by ID.
@@ -51,7 +52,7 @@ public interface ProductService {
      * @param productId the ID of the product to retrieve
      * @return the product
      */
-    Mono<ProductDTO> getProductById(Long productId);
+    Mono<ProductDTO> getProductById(UUID productId);
 
     /**
      * Get all products for a distributor.
@@ -59,7 +60,7 @@ public interface ProductService {
      * @param distributorId the ID of the distributor
      * @return a flux of products
      */
-    Flux<ProductDTO> getProductsByDistributorId(Long distributorId);
+    Flux<ProductDTO> getProductsByDistributorId(UUID distributorId);
 
     /**
      * Get all active products for a distributor.
@@ -67,7 +68,7 @@ public interface ProductService {
      * @param distributorId the ID of the distributor
      * @return a flux of active products
      */
-    Flux<ProductDTO> getActiveProductsByDistributorId(Long distributorId);
+    Flux<ProductDTO> getActiveProductsByDistributorId(UUID distributorId);
 
     /**
      * Get all products for a distributor by category.
@@ -76,5 +77,5 @@ public interface ProductService {
      * @param category the product category
      * @return a flux of products
      */
-    Flux<ProductDTO> getProductsByDistributorIdAndCategory(Long distributorId, ProductCategoryDTO category);
+    Flux<ProductDTO> getProductsByDistributorIdAndCategory(UUID distributorId, ProductCategoryDTO category);
 }
