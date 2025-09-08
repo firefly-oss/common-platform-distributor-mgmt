@@ -1253,7 +1253,7 @@ common-platform-distributor-mgmt/
 │   └── src/main/resources/
 │       └── api-spec/         # OpenAPI specification
 └── common-platform-distributor-mgmt-web/
-    ├── src/main/java/com/catalis/core/distributor/web/
+    ├── src/main/java/com/firefly/core/distributor/web/
     │   └── controllers/      # REST API controllers
     └── src/main/resources/   # Configuration files
 ```
