@@ -55,14 +55,12 @@ public class ProductCategoryDTO {
     private Boolean isActive;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

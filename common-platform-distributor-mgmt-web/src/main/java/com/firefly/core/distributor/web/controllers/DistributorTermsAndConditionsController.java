@@ -58,19 +58,19 @@ public class DistributorTermsAndConditionsController {
     @Operation(summary = "Filter distributor terms and conditions", description = "Returns a paginated list of distributor terms and conditions based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved distributor terms and conditions",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<DistributorTermsAndConditionsDTO>>> filterDistributorTermsAndConditions(
+    public Mono<ResponseEntity<PaginationResponse<DistributorTermsAndConditionsDTO>>> filterDistributorTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorTermsAndConditionsDTO> filterRequest) {
-        return ResponseEntity.ok(distributorTermsAndConditionsService.filterDistributorTermsAndConditions(filterRequest));
+        return distributorTermsAndConditionsService.filterDistributorTermsAndConditions(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create new distributor terms and conditions", description = "Creates new terms and conditions for a distributor")
@@ -192,10 +192,10 @@ public class DistributorTermsAndConditionsController {
                 content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getTermsAndConditionsByDistributorId(
+    public Mono<ResponseEntity<Flux<DistributorTermsAndConditionsDTO>>> getTermsAndConditionsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorTermsAndConditionsService.getTermsAndConditionsByDistributorId(distributorId));
+        return Mono.just(ResponseEntity.ok(distributorTermsAndConditionsService.getTermsAndConditionsByDistributorId(distributorId)));
     }
 
     @Operation(summary = "Get active terms and conditions for distributor", description = "Returns all active terms and conditions for a distributor")
@@ -207,10 +207,10 @@ public class DistributorTermsAndConditionsController {
                 content = @Content)
     })
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getActiveTermsAndConditionsByDistributorId(
+    public Mono<ResponseEntity<Flux<DistributorTermsAndConditionsDTO>>> getActiveTermsAndConditionsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorTermsAndConditionsService.getActiveTermsAndConditionsByDistributorId(distributorId));
+        return Mono.just(ResponseEntity.ok(distributorTermsAndConditionsService.getActiveTermsAndConditionsByDistributorId(distributorId)));
     }
 
     @Operation(summary = "Get terms and conditions by status", description = "Returns terms and conditions with a specific status for a distributor")
@@ -222,12 +222,12 @@ public class DistributorTermsAndConditionsController {
                 content = @Content)
     })
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getTermsAndConditionsByDistributorIdAndStatus(
+    public Mono<ResponseEntity<Flux<DistributorTermsAndConditionsDTO>>> getTermsAndConditionsByDistributorIdAndStatus(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "Status of the terms and conditions", required = true)
             @PathVariable String status) {
-        return ResponseEntity.ok(distributorTermsAndConditionsService.getTermsAndConditionsByDistributorIdAndStatus(distributorId, status));
+        return Mono.just(ResponseEntity.ok(distributorTermsAndConditionsService.getTermsAndConditionsByDistributorIdAndStatus(distributorId, status)));
     }
 
     @Operation(summary = "Update terms and conditions status", description = "Updates the status of distributor terms and conditions")
@@ -287,10 +287,11 @@ public class DistributorTermsAndConditionsController {
                 content = @Content)
     })
     @GetMapping(value = "/has-active-signed", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<Boolean>> hasActiveSignedTerms(
+    public Mono<ResponseEntity<Boolean>> hasActiveSignedTerms(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorTermsAndConditionsService.hasActiveSignedTerms(distributorId));
+        return distributorTermsAndConditionsService.hasActiveSignedTerms(distributorId)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Get latest terms and conditions", description = "Returns the latest version of terms and conditions for a distributor")
@@ -321,13 +322,13 @@ public class DistributorTermsAndConditionsController {
                 content = @Content)
     })
     @GetMapping(value = "/expiring", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorTermsAndConditionsDTO>> getExpiringTermsAndConditions(
+    public Mono<ResponseEntity<Flux<DistributorTermsAndConditionsDTO>>> getExpiringTermsAndConditions(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "Expiration date threshold", required = true)
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expirationDate) {
-        return ResponseEntity.ok(distributorTermsAndConditionsService.getExpiringTermsAndConditions(expirationDate)
-                .filter(terms -> terms.getDistributorId().equals(distributorId)));
+        return Mono.just(ResponseEntity.ok(distributorTermsAndConditionsService.getExpiringTermsAndConditions(expirationDate)
+                .filter(terms -> terms.getDistributorId().equals(distributorId))));
     }
 
     @Operation(summary = "Activate terms and conditions", description = "Activates distributor terms and conditions")

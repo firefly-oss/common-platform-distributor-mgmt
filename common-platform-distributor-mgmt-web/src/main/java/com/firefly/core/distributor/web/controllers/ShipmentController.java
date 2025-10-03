@@ -58,8 +58,7 @@ public class ShipmentController {
     @Operation(summary = "Filter shipments", description = "Returns a paginated list of shipments based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved shipments",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 

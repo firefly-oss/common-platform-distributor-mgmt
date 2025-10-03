@@ -70,8 +70,7 @@ public class LendingConfigurationController {
     @Operation(summary = "Filter lending configurations", description = "Returns a paginated list of lending configurations based on filter criteria for a specific product")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved lending configurations",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 

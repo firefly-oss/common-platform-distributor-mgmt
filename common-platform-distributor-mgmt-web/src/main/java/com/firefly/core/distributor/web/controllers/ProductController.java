@@ -64,8 +64,7 @@ public class ProductController {
     @Operation(summary = "Filter products", description = "Returns a paginated list of products based on filter criteria for a specific distributor")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved products",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 

@@ -18,7 +18,6 @@
 package com.firefly.core.distributor.interfaces.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.utils.annotations.FilterableId;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -57,14 +56,12 @@ public class DistributorOperationDTO {
     private Boolean isActive;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

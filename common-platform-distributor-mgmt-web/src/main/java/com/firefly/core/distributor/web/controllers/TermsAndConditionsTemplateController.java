@@ -56,17 +56,17 @@ public class TermsAndConditionsTemplateController {
     @Operation(summary = "Filter terms and conditions templates", description = "Returns a paginated list of templates based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved templates",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<TermsAndConditionsTemplateDTO>>> filterTemplates(
+    public Mono<ResponseEntity<PaginationResponse<TermsAndConditionsTemplateDTO>>> filterTemplates(
             @Valid @RequestBody FilterRequest<TermsAndConditionsTemplateDTO> filterRequest) {
-        return ResponseEntity.ok(templateService.filterTermsAndConditionsTemplates(filterRequest));
+        return templateService.filterTermsAndConditionsTemplates(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create a new template", description = "Creates a new terms and conditions template")

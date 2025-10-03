@@ -48,17 +48,17 @@ public class DistributorController {
     @Operation(summary = "Filter distributors", description = "Returns a paginated list of distributors based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved distributors",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<DistributorDTO>>> filterDistributors(
+    public Mono<ResponseEntity<PaginationResponse<DistributorDTO>>> filterDistributors(
             @Valid @RequestBody FilterRequest<DistributorDTO> filterRequest) {
-        return ResponseEntity.ok(distributorService.filterDistributors(filterRequest));
+        return distributorService.filterDistributors(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create a new distributor", description = "Creates a new distributor with the provided information")
@@ -72,10 +72,10 @@ public class DistributorController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorDTO>> createDistributor(
+    public Mono<ResponseEntity<DistributorDTO>> createDistributor(
             @Valid @RequestBody DistributorDTO distributorDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(distributorService.createDistributor(distributorDTO));
+        return distributorService.createDistributor(distributorDTO)
+                .map(result -> ResponseEntity.status(HttpStatus.CREATED).body(result));
     }
 
     @Operation(summary = "Get distributor by ID", description = "Returns a distributor based on its ID")
@@ -89,10 +89,11 @@ public class DistributorController {
                 content = @Content)
     })
     @GetMapping(value = "/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorDTO>> getDistributorById(
+    public Mono<ResponseEntity<DistributorDTO>> getDistributorById(
             @Parameter(description = "ID of the distributor to retrieve", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorService.getDistributorById(distributorId));
+        return distributorService.getDistributorById(distributorId)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Update distributor", description = "Updates an existing distributor with the provided information")
@@ -108,11 +109,12 @@ public class DistributorController {
                 content = @Content)
     })
     @PutMapping(value = "/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorDTO>> updateDistributor(
+    public Mono<ResponseEntity<DistributorDTO>> updateDistributor(
             @Parameter(description = "ID of the distributor to update", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorDTO distributorDTO) {
-        return ResponseEntity.ok(distributorService.updateDistributor(distributorId, distributorDTO));
+        return distributorService.updateDistributor(distributorId, distributorDTO)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Delete distributor", description = "Deletes a distributor based on its ID")

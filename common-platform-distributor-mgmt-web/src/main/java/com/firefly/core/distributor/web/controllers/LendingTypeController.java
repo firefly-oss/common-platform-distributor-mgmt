@@ -100,10 +100,12 @@ public class LendingTypeController {
                 content = @Content)
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<LendingTypeDTO>> getLendingTypeById(
+    public Mono<ResponseEntity<LendingTypeDTO>> getLendingTypeById(
             @Parameter(description = "ID of the lending type to retrieve", required = true)
             @PathVariable UUID id) {
-        return ResponseEntity.ok(lendingTypeService.getLendingTypeById(id));
+        return lendingTypeService.getLendingTypeById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /**
@@ -123,10 +125,12 @@ public class LendingTypeController {
                 content = @Content)
     })
     @GetMapping(value = "/code/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<LendingTypeDTO>> getLendingTypeByCode(
+    public Mono<ResponseEntity<LendingTypeDTO>> getLendingTypeByCode(
             @Parameter(description = "Code of the lending type to retrieve", required = true)
             @PathVariable String code) {
-        return ResponseEntity.ok(lendingTypeService.getLendingTypeByCode(code));
+        return lendingTypeService.getLendingTypeByCode(code)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /**
@@ -146,10 +150,10 @@ public class LendingTypeController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<LendingTypeDTO>> createLendingType(
+    public Mono<ResponseEntity<LendingTypeDTO>> createLendingType(
             @Valid @RequestBody LendingTypeDTO lendingTypeDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(lendingTypeService.createLendingType(lendingTypeDTO));
+        return lendingTypeService.createLendingType(lendingTypeDTO)
+                .map(result -> ResponseEntity.status(HttpStatus.CREATED).body(result));
     }
 
     /**
@@ -172,11 +176,13 @@ public class LendingTypeController {
                 content = @Content)
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<LendingTypeDTO>> updateLendingType(
+    public Mono<ResponseEntity<LendingTypeDTO>> updateLendingType(
             @Parameter(description = "ID of the lending type to update", required = true)
             @PathVariable UUID id,
             @Valid @RequestBody LendingTypeDTO lendingTypeDTO) {
-        return ResponseEntity.ok(lendingTypeService.updateLendingType(id, lendingTypeDTO));
+        return lendingTypeService.updateLendingType(id, lendingTypeDTO)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /**

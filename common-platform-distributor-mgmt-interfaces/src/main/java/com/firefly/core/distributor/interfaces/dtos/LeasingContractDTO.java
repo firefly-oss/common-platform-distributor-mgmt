@@ -19,7 +19,6 @@ package com.firefly.core.distributor.interfaces.dtos;
 
 import com.firefly.annotations.ValidAmount;
 import com.firefly.annotations.ValidDate;
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
@@ -92,7 +91,6 @@ public class LeasingContractDTO {
              message = "Status must be one of: DRAFT, PENDING, APPROVED, ACTIVE, COMPLETED, CANCELLED, TERMINATED")
     private String status;
 
-    @ValidDateTime
     private LocalDateTime approvalDate;
 
     private UUID approvedBy;
@@ -106,14 +104,12 @@ public class LeasingContractDTO {
     private Boolean isActive;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

@@ -62,7 +62,9 @@ public class ProductDTO {
 
     @Size(max = 255, message = "Manufacturer cannot exceed 255 characters")
     private String manufacturer;
-    private ProductCategoryDTO category;
+
+    @FilterableId
+    private UUID categoryId;
 
     @Size(max = 255, message = "Image URL cannot exceed 255 characters")
     private String imageUrl;
@@ -70,11 +72,9 @@ public class ProductDTO {
     private JsonNode specifications; // Using JsonNode for flexible JSON structure
     private Boolean isActive;
 
-    @ValidDateTime
     private LocalDateTime createdAt;
     private UUID createdBy;
 
-    @ValidDateTime
     private LocalDateTime updatedAt;
     private UUID updatedBy;
 }

@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 import com.firefly.annotations.ValidAmount;
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.annotations.ValidInterestRate;
 import com.firefly.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -92,10 +91,8 @@ public class LendingConfigurationDTO {
 
     @Size(max = 5000, message = "Terms and conditions cannot exceed 5000 characters")
     private String termsConditions;
-    @ValidDateTime
     private LocalDateTime createdAt;
     private UUID createdBy;
-    @ValidDateTime
     private LocalDateTime updatedAt;
     private UUID updatedBy;
 }

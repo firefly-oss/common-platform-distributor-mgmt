@@ -63,7 +63,7 @@ public class Product {
     private String manufacturer;
 
     @Column("category_id")
-    private ProductCategory category;
+    private UUID categoryId;
 
     @Column("image_url")
     private String imageUrl;
@@ -74,14 +74,12 @@ public class Product {
     @Column("is_active")
     private Boolean isActive;
 
-    @CreatedDate
     @Column("created_at")
     private LocalDateTime createdAt;
 
     @Column("created_by")
     private UUID createdBy;
 
-    @LastModifiedDate
     @Column("updated_at")
     private LocalDateTime updatedAt;
 

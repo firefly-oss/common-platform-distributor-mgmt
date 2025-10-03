@@ -52,19 +52,19 @@ public class DistributorOperationController {
     @Operation(summary = "Filter distributor operations", description = "Returns a paginated list of distributor operations based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved distributor operations",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<DistributorOperationDTO>>> filterDistributorOperations(
+    public Mono<ResponseEntity<PaginationResponse<DistributorOperationDTO>>> filterDistributorOperations(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorOperationDTO> filterRequest) {
-        return ResponseEntity.ok(distributorOperationService.filterDistributorOperations(filterRequest));
+        return distributorOperationService.filterDistributorOperations(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create a new distributor operation", description = "Creates a new operational coverage for a distributor")
@@ -166,10 +166,10 @@ public class DistributorOperationController {
                 content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorOperationDTO>> getOperationsByDistributorId(
+    public Mono<ResponseEntity<Flux<DistributorOperationDTO>>> getOperationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorOperationService.getOperationsByDistributorId(distributorId));
+        return Mono.just(ResponseEntity.ok(distributorOperationService.getOperationsByDistributorId(distributorId)));
     }
 
     @Operation(summary = "Get active operations for distributor", description = "Returns all active operational coverage areas for a distributor")
@@ -181,10 +181,10 @@ public class DistributorOperationController {
                 content = @Content)
     })
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorOperationDTO>> getActiveOperationsByDistributorId(
+    public Mono<ResponseEntity<Flux<DistributorOperationDTO>>> getActiveOperationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorOperationService.getActiveOperationsByDistributorId(distributorId));
+        return Mono.just(ResponseEntity.ok(distributorOperationService.getActiveOperationsByDistributorId(distributorId)));
     }
 
     @Operation(summary = "Check if distributor can operate in location", description = "Checks if a distributor can operate in a specific country and administrative division")
@@ -196,15 +196,16 @@ public class DistributorOperationController {
                 content = @Content)
     })
     @GetMapping(value = "/can-operate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<Boolean>> canDistributorOperateInLocation(
+    public Mono<ResponseEntity<Boolean>> canDistributorOperateInLocation(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "ID of the country", required = true)
             @RequestParam UUID countryId,
             @Parameter(description = "ID of the administrative division", required = true)
             @RequestParam UUID administrativeDivisionId) {
-        return ResponseEntity.ok(distributorOperationService.canDistributorOperateInLocation(
-                distributorId, countryId, administrativeDivisionId));
+        return distributorOperationService.canDistributorOperateInLocation(
+                distributorId, countryId, administrativeDivisionId)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Activate distributor operation", description = "Activates a distributor operation")

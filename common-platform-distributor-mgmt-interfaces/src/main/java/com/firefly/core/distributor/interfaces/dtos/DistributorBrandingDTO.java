@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.distributor.interfaces.enums.ThemeEnum;
 import com.firefly.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -68,10 +67,8 @@ public class DistributorBrandingDTO {
 
     private ThemeEnum theme;
     private Boolean isDefault;
-    @ValidDateTime
     private LocalDateTime createdAt;
     private UUID createdBy;
-    @ValidDateTime
     private LocalDateTime updatedAt;
     private UUID updatedBy;
 }

@@ -52,19 +52,19 @@ public class DistributorSimulationController {
     @Operation(summary = "Filter distributor simulations", description = "Returns a paginated list of distributor simulations based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved distributor simulations",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<DistributorSimulationDTO>>> filterDistributorSimulations(
+    public Mono<ResponseEntity<PaginationResponse<DistributorSimulationDTO>>> filterDistributorSimulations(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorSimulationDTO> filterRequest) {
-        return ResponseEntity.ok(distributorSimulationService.filterDistributorSimulations(filterRequest));
+        return distributorSimulationService.filterDistributorSimulations(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create a new distributor simulation", description = "Creates a new simulation tracking for a distributor")
@@ -166,10 +166,10 @@ public class DistributorSimulationController {
                 content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorSimulationDTO>> getSimulationsByDistributorId(
+    public Mono<ResponseEntity<Flux<DistributorSimulationDTO>>> getSimulationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorSimulationService.getSimulationsByDistributorId(distributorId));
+        return Mono.just(ResponseEntity.ok(distributorSimulationService.getSimulationsByDistributorId(distributorId)));
     }
 
     @Operation(summary = "Get active simulations for distributor", description = "Returns all active simulations tracked by a distributor")
@@ -181,10 +181,10 @@ public class DistributorSimulationController {
                 content = @Content)
     })
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorSimulationDTO>> getActiveSimulationsByDistributorId(
+    public Mono<ResponseEntity<Flux<DistributorSimulationDTO>>> getActiveSimulationsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
-        return ResponseEntity.ok(distributorSimulationService.getActiveSimulationsByDistributorId(distributorId));
+        return Mono.just(ResponseEntity.ok(distributorSimulationService.getActiveSimulationsByDistributorId(distributorId)));
     }
 
     @Operation(summary = "Get simulations by status", description = "Returns simulations with a specific status for a distributor")
@@ -196,12 +196,12 @@ public class DistributorSimulationController {
                 content = @Content)
     })
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flux<DistributorSimulationDTO>> getSimulationsByDistributorIdAndStatus(
+    public Mono<ResponseEntity<Flux<DistributorSimulationDTO>>> getSimulationsByDistributorIdAndStatus(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "Status of the simulations", required = true)
             @PathVariable String status) {
-        return ResponseEntity.ok(distributorSimulationService.getSimulationsByDistributorIdAndStatus(distributorId, status));
+        return Mono.just(ResponseEntity.ok(distributorSimulationService.getSimulationsByDistributorIdAndStatus(distributorId, status)));
     }
 
     @Operation(summary = "Update simulation status", description = "Updates the status of a distributor simulation")

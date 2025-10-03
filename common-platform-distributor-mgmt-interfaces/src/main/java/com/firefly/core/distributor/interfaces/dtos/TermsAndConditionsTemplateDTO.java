@@ -19,7 +19,6 @@ package com.firefly.core.distributor.interfaces.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.firefly.annotations.ValidDateTime;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -77,14 +76,12 @@ public class TermsAndConditionsTemplateDTO {
     private Integer renewalPeriodMonths;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

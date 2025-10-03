@@ -48,19 +48,19 @@ public class DistributorAuditLogController {
     @Operation(summary = "Filter distributor audit logs", description = "Returns a paginated list of distributor audit logs based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved distributor audit logs",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<DistributorAuditLogDTO>>> filterDistributorAuditLogs(
+    public Mono<ResponseEntity<PaginationResponse<DistributorAuditLogDTO>>> filterDistributorAuditLogs(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorAuditLogDTO> filterRequest) {
-        return ResponseEntity.ok(distributorAuditLogService.filterDistributorAuditLogs(filterRequest));
+        return distributorAuditLogService.filterDistributorAuditLogs(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create a new distributor audit log", description = "Creates a new distributor audit log with the provided information")
@@ -76,14 +76,14 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorAuditLogDTO>> createDistributorAuditLog(
+    public Mono<ResponseEntity<DistributorAuditLogDTO>> createDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorAuditLogDTO distributorAuditLogDTO) {
         // Ensure the distributorId in the path is used
         distributorAuditLogDTO.setDistributorId(distributorId);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(distributorAuditLogService.createDistributorAuditLog(distributorAuditLogDTO));
+        return distributorAuditLogService.createDistributorAuditLog(distributorAuditLogDTO)
+                .map(result -> ResponseEntity.status(HttpStatus.CREATED).body(result));
     }
 
     @Operation(summary = "Get distributor audit log by ID", description = "Returns a distributor audit log based on its ID")
@@ -97,13 +97,14 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @GetMapping(value = "/{auditLogId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorAuditLogDTO>> getDistributorAuditLogById(
+    public Mono<ResponseEntity<DistributorAuditLogDTO>> getDistributorAuditLogById(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor audit log to retrieve", required = true)
             @PathVariable UUID auditLogId) {
-        return ResponseEntity.ok(distributorAuditLogService.getDistributorAuditLogById(auditLogId)
-                .filter(auditLog -> auditLog.getDistributorId().equals(distributorId)));
+        return distributorAuditLogService.getDistributorAuditLogById(auditLogId)
+                .filter(auditLog -> auditLog.getDistributorId().equals(distributorId))
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Update distributor audit log", description = "Updates an existing distributor audit log with the provided information")
@@ -119,7 +120,7 @@ public class DistributorAuditLogController {
                 content = @Content)
     })
     @PutMapping(value = "/{auditLogId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorAuditLogDTO>> updateDistributorAuditLog(
+    public Mono<ResponseEntity<DistributorAuditLogDTO>> updateDistributorAuditLog(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor audit log to update", required = true)
@@ -127,7 +128,8 @@ public class DistributorAuditLogController {
             @Valid @RequestBody DistributorAuditLogDTO distributorAuditLogDTO) {
         // Ensure the distributorId in the path is used
         distributorAuditLogDTO.setDistributorId(distributorId);
-        return ResponseEntity.ok(distributorAuditLogService.updateDistributorAuditLog(auditLogId, distributorAuditLogDTO));
+        return distributorAuditLogService.updateDistributorAuditLog(auditLogId, distributorAuditLogDTO)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Delete distributor audit log", description = "Deletes a distributor audit log based on its ID")

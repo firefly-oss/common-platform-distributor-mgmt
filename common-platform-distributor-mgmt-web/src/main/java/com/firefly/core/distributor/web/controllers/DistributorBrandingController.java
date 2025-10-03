@@ -48,19 +48,19 @@ public class DistributorBrandingController {
     @Operation(summary = "Filter distributor brandings", description = "Returns a paginated list of distributor brandings based on filter criteria")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved distributor brandings",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginationResponse.class))),
+                content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<PaginationResponse<DistributorBrandingDTO>>> filterDistributorBrandings(
+    public Mono<ResponseEntity<PaginationResponse<DistributorBrandingDTO>>> filterDistributorBrandings(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody FilterRequest<DistributorBrandingDTO> filterRequest) {
-        return ResponseEntity.ok(distributorBrandingService.filterDistributorBranding(filterRequest));
+        return distributorBrandingService.filterDistributorBranding(filterRequest)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Create a new distributor branding", description = "Creates a new distributor branding with the provided information")
@@ -76,14 +76,14 @@ public class DistributorBrandingController {
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorBrandingDTO>> createDistributorBranding(
+    public Mono<ResponseEntity<DistributorBrandingDTO>> createDistributorBranding(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Valid @RequestBody DistributorBrandingDTO distributorBrandingDTO) {
         // Ensure the distributorId in the path is used
         distributorBrandingDTO.setDistributorId(distributorId);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(distributorBrandingService.createDistributorBranding(distributorBrandingDTO));
+        return distributorBrandingService.createDistributorBranding(distributorBrandingDTO)
+                .map(result -> ResponseEntity.status(HttpStatus.CREATED).body(result));
     }
 
     @Operation(summary = "Get distributor branding by ID", description = "Returns a distributor branding based on its ID")
@@ -97,13 +97,14 @@ public class DistributorBrandingController {
                 content = @Content)
     })
     @GetMapping(value = "/{brandingId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorBrandingDTO>> getDistributorBrandingById(
+    public Mono<ResponseEntity<DistributorBrandingDTO>> getDistributorBrandingById(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor branding to retrieve", required = true)
             @PathVariable UUID brandingId) {
-        return ResponseEntity.ok(distributorBrandingService.getDistributorBrandingById(brandingId)
-                .filter(branding -> branding.getDistributorId().equals(distributorId)));
+        return distributorBrandingService.getDistributorBrandingById(brandingId)
+                .filter(branding -> branding.getDistributorId().equals(distributorId))
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Update distributor branding", description = "Updates an existing distributor branding with the provided information")
@@ -119,7 +120,7 @@ public class DistributorBrandingController {
                 content = @Content)
     })
     @PutMapping(value = "/{brandingId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Mono<DistributorBrandingDTO>> updateDistributorBranding(
+    public Mono<ResponseEntity<DistributorBrandingDTO>> updateDistributorBranding(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "ID of the distributor branding to update", required = true)
@@ -127,7 +128,8 @@ public class DistributorBrandingController {
             @Valid @RequestBody DistributorBrandingDTO distributorBrandingDTO) {
         // Ensure the distributorId and brandingId in the path are used
         distributorBrandingDTO.setDistributorId(distributorId);
-        return ResponseEntity.ok(distributorBrandingService.updateDistributorBranding(brandingId, distributorBrandingDTO));
+        return distributorBrandingService.updateDistributorBranding(brandingId, distributorBrandingDTO)
+                .map(ResponseEntity::ok);
     }
 
     @Operation(summary = "Delete distributor branding", description = "Deletes a distributor branding based on its ID")

@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.distributor.interfaces.enums.DistributorActionEnum;
 import com.firefly.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -70,7 +69,6 @@ public class DistributorAuditLogDTO {
 
     private UUID userId;
 
-    @ValidDateTime
     @NotNull(message = "Timestamp is required")
     private LocalDateTime timestamp;
 }

@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -55,14 +54,12 @@ public class LendingTypeDTO {
     private Boolean isActive;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

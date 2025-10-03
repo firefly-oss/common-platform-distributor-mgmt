@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -66,13 +65,10 @@ public class ShipmentDTO {
     @Size(max = 500, message = "Shipping address cannot exceed 500 characters")
     private String shippingAddress;
     
-    @ValidDateTime
     private LocalDateTime shippingDate;
 
-    @ValidDateTime
     private LocalDateTime estimatedDeliveryDate;
 
-    @ValidDateTime
     private LocalDateTime actualDeliveryDate;
 
     @Pattern(regexp = "PENDING|SHIPPED|IN_TRANSIT|DELIVERED|CANCELLED|RETURNED",
@@ -83,14 +79,12 @@ public class ShipmentDTO {
     private String notes;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
     
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.annotations.ValidPhoneNumber;
 import com.firefly.annotations.ValidTaxId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -92,14 +91,10 @@ public class DistributorDTO {
 
     @Size(max = 10, message = "Default locale cannot exceed 10 characters")
     private String defaultLocale;
-    @ValidDateTime
     private LocalDateTime onboardedAt;
-    @ValidDateTime
     private LocalDateTime terminatedAt;
-    @ValidDateTime
     private LocalDateTime createdAt;
     private UUID createdBy;
-    @ValidDateTime
     private LocalDateTime updatedAt;
     private UUID updatedBy;
 }

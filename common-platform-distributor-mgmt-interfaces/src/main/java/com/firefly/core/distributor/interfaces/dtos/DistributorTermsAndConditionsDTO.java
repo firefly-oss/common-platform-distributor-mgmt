@@ -18,7 +18,6 @@
 package com.firefly.core.distributor.interfaces.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.firefly.annotations.ValidDateTime;
 import com.firefly.core.utils.annotations.FilterableId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -62,13 +61,10 @@ public class DistributorTermsAndConditionsDTO {
     private String version;
 
     @NotNull(message = "Effective date is required")
-    @ValidDateTime
     private LocalDateTime effectiveDate;
 
-    @ValidDateTime
     private LocalDateTime expirationDate;
 
-    @ValidDateTime
     private LocalDateTime signedDate;
 
     private UUID signedBy;
@@ -83,14 +79,12 @@ public class DistributorTermsAndConditionsDTO {
     private String notes;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID createdBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ValidDateTime
     private LocalDateTime updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
