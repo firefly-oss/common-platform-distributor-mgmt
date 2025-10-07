@@ -188,7 +188,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         if (shipmentDTO.getProductId() != null) {
             return productService.getProductById(shipmentDTO.getProductId())
                     .map(productDTO -> {
-                        shipmentDTO.setProduct(productDTO);
+                        shipmentDTO.setProductId(productDTO.getId());
                         return shipmentDTO;
                     })
                     .defaultIfEmpty(shipmentDTO);

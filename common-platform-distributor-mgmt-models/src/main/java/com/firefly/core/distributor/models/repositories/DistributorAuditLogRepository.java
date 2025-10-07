@@ -81,7 +81,7 @@ public interface DistributorAuditLogRepository extends BaseRepository<Distributo
      * @param endTime the end time of the range
      * @return a Flux of audit logs within the specified time range
      */
-    Flux<DistributorAuditLog> findByTimestampBetween(LocalDateTime startTime, LocalDateTime endTime);
+    Flux<DistributorAuditLog> findByAuditTimestampBetween(LocalDateTime startTime, LocalDateTime endTime);
     
     /**
      * Find all audit logs for a specific distributor within a time range.
@@ -91,6 +91,6 @@ public interface DistributorAuditLogRepository extends BaseRepository<Distributo
      * @param endTime the end time of the range
      * @return a Flux of audit logs for the distributor within the specified time range
      */
-    Flux<DistributorAuditLog> findByDistributorIdAndTimestampBetween(
+    Flux<DistributorAuditLog> findByDistributorIdAndAuditTimestampBetween(
             UUID distributorId, LocalDateTime startTime, LocalDateTime endTime);
 }

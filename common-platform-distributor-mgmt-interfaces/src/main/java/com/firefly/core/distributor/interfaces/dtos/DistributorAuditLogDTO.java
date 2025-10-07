@@ -61,7 +61,7 @@ public class DistributorAuditLogDTO {
     @Size(max = 50, message = "Entity ID cannot exceed 50 characters")
     private String entityId;
 
-    private JsonNode metadata;
+    private String auditMetadata;
 
     @Pattern(regexp = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$",
              message = "IP address must be a valid IPv4 or IPv6 address")
@@ -70,5 +70,5 @@ public class DistributorAuditLogDTO {
     private UUID userId;
 
     @NotNull(message = "Timestamp is required")
-    private LocalDateTime timestamp;
+    private LocalDateTime auditTimestamp;
 }

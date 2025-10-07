@@ -20,9 +20,11 @@ package com.firefly.core.distributor.web.controllers;
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.services.ShipmentService;
+import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import com.firefly.core.distributor.interfaces.dtos.ShipmentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -236,8 +238,8 @@ public class ShipmentController {
     @Operation(summary = "Get shipments by product", description = "Returns all shipments associated with a specific product")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved shipments",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = ShipmentDTO.class))),
+                content = @Content(mediaType = "application/json",
+                        array = @ArraySchema(schema = @Schema(implementation = ShipmentDTO.class)))),
         @ApiResponse(responseCode = "404", description = "Product not found", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 

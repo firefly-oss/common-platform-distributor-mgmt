@@ -58,7 +58,7 @@ public class TermsAndConditionsTemplateDTO {
     @NotBlank(message = "Template content is required")
     private String templateContent;
 
-    private JsonNode variables; // JSON defining available variables and their types
+    private String variables; // JSON defining available variables and their types
 
     @NotBlank(message = "Version is required")
     @Size(max = 50, message = "Version cannot exceed 50 characters")

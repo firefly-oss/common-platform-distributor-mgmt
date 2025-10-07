@@ -54,7 +54,7 @@ public class LendingConfiguration {
     private String description;
 
     @Column("lending_type_id")
-    private LendingType lendingType;
+    private UUID lendingTypeId;
 
     @Column("min_term_months")
     private Integer minTermMonths;

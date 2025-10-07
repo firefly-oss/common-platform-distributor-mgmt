@@ -69,7 +69,7 @@ public class ProductDTO {
     @Size(max = 255, message = "Image URL cannot exceed 255 characters")
     private String imageUrl;
 
-    private JsonNode specifications; // Using JsonNode for flexible JSON structure
+    private String specifications; // Using JsonNode for flexible JSON structure
     private Boolean isActive;
 
     private LocalDateTime createdAt;

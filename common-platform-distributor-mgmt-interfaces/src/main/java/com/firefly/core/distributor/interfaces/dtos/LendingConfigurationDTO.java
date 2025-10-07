@@ -58,7 +58,7 @@ public class LendingConfigurationDTO {
     private String description;
 
     @NotNull(message = "Lending type is required")
-    private LendingTypeDTO lendingType;
+    private UUID lendingTypeId;
 
     @NotNull(message = "Minimum term months is required")
     @Positive(message = "Minimum term months must be positive")

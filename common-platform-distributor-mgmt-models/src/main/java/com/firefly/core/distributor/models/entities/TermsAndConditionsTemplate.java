@@ -17,7 +17,6 @@
 
 package com.firefly.core.distributor.models.entities;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,7 +57,7 @@ public class TermsAndConditionsTemplate {
     private String templateContent; // Template with placeholders like {{distributorName}}, {{effectiveDate}}
 
     @Column("variables")
-    private JsonNode variables; // JSON defining available variables and their types
+    private String variables; // JSON defining available variables and their types
 
     @Column("version")
     private String version;

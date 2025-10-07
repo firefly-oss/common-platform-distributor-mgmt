@@ -47,13 +47,9 @@ public class ShipmentDTO {
     @NotNull(message = "Leasing contract ID is required")
     private UUID leasingContractId;
 
-    private LeasingContractDTO leasingContract;
-
     @FilterableId
     @NotNull(message = "Product ID is required")
     private UUID productId;
-
-    private ProductDTO product;
 
     @Size(max = 100, message = "Tracking number cannot exceed 100 characters")
     private String trackingNumber;

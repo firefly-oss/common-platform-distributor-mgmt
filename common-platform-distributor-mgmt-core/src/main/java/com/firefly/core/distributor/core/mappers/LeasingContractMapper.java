@@ -18,9 +18,10 @@
 package com.firefly.core.distributor.core.mappers;
 
 import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import com.firefly.core.distributor.models.entities.LeasingContract;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import com.firefly.core.distributor.models.entities.Product;
+import org.mapstruct.*;
 
 /**
  * Mapper for converting between LeasingContract entity and LeasingContractDTO.
@@ -34,8 +35,6 @@ public abstract class LeasingContractMapper {
      * @param leasingContract the LeasingContract entity
      * @return the LeasingContractDTO
      */
-    @Mapping(target = "product", ignore = true)
-    @Mapping(target = "lendingConfiguration", ignore = true)
     public abstract LeasingContractDTO toDto(LeasingContract leasingContract);
 
     /**
@@ -47,4 +46,9 @@ public abstract class LeasingContractMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     public abstract LeasingContract toEntity(LeasingContractDTO leasingContractDTO);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    public abstract void updateEntityFromDto(LeasingContractDTO dto, @MappingTarget LeasingContract entity);
+
 }

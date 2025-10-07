@@ -25,6 +25,7 @@ import com.firefly.core.distributor.interfaces.dtos.ProductCategoryDTO;
 import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -211,15 +212,16 @@ public class ProductController {
      * @param distributorId the ID of the distributor
      * @return the ResponseEntity with status 200 (OK) and with body the list of products
      */
-    @Operation(summary = "Get all products for a distributor", description = "Returns all products associated with a specific distributor")
+    @Operation(summary = "Get all products for a distributor",
+            description = "Returns all products associated with a specific distributor")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved products",
-                content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = ProductDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Distributor not found", 
-                content = @Content),
-        @ApiResponse(responseCode = "500", description = "Internal server error", 
-                content = @Content)
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved products",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)))),
+            @ApiResponse(responseCode = "404", description = "Distributor not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<Flux<ProductDTO>>> getProductsByDistributorId(

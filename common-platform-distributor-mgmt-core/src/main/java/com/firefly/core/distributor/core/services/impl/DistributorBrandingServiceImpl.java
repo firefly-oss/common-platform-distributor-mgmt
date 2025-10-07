@@ -64,9 +64,8 @@ public class DistributorBrandingServiceImpl implements DistributorBrandingServic
         return repository.findById(distributorBrandingId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Distributor branding not found with ID: " + distributorBrandingId)))
                 .flatMap(existingDistributorBranding -> {
-                    DistributorBranding updatedDistributorBranding = mapper.toEntity(distributorBrandingDTO);
-                    updatedDistributorBranding.setId(distributorBrandingId);
-                    return repository.save(updatedDistributorBranding);
+                    mapper.updateEntityFromDto(distributorBrandingDTO, existingDistributorBranding);
+                    return repository.save(existingDistributorBranding);
                 })
                 .map(mapper::toDTO);
     }

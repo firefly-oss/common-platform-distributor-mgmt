@@ -18,9 +18,10 @@
 package com.firefly.core.distributor.core.mappers;
 
 import com.firefly.core.distributor.interfaces.dtos.DistributorBrandingDTO;
+import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import com.firefly.core.distributor.models.entities.DistributorBranding;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
+import com.firefly.core.distributor.models.entities.Product;
+import org.mapstruct.*;
 
 /**
  * Mapper for converting between DistributorBranding entity and DistributorBrandingDTO.
@@ -43,4 +44,9 @@ public interface DistributorBrandingMapper {
      * @return the corresponding DistributorBranding entity
      */
     DistributorBranding toEntity(DistributorBrandingDTO dto);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDto(DistributorBrandingDTO dto, @MappingTarget DistributorBranding entity);
+
 }

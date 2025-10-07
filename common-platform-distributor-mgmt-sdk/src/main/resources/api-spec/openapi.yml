@@ -103,6 +103,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Template not found"
+          },
           "200": {
             "description": "Successfully retrieved template",
             "content": {
@@ -112,9 +115,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Template not found"
           },
           "500": {
             "description": "Internal server error"
@@ -160,14 +160,11 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid template data provided"
-          },
           "404": {
             "description": "Template not found"
           },
-          "500": {
-            "description": "Internal server error"
+          "409": {
+            "description": "Template name already exists"
           },
           "200": {
             "description": "Template successfully updated",
@@ -179,8 +176,11 @@
               }
             }
           },
-          "409": {
-            "description": "Template name already exists"
+          "400": {
+            "description": "Invalid template data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -204,11 +204,11 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Template successfully deleted"
-          },
           "404": {
             "description": "Template not found"
+          },
+          "204": {
+            "description": "Template successfully deleted"
           },
           "500": {
             "description": "Internal server error"
@@ -265,9 +265,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid status value"
-          },
           "200": {
             "description": "Shipment status successfully updated",
             "content": {
@@ -278,11 +275,14 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Shipment not found"
+          },
+          "400": {
+            "description": "Invalid status value"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -308,6 +308,12 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Shipment not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved shipment",
             "content": {
@@ -317,12 +323,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "404": {
-            "description": "Shipment not found"
           }
         }
       },
@@ -368,6 +368,9 @@
           "400": {
             "description": "Invalid shipment data provided"
           },
+          "404": {
+            "description": "Shipment not found"
+          },
           "200": {
             "description": "Shipment successfully updated",
             "content": {
@@ -380,9 +383,6 @@
           },
           "500": {
             "description": "Internal server error"
-          },
-          "404": {
-            "description": "Shipment not found"
           }
         }
       },
@@ -409,11 +409,11 @@
           "204": {
             "description": "Shipment successfully deleted"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Shipment not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -439,12 +439,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product category not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved product category",
             "content": {
@@ -454,6 +448,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product category not found"
           }
         }
       },
@@ -496,12 +496,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Product category not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Product category successfully updated",
             "content": {
@@ -514,6 +508,12 @@
           },
           "400": {
             "description": "Invalid product category data provided"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product category not found"
           }
         }
       },
@@ -537,14 +537,14 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product category not found"
-          },
           "204": {
             "description": "Product category successfully deleted"
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product category not found"
           }
         }
       }
@@ -580,11 +580,11 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Lending type not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -637,14 +637,14 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
+          "400": {
+            "description": "Invalid lending type data provided"
           },
           "404": {
             "description": "Lending type not found"
           },
-          "400": {
-            "description": "Invalid lending type data provided"
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -671,11 +671,11 @@
           "204": {
             "description": "Lending type successfully deleted"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Lending type not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -701,6 +701,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Leasing contract not found"
+          },
           "200": {
             "description": "Successfully retrieved leasing contract",
             "content": {
@@ -713,9 +716,6 @@
           },
           "500": {
             "description": "Internal server error"
-          },
-          "404": {
-            "description": "Leasing contract not found"
           }
         }
       },
@@ -758,11 +758,14 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Internal server error"
+          "404": {
+            "description": "Leasing contract not found"
           },
           "400": {
             "description": "Invalid leasing contract data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           },
           "200": {
             "description": "Leasing contract successfully updated",
@@ -773,9 +776,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Leasing contract not found"
           }
         }
       },
@@ -802,11 +802,11 @@
           "204": {
             "description": "Leasing contract successfully deleted"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Leasing contract not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -845,9 +845,6 @@
           "404": {
             "description": "Terms and conditions not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved terms and conditions",
             "content": {
@@ -857,6 +854,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -912,6 +912,9 @@
           "404": {
             "description": "Terms and conditions not found"
           },
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Terms and conditions successfully updated",
             "content": {
@@ -921,9 +924,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           },
           "400": {
             "description": "Invalid terms and conditions data provided"
@@ -1013,11 +1013,11 @@
               }
             }
           },
-          "404": {
-            "description": "Distributor simulation not found"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor simulation not found"
           }
         }
       },
@@ -1070,12 +1070,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Distributor simulation not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Distributor simulation successfully updated",
             "content": {
@@ -1088,6 +1082,12 @@
           },
           "400": {
             "description": "Invalid distributor simulation data provided"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor simulation not found"
           }
         }
       },
@@ -1121,11 +1121,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor simulation not found"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor simulation not found"
           },
           "204": {
             "description": "Distributor simulation successfully deleted"
@@ -1174,12 +1174,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Lending configuration not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved lending configuration",
             "content": {
@@ -1189,6 +1183,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Lending configuration not found"
           }
         }
       },
@@ -1251,15 +1251,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid lending configuration data provided"
-          },
-          "404": {
-            "description": "Lending configuration not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Lending configuration successfully updated",
             "content": {
@@ -1269,6 +1260,15 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "400": {
+            "description": "Invalid lending configuration data provided"
+          },
+          "404": {
+            "description": "Lending configuration not found"
           }
         }
       },
@@ -1312,14 +1312,14 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Lending configuration not found"
+          "204": {
+            "description": "Lending configuration successfully deleted"
           },
           "500": {
             "description": "Internal server error"
           },
-          "204": {
-            "description": "Lending configuration successfully deleted"
+          "404": {
+            "description": "Lending configuration not found"
           }
         }
       }
@@ -1355,6 +1355,9 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Internal server error"
+          },
           "404": {
             "description": "Product not found"
           },
@@ -1367,9 +1370,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       },
@@ -1422,8 +1422,8 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Product not found"
+          "400": {
+            "description": "Invalid product data provided"
           },
           "200": {
             "description": "Product successfully updated",
@@ -1435,11 +1435,11 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid product data provided"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product not found"
           }
         }
       },
@@ -1473,14 +1473,14 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product not found"
-          },
           "204": {
             "description": "Product successfully deleted"
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product not found"
           }
         }
       }
@@ -1596,11 +1596,11 @@
           "404": {
             "description": "Distributor operation not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "400": {
             "description": "Invalid distributor operation data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -1634,14 +1634,14 @@
           }
         ],
         "responses": {
+          "204": {
+            "description": "Distributor operation successfully deleted"
+          },
           "404": {
             "description": "Distributor operation not found"
           },
           "500": {
             "description": "Internal server error"
-          },
-          "204": {
-            "description": "Distributor operation successfully deleted"
           }
         }
       }
@@ -1680,6 +1680,9 @@
           "404": {
             "description": "Distributor branding not found"
           },
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved distributor branding",
             "content": {
@@ -1689,9 +1692,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       },
@@ -1744,11 +1744,11 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Distributor branding not found"
-          },
           "400": {
             "description": "Invalid distributor branding data provided"
+          },
+          "404": {
+            "description": "Distributor branding not found"
           },
           "200": {
             "description": "Distributor branding successfully updated",
@@ -1798,11 +1798,11 @@
           "404": {
             "description": "Distributor branding not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "204": {
             "description": "Distributor branding successfully deleted"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -1838,12 +1838,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
-          "404": {
-            "description": "Distributor audit log not found"
-          },
           "200": {
             "description": "Successfully retrieved distributor audit log",
             "content": {
@@ -1853,6 +1847,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Distributor audit log not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -1918,11 +1918,11 @@
           "400": {
             "description": "Invalid distributor audit log data provided"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Distributor audit log not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -1956,14 +1956,14 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Distributor audit log successfully deleted"
+          "404": {
+            "description": "Distributor audit log not found"
           },
           "500": {
             "description": "Internal server error"
           },
-          "404": {
-            "description": "Distributor audit log not found"
+          "204": {
+            "description": "Distributor audit log successfully deleted"
           }
         }
       }
@@ -1989,12 +1989,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved distributor",
             "content": {
@@ -2004,6 +1998,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       },
@@ -2046,15 +2046,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Distributor not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "400": {
-            "description": "Invalid distributor data provided"
-          },
           "200": {
             "description": "Distributor successfully updated",
             "content": {
@@ -2064,6 +2055,15 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid distributor data provided"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       },
@@ -2087,14 +2087,14 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor not found"
-          },
           "500": {
             "description": "Internal server error"
           },
           "204": {
             "description": "Distributor successfully deleted"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       }
@@ -2142,14 +2142,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid template or variables provided"
-          },
           "404": {
             "description": "Template not found"
-          },
-          "500": {
-            "description": "Internal server error"
           },
           "200": {
             "description": "Successfully generated preview",
@@ -2158,6 +2152,12 @@
 
               }
             }
+          },
+          "400": {
+            "description": "Invalid template or variables provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2239,11 +2239,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid template data provided"
-          },
-          "500": {
-            "description": "Internal server error"
+          "409": {
+            "description": "Template name already exists"
           },
           "201": {
             "description": "Template successfully created",
@@ -2255,8 +2252,11 @@
               }
             }
           },
-          "409": {
-            "description": "Template name already exists"
+          "400": {
+            "description": "Invalid template data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2338,6 +2338,9 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "Invalid shipment data provided"
+          },
           "201": {
             "description": "Shipment successfully created",
             "content": {
@@ -2347,9 +2350,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid shipment data provided"
           },
           "500": {
             "description": "Internal server error"
@@ -2420,11 +2420,11 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "400": {
             "description": "Invalid product category data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2438,9 +2438,6 @@
         "description": "Returns all lending types",
         "operationId": "getAllLendingTypes",
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved lending types",
             "content": {
@@ -2450,6 +2447,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -2482,9 +2482,6 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "201": {
             "description": "Lending type successfully created",
             "content": {
@@ -2497,6 +2494,9 @@
           },
           "400": {
             "description": "Invalid lending type data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2541,8 +2541,8 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
+          "404": {
+            "description": "Leasing contract not found"
           },
           "400": {
             "description": "Invalid approval request"
@@ -2557,8 +2557,8 @@
               }
             }
           },
-          "404": {
-            "description": "Leasing contract not found"
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2650,11 +2650,11 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "400": {
             "description": "Invalid leasing contract data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2771,12 +2771,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid filter criteria provided"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved distributor terms and conditions",
             "content": {
@@ -2784,6 +2778,12 @@
 
               }
             }
+          },
+          "400": {
+            "description": "Invalid filter criteria provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2809,9 +2809,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved terms and conditions",
             "content": {
@@ -2821,6 +2818,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -2863,12 +2863,6 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
-          "400": {
-            "description": "Invalid terms and conditions data provided"
-          },
           "201": {
             "description": "Terms and conditions successfully created",
             "content": {
@@ -2878,6 +2872,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "400": {
+            "description": "Invalid terms and conditions data provided"
           }
         }
       }
@@ -2925,9 +2925,6 @@
           "400": {
             "description": "Invalid filter criteria provided"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved distributor simulations",
             "content": {
@@ -2935,6 +2932,9 @@
 
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -3014,9 +3014,6 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "409": {
             "description": "Distributor simulation already exists for this application"
           },
@@ -3032,6 +3029,9 @@
           },
           "400": {
             "description": "Invalid distributor simulation data provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -3106,14 +3106,14 @@
               }
             }
           },
-          "404": {
-            "description": "Lending configuration not found"
+          "400": {
+            "description": "Invalid leasing contract data provided"
           },
           "500": {
             "description": "Internal server error"
           },
-          "400": {
-            "description": "Invalid leasing contract data provided"
+          "404": {
+            "description": "Lending configuration not found"
           }
         }
       }
@@ -3168,12 +3168,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid filter criteria provided"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved lending configurations",
             "content": {
@@ -3181,6 +3175,12 @@
 
               }
             }
+          },
+          "400": {
+            "description": "Invalid filter criteria provided"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -3216,11 +3216,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product not found"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product not found"
           },
           "200": {
             "description": "Successfully retrieved lending configurations",
@@ -3283,9 +3283,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid lending configuration data provided"
-          },
           "201": {
             "description": "Lending configuration successfully created",
             "content": {
@@ -3298,6 +3295,9 @@
           },
           "500": {
             "description": "Internal server error"
+          },
+          "400": {
+            "description": "Invalid lending configuration data provided"
           }
         }
       }
@@ -3385,16 +3385,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductDTO"
+                  }
                 }
               }
             }
           },
-          "404": {
-            "description": "Distributor not found"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       },
@@ -3588,6 +3591,9 @@
           "required": true
         },
         "responses": {
+          "409": {
+            "description": "Distributor operation already exists for this location"
+          },
           "201": {
             "description": "Distributor operation successfully created",
             "content": {
@@ -3598,14 +3604,11 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "400": {
             "description": "Invalid distributor operation data provided"
           },
-          "409": {
-            "description": "Distributor operation already exists for this location"
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -3707,15 +3710,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Invalid distributor branding data provided"
-          },
-          "404": {
-            "description": "Distributor not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "201": {
             "description": "Distributor branding successfully created",
             "content": {
@@ -3725,6 +3719,15 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid distributor branding data provided"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       }
@@ -3826,15 +3829,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Distributor not found"
-          },
-          "400": {
-            "description": "Invalid distributor audit log data provided"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "201": {
             "description": "Distributor audit log successfully created",
             "content": {
@@ -3844,6 +3838,15 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid distributor audit log data provided"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       }
@@ -3925,6 +3928,9 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "Invalid distributor data provided"
+          },
           "201": {
             "description": "Distributor successfully created",
             "content": {
@@ -3937,9 +3943,6 @@
           },
           "500": {
             "description": "Internal server error"
-          },
-          "400": {
-            "description": "Invalid distributor data provided"
           }
         }
       }
@@ -3987,9 +3990,6 @@
           "404": {
             "description": "Template not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Template successfully set as default",
             "content": {
@@ -3999,6 +3999,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4043,6 +4046,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Template not found"
+          },
           "200": {
             "description": "Default status successfully removed",
             "content": {
@@ -4052,9 +4058,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Template not found"
           },
           "500": {
             "description": "Internal server error"
@@ -4161,12 +4164,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Template not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Template successfully activated",
             "content": {
@@ -4176,6 +4173,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Template not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4242,9 +4245,6 @@
           "404": {
             "description": "Terms and conditions not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Status successfully updated",
             "content": {
@@ -4254,6 +4254,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4311,9 +4314,6 @@
           "404": {
             "description": "Terms and conditions not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Terms and conditions successfully signed",
             "content": {
@@ -4323,6 +4323,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4380,9 +4383,6 @@
           "404": {
             "description": "Terms and conditions not found"
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Terms and conditions successfully deactivated",
             "content": {
@@ -4392,6 +4392,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4446,6 +4449,12 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Terms and conditions not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Terms and conditions successfully activated",
             "content": {
@@ -4455,12 +4464,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Terms and conditions not found"
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       }
@@ -4524,12 +4527,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor simulation not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Simulation status successfully updated",
             "content": {
@@ -4539,6 +4536,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor simulation not found"
           }
         }
       }
@@ -4593,9 +4596,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor simulation not found"
-          },
           "200": {
             "description": "Distributor simulation successfully deactivated",
             "content": {
@@ -4608,6 +4608,9 @@
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor simulation not found"
           }
         }
       }
@@ -4662,12 +4665,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor simulation not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Distributor simulation successfully activated",
             "content": {
@@ -4677,6 +4674,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor simulation not found"
           }
         }
       }
@@ -4800,12 +4803,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor operation not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Distributor operation successfully activated",
             "content": {
@@ -4815,6 +4812,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Distributor operation not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4839,6 +4842,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Template not found"
+          },
           "200": {
             "description": "Successfully retrieved template",
             "content": {
@@ -4848,9 +4854,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Template not found"
           },
           "500": {
             "description": "Internal server error"
@@ -4878,9 +4881,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved default template",
             "content": {
@@ -4890,6 +4890,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           },
           "404": {
             "description": "Default template not found for category"
@@ -4906,9 +4909,6 @@
         "description": "Returns all default templates",
         "operationId": "getDefaultTemplates",
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved default templates",
             "content": {
@@ -4918,6 +4918,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -4942,6 +4945,9 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved active templates",
             "content": {
@@ -4951,9 +4957,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       }
@@ -5003,6 +5006,9 @@
         "description": "Returns all active templates",
         "operationId": "getActiveTemplates",
         "responses": {
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved active templates",
             "content": {
@@ -5012,9 +5018,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       }
@@ -5039,9 +5042,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved simulations",
             "content": {
@@ -5051,6 +5051,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5076,9 +5079,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved simulations",
             "content": {
@@ -5088,6 +5088,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5113,9 +5116,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Simulation not found"
-          },
           "200": {
             "description": "Successfully retrieved simulation",
             "content": {
@@ -5128,6 +5128,9 @@
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Simulation not found"
           }
         }
       }
@@ -5152,6 +5155,12 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Shipment not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved shipment",
             "content": {
@@ -5161,12 +5170,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "404": {
-            "description": "Shipment not found"
           }
         }
       }
@@ -5231,21 +5234,24 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product not found"
-          },
           "200": {
             "description": "Successfully retrieved shipments",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShipmentDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShipmentDTO"
+                  }
                 }
               }
             }
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product not found"
           }
         }
       }
@@ -5271,6 +5277,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Leasing contract not found"
+          },
           "200": {
             "description": "Successfully retrieved shipments",
             "content": {
@@ -5283,9 +5292,6 @@
           },
           "500": {
             "description": "Internal server error"
-          },
-          "404": {
-            "description": "Leasing contract not found"
           }
         }
       }
@@ -5310,12 +5316,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product category not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved product category",
             "content": {
@@ -5325,6 +5325,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product category not found"
           }
         }
       }
@@ -5338,6 +5344,9 @@
         "description": "Returns all active product categories",
         "operationId": "getActiveProductCategories",
         "responses": {
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved active product categories",
             "content": {
@@ -5347,9 +5356,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       }
@@ -5384,11 +5390,11 @@
               }
             }
           },
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "Lending type not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5478,9 +5484,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product not found"
-          },
           "200": {
             "description": "Successfully retrieved leasing contracts",
             "content": {
@@ -5493,6 +5496,9 @@
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Product not found"
           }
         }
       }
@@ -5558,9 +5564,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor not found"
-          },
           "200": {
             "description": "Successfully retrieved leasing contracts",
             "content": {
@@ -5573,6 +5576,9 @@
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       }
@@ -5598,6 +5604,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Leasing contract not found"
+          },
           "200": {
             "description": "Successfully retrieved leasing contract",
             "content": {
@@ -5610,9 +5619,6 @@
           },
           "500": {
             "description": "Internal server error"
-          },
-          "404": {
-            "description": "Leasing contract not found"
           }
         }
       }
@@ -5647,9 +5653,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved terms and conditions",
             "content": {
@@ -5659,6 +5662,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5684,9 +5690,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "404": {
             "description": "No terms and conditions found"
           },
@@ -5699,6 +5702,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5724,9 +5730,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully checked active signed terms",
             "content": {
@@ -5736,6 +5739,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5771,6 +5777,9 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Internal server error"
+          },
           "200": {
             "description": "Successfully retrieved expiring terms and conditions",
             "content": {
@@ -5780,9 +5789,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       }
@@ -5891,9 +5897,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved active distributor simulations",
             "content": {
@@ -5903,6 +5906,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -5998,9 +6004,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product or default configuration not found"
-          },
           "200": {
             "description": "Successfully retrieved default lending configuration",
             "content": {
@@ -6010,6 +6013,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Product or default configuration not found"
           },
           "500": {
             "description": "Internal server error"
@@ -6048,9 +6054,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Product not found"
-          },
           "500": {
             "description": "Internal server error"
           },
@@ -6063,6 +6066,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Product not found"
           }
         }
       }
@@ -6098,9 +6104,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor or category not found"
-          },
           "200": {
             "description": "Successfully retrieved products",
             "content": {
@@ -6113,6 +6116,9 @@
           },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor or category not found"
           }
         }
       }
@@ -6148,11 +6154,11 @@
               }
             }
           },
-          "404": {
-            "description": "Distributor not found"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           }
         }
       }
@@ -6235,9 +6241,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Internal server error"
-          },
           "200": {
             "description": "Successfully retrieved active distributor operations",
             "content": {
@@ -6247,6 +6250,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -6272,11 +6278,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Distributor not found"
-          },
           "500": {
             "description": "Internal server error"
+          },
+          "404": {
+            "description": "Distributor not found"
           },
           "200": {
             "description": "Successfully retrieved lending configurations",
@@ -6294,9 +6300,6 @@
   },
   "components": {
     "schemas": {
-      "JsonNode": {
-        "type": "object"
-      },
       "TermsAndConditionsTemplateDTO": {
         "required": [
           "category",
@@ -6329,7 +6332,7 @@
             "type": "string"
           },
           "variables": {
-            "$ref": "#/components/schemas/JsonNode"
+            "type": "string"
           },
           "version": {
             "maxLength": 50,
@@ -6374,339 +6377,6 @@
           }
         }
       },
-      "LeasingContractDTO": {
-        "required": [
-          "contractId",
-          "distributorId",
-          "downPayment",
-          "endDate",
-          "lendingConfigurationId",
-          "monthlyPayment",
-          "partyId",
-          "productId",
-          "startDate",
-          "totalAmount"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "contractId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "partyId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "distributorId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "productId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "lendingConfigurationId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "product": {
-            "$ref": "#/components/schemas/ProductDTO"
-          },
-          "lendingConfiguration": {
-            "$ref": "#/components/schemas/LendingConfigurationDTO"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "monthlyPayment": {
-            "type": "number"
-          },
-          "downPayment": {
-            "type": "number"
-          },
-          "totalAmount": {
-            "type": "number"
-          },
-          "status": {
-            "pattern": "DRAFT|PENDING|APPROVED|ACTIVE|COMPLETED|CANCELLED|TERMINATED",
-            "type": "string"
-          },
-          "approvalDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "approvedBy": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "termsConditions": {
-            "maxLength": 5000,
-            "minLength": 0,
-            "type": "string"
-          },
-          "notes": {
-            "maxLength": 1000,
-            "minLength": 0,
-            "type": "string"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          },
-          "createdBy": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          }
-        }
-      },
-      "LendingConfigurationDTO": {
-        "required": [
-          "defaultTermMonths",
-          "lendingType",
-          "maxTermMonths",
-          "minTermMonths",
-          "name",
-          "productId"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "productId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "description": {
-            "maxLength": 1000,
-            "minLength": 0,
-            "type": "string"
-          },
-          "lendingType": {
-            "$ref": "#/components/schemas/LendingTypeDTO"
-          },
-          "minTermMonths": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "maxTermMonths": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "defaultTermMonths": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "minDownPaymentPercentage": {
-            "type": "number"
-          },
-          "defaultDownPaymentPercentage": {
-            "type": "number"
-          },
-          "interestRate": {
-            "type": "number"
-          },
-          "processingFeePercentage": {
-            "type": "number"
-          },
-          "earlyTerminationFeePercentage": {
-            "type": "number"
-          },
-          "latePaymentFeeAmount": {
-            "type": "number"
-          },
-          "gracePeriodDays": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "isDefault": {
-            "type": "boolean"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "termsConditions": {
-            "maxLength": 5000,
-            "minLength": 0,
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedBy": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
-      "LendingTypeDTO": {
-        "required": [
-          "code",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "name": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "code": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "description": {
-            "maxLength": 1000,
-            "minLength": 0,
-            "type": "string"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          },
-          "createdBy": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          }
-        }
-      },
-      "ProductDTO": {
-        "required": [
-          "distributorId",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true
-          },
-          "distributorId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "description": {
-            "maxLength": 1000,
-            "minLength": 0,
-            "type": "string"
-          },
-          "sku": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "modelNumber": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "manufacturer": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "imageUrl": {
-            "maxLength": 255,
-            "minLength": 0,
-            "type": "string"
-          },
-          "specifications": {
-            "$ref": "#/components/schemas/JsonNode"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedBy": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
       "ShipmentDTO": {
         "required": [
           "leasingContractId",
@@ -6724,15 +6394,9 @@
             "type": "string",
             "format": "uuid"
           },
-          "leasingContract": {
-            "$ref": "#/components/schemas/LeasingContractDTO"
-          },
           "productId": {
             "type": "string",
             "format": "uuid"
-          },
-          "product": {
-            "$ref": "#/components/schemas/ProductDTO"
           },
           "trackingNumber": {
             "maxLength": 100,
@@ -6815,6 +6479,162 @@
             "type": "string"
           },
           "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          }
+        }
+      },
+      "LendingTypeDTO": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "code": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          }
+        }
+      },
+      "LeasingContractDTO": {
+        "required": [
+          "contractId",
+          "distributorId",
+          "downPayment",
+          "endDate",
+          "lendingConfigurationId",
+          "monthlyPayment",
+          "partyId",
+          "productId",
+          "startDate",
+          "totalAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "contractId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "partyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "distributorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lendingConfigurationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "monthlyPayment": {
+            "type": "number"
+          },
+          "downPayment": {
+            "type": "number"
+          },
+          "totalAmount": {
+            "type": "number"
+          },
+          "status": {
+            "pattern": "DRAFT|PENDING|APPROVED|ACTIVE|COMPLETED|CANCELLED|TERMINATED",
+            "type": "string"
+          },
+          "approvalDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approvedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "termsConditions": {
+            "maxLength": 5000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "notes": {
             "maxLength": 1000,
             "minLength": 0,
             "type": "string"
@@ -7105,6 +6925,178 @@
           }
         }
       },
+      "LendingConfigurationDTO": {
+        "required": [
+          "defaultTermMonths",
+          "lendingTypeId",
+          "maxTermMonths",
+          "minTermMonths",
+          "name",
+          "productId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "lendingTypeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minTermMonths": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxTermMonths": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "defaultTermMonths": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minDownPaymentPercentage": {
+            "type": "number"
+          },
+          "defaultDownPaymentPercentage": {
+            "type": "number"
+          },
+          "interestRate": {
+            "type": "number"
+          },
+          "processingFeePercentage": {
+            "type": "number"
+          },
+          "earlyTerminationFeePercentage": {
+            "type": "number"
+          },
+          "latePaymentFeeAmount": {
+            "type": "number"
+          },
+          "gracePeriodDays": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "termsConditions": {
+            "maxLength": 5000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ProductDTO": {
+        "required": [
+          "distributorId",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "distributorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "sku": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "modelNumber": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "manufacturer": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "imageUrl": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "specifications": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "DistributorOperationDTO": {
         "required": [
           "administrativeDivisionId",
@@ -7229,10 +7221,10 @@
       "DistributorAuditLogDTO": {
         "required": [
           "action",
+          "auditTimestamp",
           "distributorId",
           "entity",
-          "entityId",
-          "timestamp"
+          "entityId"
         ],
         "type": "object",
         "properties": {
@@ -7263,8 +7255,8 @@
             "minLength": 0,
             "type": "string"
           },
-          "metadata": {
-            "$ref": "#/components/schemas/JsonNode"
+          "auditMetadata": {
+            "type": "string"
           },
           "ipAddress": {
             "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$",
@@ -7274,7 +7266,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "timestamp": {
+          "auditTimestamp": {
             "type": "string",
             "format": "date-time"
           }

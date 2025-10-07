@@ -18,6 +18,7 @@
 package com.firefly.core.distributor.core.services.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firefly.core.distributor.core.services.DistributorService;
 import com.firefly.core.distributor.core.services.DistributorTermsAndConditionsService;
 import com.firefly.core.distributor.core.services.TermsAndConditionsGenerationService;
@@ -97,7 +98,13 @@ public class TermsAndConditionsGenerationServiceImpl implements TermsAndConditio
     @Override
     public Mono<Boolean> validateVariables(TermsAndConditionsTemplateDTO template, Map<String, Object> variables) {
         return Mono.fromCallable(() -> {
-            JsonNode variableDefinitions = template.getVariables();
+            String variablesJson = template.getVariables();
+            if (variablesJson == null || variablesJson.trim().isEmpty()) {
+                return true; // No validation needed if no variables defined
+            }
+            
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode variableDefinitions = objectMapper.readTree(variablesJson);
             if (variableDefinitions == null || variableDefinitions.isEmpty()) {
                 return true; // No validation needed if no variables defined
             }

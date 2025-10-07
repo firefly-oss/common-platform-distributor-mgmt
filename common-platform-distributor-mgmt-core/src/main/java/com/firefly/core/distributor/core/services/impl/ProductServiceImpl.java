@@ -69,9 +69,8 @@ public class ProductServiceImpl implements ProductService {
         return repository.findById(productId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Product not found with ID: " + productId)))
                 .flatMap(existingProduct -> {
-                    Product updatedProduct = mapper.toEntity(productDTO);
-                    updatedProduct.setId(productId);
-                    return repository.save(updatedProduct);
+                    mapper.updateEntityFromDto(productDTO, existingProduct);
+                    return repository.save(existingProduct);
                 })
                 .map(mapper::toDTO);
     }

@@ -56,8 +56,8 @@ public class DistributorAuditLog {
     @Column("entity_id")
     private String entityId;
 
-    @Column("metadata")
-    private JsonNode metadata;
+    @Column("audit_metadata")
+    private String auditMetadata;
 
     @Column("ip_address")
     private String ipAddress;
@@ -65,6 +65,6 @@ public class DistributorAuditLog {
     @Column("user_id")
     private UUID userId;
 
-    @Column("timestamp")
-    private LocalDateTime timestamp;
+    @Column("audit_timestamp")
+    private LocalDateTime auditTimestamp;
 }

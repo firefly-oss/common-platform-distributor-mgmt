@@ -34,8 +34,6 @@ public abstract class ShipmentMapper {
      * @param shipment the Shipment entity
      * @return the ShipmentDTO
      */
-    @Mapping(target = "product", ignore = true)
-    @Mapping(target = "leasingContract", ignore = true)
     public abstract ShipmentDTO toDto(Shipment shipment);
 
     /**

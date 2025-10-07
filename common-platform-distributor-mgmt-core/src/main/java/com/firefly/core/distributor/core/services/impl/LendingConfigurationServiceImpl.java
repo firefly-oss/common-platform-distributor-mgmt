@@ -69,9 +69,8 @@ public class LendingConfigurationServiceImpl implements LendingConfigurationServ
         return repository.findById(lendingConfigurationId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Lending configuration not found with ID: " + lendingConfigurationId)))
                 .flatMap(existingConfig -> {
-                    LendingConfiguration updatedConfig = mapper.toEntity(lendingConfigurationDTO);
-                    updatedConfig.setId(lendingConfigurationId);
-                    return repository.save(updatedConfig);
+                    mapper.updateEntityFromDto(lendingConfigurationDTO, existingConfig);
+                    return repository.save(existingConfig);
                 })
                 .map(mapper::toDTO);
     }

@@ -18,8 +18,10 @@
 package com.firefly.core.distributor.core.mappers;
 
 import com.firefly.core.distributor.interfaces.dtos.LendingConfigurationDTO;
+import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
 import com.firefly.core.distributor.models.entities.LendingConfiguration;
-import org.mapstruct.Mapper;
+import com.firefly.core.distributor.models.entities.Product;
+import org.mapstruct.*;
 
 /**
  * Mapper for converting between LendingConfiguration entity and LendingConfigurationDTO.
@@ -42,4 +44,9 @@ public interface LendingConfigurationMapper {
      * @return the LendingConfiguration entity
      */
     LendingConfiguration toEntity(LendingConfigurationDTO lendingConfigurationDTO);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDto(LendingConfigurationDTO dto, @MappingTarget LendingConfiguration entity);
+
 }

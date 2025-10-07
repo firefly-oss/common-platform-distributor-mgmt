@@ -70,13 +70,8 @@ public class LeasingContractServiceImpl implements LeasingContractService {
     public Mono<LeasingContractDTO> updateLeasingContract(UUID id, LeasingContractDTO leasingContractDTO) {
         return leasingContractRepository.findById(id)
                 .flatMap(existingContract -> {
-                    LeasingContract updatedContract = leasingContractMapper.toEntity(leasingContractDTO);
-                    updatedContract.setId(id);
-                    updatedContract.setCreatedAt(existingContract.getCreatedAt());
-                    updatedContract.setCreatedBy(existingContract.getCreatedBy());
-                    updatedContract.setUpdatedAt(LocalDateTime.now());
-                    
-                    return leasingContractRepository.save(updatedContract);
+                    leasingContractMapper.updateEntityFromDto(leasingContractDTO, existingContract);
+                    return leasingContractRepository.save(existingContract);
                 })
                 .map(leasingContractMapper::toDto)
                 .flatMap(this::enrichLeasingContractDTO);
@@ -179,7 +174,7 @@ public class LeasingContractServiceImpl implements LeasingContractService {
         if (leasingContractDTO.getProductId() != null) {
             return productService.getProductById(leasingContractDTO.getProductId())
                     .map(productDTO -> {
-                        leasingContractDTO.setProduct(productDTO);
+                        leasingContractDTO.setProductId(productDTO.getId());
                         return leasingContractDTO;
                     })
                     .defaultIfEmpty(leasingContractDTO);

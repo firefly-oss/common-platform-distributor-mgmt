@@ -22,9 +22,7 @@ import com.firefly.core.distributor.models.entities.Product;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -42,8 +40,12 @@ public abstract class ProductMapper {
      * @param product the Product entity
      * @return the ProductDTO
      */
-    @Mapping(source = "specifications", target = "specifications", qualifiedByName = "stringToJsonNode")
     public abstract ProductDTO toDTO(Product product);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    public abstract void updateEntityFromDto(ProductDTO dto, @MappingTarget Product entity);
+
 
     /**
      * Convert a ProductDTO to a Product entity.
@@ -51,7 +53,6 @@ public abstract class ProductMapper {
      * @param productDTO the ProductDTO
      * @return the Product entity
      */
-    @Mapping(source = "specifications", target = "specifications", qualifiedByName = "jsonNodeToString")
     public abstract Product toEntity(ProductDTO productDTO);
 
     /**
@@ -89,4 +90,6 @@ public abstract class ProductMapper {
             return "{}";
         }
     }
+
+
 }

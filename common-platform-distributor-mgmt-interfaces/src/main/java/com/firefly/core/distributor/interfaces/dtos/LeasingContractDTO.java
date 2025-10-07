@@ -63,15 +63,9 @@ public class LeasingContractDTO {
     @NotNull(message = "Lending configuration ID is required")
     private UUID lendingConfigurationId;
 
-    private ProductDTO product;
-
-    private LendingConfigurationDTO lendingConfiguration;
-
-    @ValidDate
     @NotNull(message = "Start date is required")
     private LocalDate startDate;
 
-    @ValidDate
     @NotNull(message = "End date is required")
     private LocalDate endDate;
 
