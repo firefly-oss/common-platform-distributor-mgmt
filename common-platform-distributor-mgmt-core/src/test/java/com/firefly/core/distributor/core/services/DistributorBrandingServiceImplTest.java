@@ -98,7 +98,7 @@ public class DistributorBrandingServiceImplTest {
     void updateDistributorBranding_WhenDistributorBrandingExists_ShouldUpdateAndReturnDistributorBranding() {
         // Arrange
         when(repository.findById(any(UUID.class))).thenReturn(Mono.just(distributorBranding));
-        when(mapper.toEntity(any(DistributorBrandingDTO.class))).thenReturn(distributorBranding);
+        doNothing().when(mapper).updateEntityFromDto(any(DistributorBrandingDTO.class), any(DistributorBranding.class));
         when(repository.save(any(DistributorBranding.class))).thenReturn(Mono.just(distributorBranding));
         when(mapper.toDTO(any(DistributorBranding.class))).thenReturn(distributorBrandingDTO);
 
@@ -109,7 +109,7 @@ public class DistributorBrandingServiceImplTest {
 
         // Verify
         verify(repository).findById(testId);
-        verify(mapper).toEntity(distributorBrandingDTO);
+        verify(mapper).updateEntityFromDto(distributorBrandingDTO, distributorBranding);
         verify(repository).save(distributorBranding);
         verify(mapper).toDTO(distributorBranding);
     }
