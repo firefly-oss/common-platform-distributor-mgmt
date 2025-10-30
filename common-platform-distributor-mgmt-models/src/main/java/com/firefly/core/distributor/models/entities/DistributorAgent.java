@@ -91,8 +91,11 @@ public class DistributorAgent {
     @Column("state")
     private String state;
 
-    @Column("country_code")
-    private String countryCode;
+    @Column("country_id")
+    private UUID countryId;
+
+    @Column("administrative_division_id")
+    private UUID administrativeDivisionId; // References administrative_division(division_id) from master data
 
     @Column("hire_date")
     private LocalDate hireDate;

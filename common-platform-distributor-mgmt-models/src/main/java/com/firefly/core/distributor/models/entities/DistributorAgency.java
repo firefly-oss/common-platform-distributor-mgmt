@@ -81,6 +81,38 @@ public class DistributorAgency {
     @Column("email")
     private String email;
 
+    // Fiscal and Legal Information
+    @Column("legal_entity_name")
+    private String legalEntityName;
+
+    @Column("legal_form_id")
+    private UUID legalFormId; // References legal_form(legal_form_id) from master data
+
+    @Column("tax_id")
+    private String taxId;
+
+    @Column("registration_number")
+    private String registrationNumber;
+
+    @Column("vat_number")
+    private String vatNumber;
+
+    @Column("fiscal_address_line")
+    private String fiscalAddressLine;
+
+    @Column("fiscal_postal_code")
+    private String fiscalPostalCode;
+
+    @Column("fiscal_city")
+    private String fiscalCity;
+
+    @Column("fiscal_state")
+    private String fiscalState;
+
+    @Column("fiscal_country_id")
+    private UUID fiscalCountryId;
+
+    // Operational Flags
     @Column("is_headquarters")
     private Boolean isHeadquarters;
 

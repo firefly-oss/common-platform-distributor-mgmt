@@ -78,6 +78,36 @@ public class DistributorAgencyDTO {
     @Size(max = 255, message = "Email must not exceed 255 characters")
     private String email;
 
+    // Fiscal and Legal Information
+    @Size(max = 255, message = "Legal entity name must not exceed 255 characters")
+    private String legalEntityName;
+
+    private UUID legalFormId; // References legal_form(legal_form_id) from master data
+
+    @Size(max = 100, message = "Tax ID must not exceed 100 characters")
+    private String taxId;
+
+    @Size(max = 100, message = "Registration number must not exceed 100 characters")
+    private String registrationNumber;
+
+    @Size(max = 100, message = "VAT number must not exceed 100 characters")
+    private String vatNumber;
+
+    @Size(max = 255, message = "Fiscal address line must not exceed 255 characters")
+    private String fiscalAddressLine;
+
+    @Size(max = 20, message = "Fiscal postal code must not exceed 20 characters")
+    private String fiscalPostalCode;
+
+    @Size(max = 100, message = "Fiscal city must not exceed 100 characters")
+    private String fiscalCity;
+
+    @Size(max = 100, message = "Fiscal state must not exceed 100 characters")
+    private String fiscalState;
+
+    private UUID fiscalCountryId;
+
+    // Operational Flags
     private Boolean isHeadquarters;
     private Boolean isActive;
     private LocalDateTime openedAt;

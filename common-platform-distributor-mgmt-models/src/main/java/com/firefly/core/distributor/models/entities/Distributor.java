@@ -83,8 +83,8 @@ public class Distributor {
     @Column("state")
     private String state;
 
-    @Column("country_code")
-    private String countryCode;
+    @Column("country_id")
+    private UUID countryId;
 
     @Column("is_active")
     private Boolean isActive;

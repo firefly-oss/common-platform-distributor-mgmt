@@ -92,8 +92,9 @@ public class DistributorAgentDTO {
     @Size(max = 100, message = "State must not exceed 100 characters")
     private String state;
 
-    @Size(max = 2, message = "Country code must be 2 characters")
-    private String countryCode;
+    private UUID countryId;
+
+    private UUID administrativeDivisionId; // References administrative_division(division_id) from master data
 
     private LocalDate hireDate;
     private LocalDate terminationDate;

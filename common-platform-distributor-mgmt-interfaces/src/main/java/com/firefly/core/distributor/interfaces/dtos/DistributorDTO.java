@@ -82,8 +82,7 @@ public class DistributorDTO {
     @Size(max = 100, message = "State cannot exceed 100 characters")
     private String state;
 
-    @Pattern(regexp = "^[A-Z]{2}$", message = "Country code must be a valid 2-letter ISO code")
-    private String countryCode;
+    private UUID countryId;
     private Boolean isActive;
     private Boolean isTestDistributor;
 
