@@ -116,6 +116,7 @@ erDiagram
     Distributor ||--o{ DistributorContract : "has"
     Distributor ||--o{ DistributorConfiguration : "has"
     Distributor ||--o{ DistributorTermsAndConditions : "agrees to"
+    Distributor ||--o{ DistributorAuthorizedTerritory : "authorized in"
     Distributor ||--o{ DistributorOperation : "operates in"
     Distributor ||--o{ DistributorSimulation : "tracks"
     Distributor ||--o{ DistributorAgency : "has"
@@ -127,6 +128,7 @@ erDiagram
     %% Agent and Agency Relationships
     DistributorAgent ||--o{ DistributorAgentAgency : "assigned to"
     DistributorAgency ||--o{ DistributorAgentAgency : "has"
+    DistributorAgency ||--o{ AgencyPaymentMethod : "has payment methods"
     AgentRole ||--o{ DistributorAgentAgency : "defines"
     DistributorAgency ||--o{ DistributorOperation : "manages"
     DistributorAgency ||--o{ DistributorSimulation : "tracks"
@@ -169,13 +171,29 @@ erDiagram
         String postalCode
         String city
         String state
-        String countryCode
+        UUID countryId FK
         Boolean isActive
         Boolean isTestDistributor
         String timeZone
         String defaultLocale
         LocalDateTime onboardedAt
         LocalDateTime terminatedAt
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    DistributorAuthorizedTerritory {
+        UUID id PK
+        UUID distributorId FK
+        UUID countryId FK
+        UUID administrativeDivisionId FK
+        String authorizationLevel
+        Boolean isActive
+        LocalDateTime authorizedFrom
+        LocalDateTime authorizedUntil
+        String notes
         LocalDateTime createdAt
         UUID createdBy
         LocalDateTime updatedAt
@@ -199,7 +217,8 @@ erDiagram
         String postalCode
         String city
         String state
-        String countryCode
+        UUID countryId FK
+        UUID administrativeDivisionId FK
         LocalDate hireDate
         LocalDate terminationDate
         Boolean isActive
@@ -223,10 +242,50 @@ erDiagram
         String state
         String phoneNumber
         String email
+        String legalEntityName
+        UUID legalFormId FK
+        String taxId
+        String registrationNumber
+        String vatNumber
+        String fiscalAddressLine
+        String fiscalPostalCode
+        String fiscalCity
+        String fiscalState
+        UUID fiscalCountryId FK
         Boolean isHeadquarters
         Boolean isActive
         LocalDateTime openedAt
         LocalDateTime closedAt
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    AgencyPaymentMethod {
+        UUID id PK
+        UUID agencyId FK
+        String paymentMethodType
+        String paymentProvider
+        String accountHolderName
+        String accountNumber
+        String routingNumber
+        String swiftCode
+        String iban
+        String bankName
+        String bankBranch
+        String bankAddress
+        String currencyCode
+        String walletId
+        String walletPhone
+        String walletEmail
+        Boolean isPrimary
+        Boolean isVerified
+        LocalDateTime verifiedAt
+        UUID verifiedBy
+        Boolean isActive
+        String notes
+        String metadata
         LocalDateTime createdAt
         UUID createdBy
         LocalDateTime updatedAt
@@ -582,12 +641,14 @@ erDiagram
 - **DistributorConfiguration**: Dynamic hierarchical configuration system supporting distributor, agency, and agent-level settings
 - **DistributorTermsAndConditions**: Distributor-specific agreement management with digital signature support
 - **TermsAndConditionsTemplate**: Reusable templates for agreement generation with variable substitution
+- **DistributorAuthorizedTerritory**: Geographic authorization control defining where distributors are allowed to operate (countries/regions)
 
 #### Agent and Agency Management
-- **DistributorAgent**: Employee/representative profiles with complete contact and organizational information
-- **DistributorAgency**: Physical or logical locations/branches where distributors operate
+- **DistributorAgent**: Employee/representative profiles with complete contact and organizational information, assigned to specific administrative divisions
+- **DistributorAgency**: Physical or logical locations/branches where distributors operate with complete fiscal and legal information (references legal_form from master data)
 - **DistributorAgentAgency**: Many-to-many relationship mapping agents to agencies with specific roles
 - **AgentRole**: Reference table defining agent role types (Manager, Sales Agent, Supervisor, etc.)
+- **AgencyPaymentMethod**: Payment methods configured for agency disbursements (bank accounts, digital wallets, wire transfers)
 
 #### Configuration System
 - **ConfigurationScope**: Reference table defining configuration hierarchy levels (Distributor, Agency, Agent)
@@ -607,6 +668,16 @@ erDiagram
 #### Operations and Tracking
 - **DistributorOperation**: Multi-country operational coverage tracking with geographic authorization
 - **DistributorSimulation**: Integration tracking with external application systems for simulation management
+
+### Master Data References
+
+This service integrates with the **common-platform-reference-master-data** service for the following reference data:
+
+- **Country** (`country_id`): Referenced by Distributor, DistributorAgent, DistributorAgency, DistributorAuthorizedTerritory
+- **AdministrativeDivision** (`division_id`): Referenced by DistributorAgent, DistributorAgency, DistributorAuthorizedTerritory
+- **LegalForm** (`legal_form_id`): Referenced by DistributorAgency for legal entity type classification
+
+These references ensure data consistency and enable proper geographic and legal entity management across the platform.
 
 ### Enumerations
 
