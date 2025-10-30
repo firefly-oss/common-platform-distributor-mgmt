@@ -53,10 +53,10 @@ public interface DistributorRepository extends BaseRepository<Distributor, UUID>
     Flux<Distributor> findByIsTestDistributorTrue();
     
     /**
-     * Find distributors by country code.
+     * Find distributors by country ID.
      *
-     * @param countryCode the ISO 3166-1 alpha-2 country code
+     * @param countryId the UUID of the country from master data
      * @return a Flux of distributors in the specified country
      */
-    Flux<Distributor> findByCountryCode(String countryCode);
+    Flux<Distributor> findByCountryId(UUID countryId);
 }
