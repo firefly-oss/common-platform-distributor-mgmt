@@ -22,7 +22,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.mappers.ShipmentMapper;
 import com.firefly.core.distributor.core.services.ProductService;
 import com.firefly.core.distributor.core.services.ShipmentService;
-import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.interfaces.dtos.LendingContractDTO;
 import com.firefly.core.distributor.interfaces.dtos.ShipmentDTO;
 import com.firefly.core.distributor.models.entities.Shipment;
 import com.firefly.core.distributor.models.repositories.ShipmentRepository;
@@ -67,15 +67,15 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     @Transactional
-    public Mono<ShipmentDTO> createShipmentForApprovedContract(LeasingContractDTO leasingContractDTO) {
+    public Mono<ShipmentDTO> createShipmentForApprovedContract(LendingContractDTO lendingContractDTO) {
         // Create a new shipment for the approved contract
         ShipmentDTO shipmentDTO = ShipmentDTO.builder()
-                .leasingContractId(leasingContractDTO.getId())
-                .productId(leasingContractDTO.getProductId())
+                .lendingContractId(lendingContractDTO.getId())
+                .productId(lendingContractDTO.getProductId())
                 .status("PENDING")
-                .createdBy(leasingContractDTO.getApprovedBy())
+                .createdBy(lendingContractDTO.getApprovedBy())
                 .build();
-        
+
         return createShipment(shipmentDTO);
     }
 
@@ -116,8 +116,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Flux<ShipmentDTO> getShipmentsByLeasingContractId(UUID leasingContractId) {
-        return shipmentRepository.findByLeasingContractId(leasingContractId)
+    public Flux<ShipmentDTO> getShipmentsByLendingContractId(UUID lendingContractId) {
+        return shipmentRepository.findByLendingContractId(lendingContractId)
                 .map(shipmentMapper::toDto)
                 .flatMap(this::enrichShipmentDTO);
     }

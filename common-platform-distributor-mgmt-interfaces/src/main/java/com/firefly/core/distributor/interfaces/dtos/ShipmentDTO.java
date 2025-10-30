@@ -44,8 +44,8 @@ public class ShipmentDTO {
     private UUID id;
 
     @FilterableId
-    @NotNull(message = "Leasing contract ID is required")
-    private UUID leasingContractId;
+    @NotNull(message = "Lending contract ID is required")
+    private UUID lendingContractId;
 
     @FilterableId
     @NotNull(message = "Product ID is required")

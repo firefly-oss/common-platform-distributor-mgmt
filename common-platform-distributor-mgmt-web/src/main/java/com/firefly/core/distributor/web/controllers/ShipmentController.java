@@ -221,11 +221,11 @@ public class ShipmentController {
                 content = @Content)
     })
     @GetMapping(value = "/leasing-contract/{leasingContractId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Flux<ShipmentDTO>>> getShipmentsByLeasingContractId(
+    public Mono<ResponseEntity<Flux<ShipmentDTO>>> getShipmentsByLendingContractId(
             @Parameter(description = "ID of the leasing contract", required = true)
             @PathVariable UUID leasingContractId) {
         
-        Flux<ShipmentDTO> shipments = shipmentService.getShipmentsByLeasingContractId(leasingContractId);
+        Flux<ShipmentDTO> shipments = shipmentService.getShipmentsByLendingContractId(leasingContractId);
         return Mono.just(ResponseEntity.ok(shipments));
     }
 

@@ -25,7 +25,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for converting between Shipment entity and ShipmentDTO.
  */
-@Mapper(componentModel = "spring", uses = {ProductMapper.class, LeasingContractMapper.class})
+@Mapper(componentModel = "spring", uses = {ProductMapper.class, LendingContractMapper.class})
 public abstract class ShipmentMapper {
 
     /**

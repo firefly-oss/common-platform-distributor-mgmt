@@ -19,7 +19,7 @@ package com.firefly.core.distributor.core.services;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
-import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.interfaces.dtos.LendingContractDTO;
 import com.firefly.core.distributor.interfaces.dtos.ShipmentDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,12 +39,12 @@ public interface ShipmentService {
     Mono<ShipmentDTO> createShipment(ShipmentDTO shipmentDTO);
 
     /**
-     * Create a shipment for an approved leasing contract.
+     * Create a shipment for an approved lending contract.
      *
-     * @param leasingContractDTO the approved leasing contract
+     * @param lendingContractDTO the approved lending contract
      * @return a Mono completing when the operation is done
      */
-    Mono<ShipmentDTO> createShipmentForApprovedContract(LeasingContractDTO leasingContractDTO);
+    Mono<ShipmentDTO> createShipmentForApprovedContract(LendingContractDTO lendingContractDTO);
 
     /**
      * Update an existing shipment.
@@ -80,12 +80,12 @@ public interface ShipmentService {
     Mono<ShipmentDTO> getShipmentByTrackingNumber(String trackingNumber);
 
     /**
-     * Get all shipments for a leasing contract.
+     * Get all shipments for a lending contract.
      *
-     * @param leasingContractId the ID of the leasing contract
+     * @param lendingContractId the ID of the lending contract
      * @return a Flux of shipments
      */
-    Flux<ShipmentDTO> getShipmentsByLeasingContractId(UUID leasingContractId);
+    Flux<ShipmentDTO> getShipmentsByLendingContractId(UUID lendingContractId);
 
     /**
      * Get all shipments for a product.

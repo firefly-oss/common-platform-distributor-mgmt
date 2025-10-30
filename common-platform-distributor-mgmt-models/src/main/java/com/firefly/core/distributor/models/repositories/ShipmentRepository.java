@@ -31,12 +31,12 @@ import java.util.UUID;
 public interface ShipmentRepository extends BaseRepository<Shipment, UUID> {
 
     /**
-     * Find all shipments by leasing contract ID.
+     * Find all shipments by lending contract ID.
      *
-     * @param leasingContractId the leasing contract ID
+     * @param lendingContractId the lending contract ID
      * @return a Flux of shipments
      */
-    Flux<Shipment> findByLeasingContractId(UUID leasingContractId);
+    Flux<Shipment> findByLendingContractId(UUID lendingContractId);
 
     /**
      * Find all shipments by product ID.
@@ -63,13 +63,13 @@ public interface ShipmentRepository extends BaseRepository<Shipment, UUID> {
     Flux<Shipment> findByStatus(String status);
 
     /**
-     * Find all shipments by leasing contract ID and status.
+     * Find all shipments by lending contract ID and status.
      *
-     * @param leasingContractId the leasing contract ID
+     * @param lendingContractId the lending contract ID
      * @param status the status
      * @return a Flux of shipments
      */
-    Flux<Shipment> findByLeasingContractIdAndStatus(UUID leasingContractId, String status);
+    Flux<Shipment> findByLendingContractIdAndStatus(UUID lendingContractId, String status);
 
     /**
      * Find all shipments by product ID and status.

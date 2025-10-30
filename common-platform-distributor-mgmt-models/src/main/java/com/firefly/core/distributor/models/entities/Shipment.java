@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Entity representing a shipment of a product after a leasing contract is approved.
+ * Entity representing a shipment of a product after a lending contract is approved.
  * Maps to the 'shipment' table in the database.
  */
 @Data
@@ -44,8 +44,8 @@ public class Shipment {
     @Id
     private UUID id;
 
-    @Column("leasing_contract_id")
-    private UUID leasingContractId;
+    @Column("lending_contract_id")
+    private UUID lendingContractId;
 
     @Column("product_id")
     private UUID productId;
