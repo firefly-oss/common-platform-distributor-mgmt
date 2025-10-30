@@ -110,26 +110,50 @@ The service manages a comprehensive data model with the following core entities 
 
 ```mermaid
 erDiagram
+    %% Core Distributor Relationships
     Distributor ||--o{ DistributorBranding : "has"
     Distributor ||--o{ DistributorAuditLog : "has"
-    Distributor ||--o{ Product : "offers"
-    Distributor ||--o{ LeasingContract : "manages"
+    Distributor ||--o{ DistributorContract : "has"
+    Distributor ||--o{ DistributorConfiguration : "has"
+    Distributor ||--o{ DistributorTermsAndConditions : "agrees to"
     Distributor ||--o{ DistributorOperation : "operates in"
     Distributor ||--o{ DistributorSimulation : "tracks"
-    Distributor ||--o{ DistributorTermsAndConditions : "agrees to"
-    
-    Product ||--o{ LendingConfiguration : "has"
+    Distributor ||--o{ DistributorAgency : "has"
+    Distributor ||--o{ DistributorAgent : "employs"
+    Distributor ||--o{ Product : "offers"
+    Distributor ||--o{ DistributorProductCatalog : "catalogs"
+    Distributor ||--o{ LendingContract : "manages"
+
+    %% Agent and Agency Relationships
+    DistributorAgent ||--o{ DistributorAgentAgency : "assigned to"
+    DistributorAgency ||--o{ DistributorAgentAgency : "has"
+    AgentRole ||--o{ DistributorAgentAgency : "defines"
+    DistributorAgency ||--o{ DistributorOperation : "manages"
+    DistributorAgency ||--o{ DistributorSimulation : "tracks"
+    DistributorAgent ||--o{ DistributorSimulation : "creates"
+    DistributorAgent ||--o{ LendingContract : "originates"
+
+    %% Configuration Relationships
+    ConfigurationScope ||--o{ DistributorConfiguration : "defines scope"
+    ConfigurationDataType ||--o{ DistributorConfiguration : "defines type"
+    DistributorAgency ||--o{ DistributorConfiguration : "has"
+    DistributorAgent ||--o{ DistributorConfiguration : "has"
+
+    %% Product Relationships
     Product }|--|| ProductCategory : "belongs to"
-    Product ||--o{ LeasingContract : "included in"
+    Product ||--o{ DistributorProductCatalog : "listed in"
+    Product ||--o{ LendingConfiguration : "has"
+    Product ||--o{ LendingContract : "included in"
     Product ||--o{ Shipment : "shipped as"
-    
-    LendingConfiguration }|--|| LendingType : "has type"
-    LendingConfiguration ||--o{ LeasingContract : "used in"
-    
-    LeasingContract ||--o{ Shipment : "has"
-    
+
+    %% Lending Relationships
+    LendingType ||--o{ LendingConfiguration : "defines"
+    LendingConfiguration ||--o{ LendingContract : "used in"
+    LendingContract ||--o{ Shipment : "has"
+
+    %% Terms and Conditions Relationships
     TermsAndConditionsTemplate ||--o{ DistributorTermsAndConditions : "generates"
-    
+
     Distributor {
         UUID id PK
         String externalCode
@@ -138,7 +162,8 @@ erDiagram
         String taxId
         String registrationNumber
         String websiteUrl
-        String supportPhoneNumber
+        String phoneNumber
+        String email
         String supportEmail
         String addressLine
         String postalCode
@@ -149,12 +174,169 @@ erDiagram
         Boolean isTestDistributor
         String timeZone
         String defaultLocale
+        LocalDateTime onboardedAt
+        LocalDateTime terminatedAt
         LocalDateTime createdAt
         UUID createdBy
         LocalDateTime updatedAt
         UUID updatedBy
     }
-    
+
+    DistributorAgent {
+        UUID id PK
+        UUID distributorId FK
+        UUID userId FK
+        String employeeCode
+        String firstName
+        String lastName
+        String email
+        String phoneNumber
+        String avatarUrl
+        String department
+        String unit
+        String jobTitle
+        String addressLine
+        String postalCode
+        String city
+        String state
+        String countryCode
+        LocalDate hireDate
+        LocalDate terminationDate
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    DistributorAgency {
+        UUID id PK
+        UUID distributorId FK
+        String name
+        String code
+        String description
+        UUID countryId FK
+        UUID administrativeDivisionId FK
+        String addressLine
+        String postalCode
+        String city
+        String state
+        String phoneNumber
+        String email
+        Boolean isHeadquarters
+        Boolean isActive
+        LocalDateTime openedAt
+        LocalDateTime closedAt
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    DistributorAgentAgency {
+        UUID id PK
+        UUID agentId FK
+        UUID agencyId FK
+        UUID roleId FK
+        Boolean isPrimaryAgency
+        Boolean isActive
+        LocalDateTime assignedAt
+        LocalDateTime unassignedAt
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    AgentRole {
+        UUID id PK
+        String code
+        String name
+        String description
+        Integer level
+        Boolean isActive
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
+
+    DistributorConfiguration {
+        UUID id PK
+        UUID distributorId FK
+        UUID agencyId FK
+        UUID agentId FK
+        UUID scopeId FK
+        String configKey
+        String configValue
+        UUID dataTypeId FK
+        String category
+        String description
+        Boolean isSensitive
+        Boolean isOverridable
+        Boolean isActive
+        LocalDateTime effectiveFrom
+        LocalDateTime effectiveUntil
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    ConfigurationScope {
+        UUID id PK
+        String code
+        String name
+        String description
+        Integer level
+        Boolean isActive
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
+
+    ConfigurationDataType {
+        UUID id PK
+        String code
+        String name
+        String description
+        Boolean isActive
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+    }
+
+    DistributorContract {
+        UUID id PK
+        UUID distributorId FK
+        String contractNumber
+        String contractType
+        String title
+        String description
+        String status
+        LocalDate startDate
+        LocalDate endDate
+        LocalDate renewalDate
+        Integer noticePeriodDays
+        Boolean autoRenewal
+        BigDecimal contractValue
+        String currencyCode
+        String paymentTerms
+        String specialTerms
+        String financialConditions
+        String productConditions
+        String serviceLevelAgreements
+        String metadata
+        LocalDate signedDate
+        UUID signedBy
+        LocalDate approvedDate
+        UUID approvedBy
+        LocalDate terminatedDate
+        UUID terminatedBy
+        String terminationReason
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
     DistributorBranding {
         UUID id PK
         UUID distributorId FK
@@ -171,143 +353,39 @@ erDiagram
         LocalDateTime updatedAt
         UUID updatedBy
     }
-    
+
     DistributorAuditLog {
         UUID id PK
         UUID distributorId FK
         DistributorActionEnum action
         String entity
         String entityId
-        JsonNode metadata
+        String auditMetadata
         String ipAddress
         UUID userId
-        LocalDateTime timestamp
+        LocalDateTime auditTimestamp
     }
-    
-    Product {
-        UUID id PK
-        UUID distributorId FK
-        String name
-        String description
-        String sku
-        String modelNumber
-        String manufacturer
-        ProductCategoryDTO category
-        String imageUrl
-        JsonNode specifications
-        Boolean isActive
-        LocalDateTime createdAt
-        UUID createdBy
-        LocalDateTime updatedAt
-        UUID updatedBy
-    }
-    
-    ProductCategory {
-        UUID id PK
-        String name
-        String code
-        String description
-        Boolean isActive
-        LocalDateTime createdAt
-        UUID createdBy
-        LocalDateTime updatedAt
-        UUID updatedBy
-    }
-    
-    LendingType {
-        UUID id PK
-        String name
-        String code
-        String description
-        Boolean isActive
-        LocalDateTime createdAt
-        UUID createdBy
-        LocalDateTime updatedAt
-        UUID updatedBy
-    }
-    
-    LendingConfiguration {
-        UUID id PK
-        UUID productId FK
-        String name
-        String description
-        LendingTypeDTO lendingType
-        Integer minTermMonths
-        Integer maxTermMonths
-        Integer defaultTermMonths
-        BigDecimal minInterestRate
-        BigDecimal maxInterestRate
-        BigDecimal defaultInterestRate
-        BigDecimal minAmount
-        BigDecimal maxAmount
-        BigDecimal defaultAmount
-        Integer gracePeriodDays
-        Boolean isDefault
-        Boolean isActive
-        String termsConditions
-        LocalDateTime createdAt
-        UUID createdBy
-        LocalDateTime updatedAt
-        UUID updatedBy
-    }
-    
-    LeasingContract {
-        UUID id PK
-        UUID contractId
-        UUID partyId
-        UUID distributorId FK
-        UUID productId FK
-        UUID lendingConfigurationId FK
-        LocalDate startDate
-        LocalDate endDate
-        BigDecimal monthlyPayment
-        BigDecimal downPayment
-        BigDecimal totalAmount
-        String status
-        LocalDateTime approvalDate
-        UUID approvedBy
-        String termsConditions
-        String notes
-        LocalDateTime createdAt
-        UUID createdBy
-        LocalDateTime updatedAt
-        UUID updatedBy
-    }
-    
-    Shipment {
-        UUID id PK
-        UUID leasingContractId FK
-        UUID productId FK
-        String trackingNumber
-        String carrier
-        String shippingAddress
-        LocalDateTime shippingDate
-        LocalDateTime estimatedDeliveryDate
-        LocalDateTime actualDeliveryDate
-        String status
-        String notes
-        LocalDateTime createdAt
-        UUID createdBy
-        LocalDateTime updatedAt
-        UUID updatedBy
-    }
-    
+
     DistributorOperation {
         UUID id PK
         UUID distributorId FK
-        UUID countryId
-        UUID administrativeDivisionId
+        UUID countryId FK
+        UUID administrativeDivisionId FK
+        UUID managedByAgentId FK
+        UUID agencyId FK
         Boolean isActive
         LocalDateTime createdAt
         UUID createdBy
         LocalDateTime updatedAt
         UUID updatedBy
     }
-    
+
     DistributorSimulation {
         UUID id PK
         UUID distributorId FK
-        UUID applicationId
+        UUID applicationId FK
+        UUID agentId FK
+        UUID agencyId FK
         String simulationStatus
         String notes
         Boolean isActive
@@ -316,7 +394,7 @@ erDiagram
         LocalDateTime updatedAt
         UUID updatedBy
     }
-    
+
     DistributorTermsAndConditions {
         UUID id PK
         UUID distributorId FK
@@ -336,14 +414,14 @@ erDiagram
         LocalDateTime updatedAt
         UUID updatedBy
     }
-    
+
     TermsAndConditionsTemplate {
         UUID id PK
         String name
         String description
         String category
         String templateContent
-        JsonNode variables
+        String variables
         String version
         Boolean isDefault
         Boolean isActive
@@ -355,23 +433,180 @@ erDiagram
         LocalDateTime updatedAt
         UUID updatedBy
     }
+
+    Product {
+        UUID id PK
+        UUID distributorId FK
+        String name
+        String description
+        String sku
+        String modelNumber
+        String manufacturer
+        UUID categoryId FK
+        String imageUrl
+        String specifications
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    ProductCategory {
+        UUID id PK
+        String name
+        String code
+        String description
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    DistributorProductCatalog {
+        UUID id PK
+        UUID distributorId FK
+        UUID productId FK
+        String catalogCode
+        String displayName
+        String customDescription
+        Boolean isFeatured
+        Boolean isAvailable
+        LocalDateTime availabilityStartDate
+        LocalDateTime availabilityEndDate
+        Integer displayOrder
+        Integer minQuantity
+        Integer maxQuantity
+        Boolean shippingAvailable
+        BigDecimal shippingCost
+        Integer shippingTimeDays
+        String specialConditions
+        String metadata
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    LendingType {
+        UUID id PK
+        String name
+        String code
+        String description
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    LendingConfiguration {
+        UUID id PK
+        UUID productId FK
+        String name
+        String description
+        UUID lendingTypeId FK
+        Integer minTermMonths
+        Integer maxTermMonths
+        Integer defaultTermMonths
+        BigDecimal minDownPaymentPercentage
+        BigDecimal defaultDownPaymentPercentage
+        BigDecimal interestRate
+        BigDecimal processingFeePercentage
+        BigDecimal earlyTerminationFeePercentage
+        BigDecimal latePaymentFeeAmount
+        Integer gracePeriodDays
+        Boolean isDefault
+        Boolean isActive
+        String termsConditions
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    LendingContract {
+        UUID id PK
+        UUID contractId FK
+        UUID partyId FK
+        UUID distributorId FK
+        UUID productId FK
+        UUID lendingConfigurationId FK
+        UUID originatingAgentId FK
+        UUID agencyId FK
+        LocalDate startDate
+        LocalDate endDate
+        BigDecimal monthlyPayment
+        BigDecimal downPayment
+        BigDecimal totalAmount
+        String status
+        LocalDateTime approvalDate
+        UUID approvedBy
+        String termsConditions
+        String notes
+        Boolean isActive
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
+
+    Shipment {
+        UUID id PK
+        UUID lendingContractId FK
+        UUID productId FK
+        String trackingNumber
+        String carrier
+        String shippingAddress
+        LocalDateTime shippingDate
+        LocalDateTime estimatedDeliveryDate
+        LocalDateTime actualDeliveryDate
+        String status
+        String notes
+        LocalDateTime createdAt
+        UUID createdBy
+        LocalDateTime updatedAt
+        UUID updatedBy
+    }
 ```
 
 ### Entity Descriptions
 
-- **Distributor**: Core entity representing financial service distributors
-- **DistributorBranding**: Customizable branding configurations per distributor
-- **DistributorAuditLog**: Comprehensive audit trail for all distributor activities
-- **Product**: Products offered by distributors with detailed specifications
-- **ProductCategory**: Hierarchical categorization of products
-- **LendingType**: Different types of lending products (personal loans, mortgages, etc.)
-- **LendingConfiguration**: Flexible lending parameters and configurations
-- **LeasingContract**: Contract management for leased products
-- **Shipment**: Physical product shipment tracking
-- **DistributorOperation**: Multi-country operational coverage tracking
-- **DistributorSimulation**: Integration tracking with external application systems
-- **DistributorTermsAndConditions**: Distributor-specific agreement management
-- **TermsAndConditionsTemplate**: Reusable templates for agreement generation
+#### Core Distributor Entities
+- **Distributor**: Core entity representing financial service distributors with complete profile information
+- **DistributorBranding**: Customizable branding configurations per distributor (logos, colors, themes)
+- **DistributorAuditLog**: Comprehensive audit trail for all distributor activities and changes
+- **DistributorContract**: Contracts between the platform and distributors with financial and operational terms
+- **DistributorConfiguration**: Dynamic hierarchical configuration system supporting distributor, agency, and agent-level settings
+- **DistributorTermsAndConditions**: Distributor-specific agreement management with digital signature support
+- **TermsAndConditionsTemplate**: Reusable templates for agreement generation with variable substitution
+
+#### Agent and Agency Management
+- **DistributorAgent**: Employee/representative profiles with complete contact and organizational information
+- **DistributorAgency**: Physical or logical locations/branches where distributors operate
+- **DistributorAgentAgency**: Many-to-many relationship mapping agents to agencies with specific roles
+- **AgentRole**: Reference table defining agent role types (Manager, Sales Agent, Supervisor, etc.)
+
+#### Configuration System
+- **ConfigurationScope**: Reference table defining configuration hierarchy levels (Distributor, Agency, Agent)
+- **ConfigurationDataType**: Reference table defining data types for configuration values (String, Number, Boolean, JSON, etc.)
+
+#### Product Management
+- **Product**: Products offered by distributors with detailed specifications and metadata
+- **ProductCategory**: Hierarchical categorization of products for organization and filtering
+- **DistributorProductCatalog**: Distributor-specific product catalog with custom pricing, availability, and shipping configurations
+
+#### Lending and Contracts
+- **LendingType**: Different types of lending products (Lease, Rental, Loan, Financing, etc.)
+- **LendingConfiguration**: Flexible lending parameters and configurations per product
+- **LendingContract**: Contract management for lending agreements with customer and agent tracking
+- **Shipment**: Physical product shipment tracking with carrier and delivery information
+
+#### Operations and Tracking
+- **DistributorOperation**: Multi-country operational coverage tracking with geographic authorization
+- **DistributorSimulation**: Integration tracking with external application systems for simulation management
 
 ### Enumerations
 
