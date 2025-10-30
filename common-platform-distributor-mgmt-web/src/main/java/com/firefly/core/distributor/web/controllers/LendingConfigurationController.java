@@ -19,10 +19,10 @@ package com.firefly.core.distributor.web.controllers;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
-import com.firefly.core.distributor.core.services.LeasingContractService;
+import com.firefly.core.distributor.core.services.LendingContractService;
 import com.firefly.core.distributor.core.services.LendingConfigurationService;
 import com.firefly.core.distributor.core.services.LendingTypeService;
-import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.interfaces.dtos.LendingContractDTO;
 import com.firefly.core.distributor.interfaces.dtos.LendingConfigurationDTO;
 import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,9 +55,9 @@ public class LendingConfigurationController {
     
     @Autowired
     private LendingTypeService lendingTypeService;
-    
+
     @Autowired
-    private LeasingContractService leasingContractService;
+    private LendingContractService lendingContractService;
 
     /**
      * POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/filter : Filter lending configurations
@@ -340,20 +340,20 @@ public class LendingConfigurationController {
     }
     
     /**
-     * POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}/create-contract : Create a leasing contract from a lending configuration
+     * POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}/create-contract : Create a lending contract from a lending configuration
      *
      * @param distributorId the ID of the distributor
      * @param productId the ID of the product
      * @param configId the ID of the lending configuration
-     * @param leasingContractDTO the leasing contract details
-     * @return the ResponseEntity with status 201 (Created) and with body the new leasing contract
+     * @param lendingContractDTO the lending contract details
+     * @return the ResponseEntity with status 201 (Created) and with body the new lending contract
      */
-    @Operation(summary = "Create a leasing contract from a lending configuration", description = "Creates a new leasing contract based on a specific lending configuration")
+    @Operation(summary = "Create a lending contract from a lending configuration", description = "Creates a new lending contract based on a specific lending configuration")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Leasing contract successfully created",
+        @ApiResponse(responseCode = "201", description = "Lending contract successfully created",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid leasing contract data provided", 
+                schema = @Schema(implementation = LendingContractDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid lending contract data provided", 
                 content = @Content),
         @ApiResponse(responseCode = "404", description = "Lending configuration not found", 
                 content = @Content),
@@ -361,24 +361,24 @@ public class LendingConfigurationController {
                 content = @Content)
     })
     @PostMapping(value = "/{configId}/create-contract", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<LeasingContractDTO>> createLeasingContractFromConfiguration(
+    public Mono<ResponseEntity<LendingContractDTO>> createLendingContractFromConfiguration(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId,
             @Parameter(description = "ID of the product", required = true)
             @PathVariable UUID productId,
             @Parameter(description = "ID of the lending configuration", required = true)
             @PathVariable UUID configId,
-            @Valid @RequestBody LeasingContractDTO leasingContractDTO) {
+            @Valid @RequestBody LendingContractDTO lendingContractDTO) {
         
         // Set the required fields from the path variables
-        leasingContractDTO.setDistributorId(distributorId);
-        leasingContractDTO.setProductId(productId);
-        leasingContractDTO.setLendingConfigurationId(configId);
+        lendingContractDTO.setDistributorId(distributorId);
+        lendingContractDTO.setProductId(productId);
+        lendingContractDTO.setLendingConfigurationId(configId);
         
         // Set initial status
-        leasingContractDTO.setStatus("PENDING");
+        lendingContractDTO.setStatus("PENDING");
         
-        return leasingContractService.createLeasingContract(leasingContractDTO)
+        return lendingContractService.createLendingContract(lendingContractDTO)
                 .map(result -> ResponseEntity.status(HttpStatus.CREATED).body(result));
     }
 
