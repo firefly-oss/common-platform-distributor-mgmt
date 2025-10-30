@@ -53,6 +53,9 @@ public class DistributorOperationDTO {
     @Positive(message = "Administrative Division ID must be positive")
     private UUID administrativeDivisionId;
 
+    private UUID managedByAgentId;
+    private UUID agencyId;
+
     private Boolean isActive;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

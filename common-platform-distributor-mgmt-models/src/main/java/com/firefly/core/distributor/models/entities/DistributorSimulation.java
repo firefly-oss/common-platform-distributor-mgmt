@@ -50,6 +50,12 @@ public class DistributorSimulation {
     @Column("application_id")
     private UUID applicationId;
 
+    @Column("agent_id")
+    private UUID agentId;
+
+    @Column("agency_id")
+    private UUID agencyId;
+
     @Column("simulation_status")
     private String simulationStatus;
 

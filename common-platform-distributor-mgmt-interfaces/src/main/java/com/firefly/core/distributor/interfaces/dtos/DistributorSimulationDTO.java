@@ -50,6 +50,9 @@ public class DistributorSimulationDTO {
     @Positive(message = "Application ID must be positive")
     private UUID applicationId;
 
+    private UUID agentId;
+    private UUID agencyId;
+
     @Size(max = 50, message = "Simulation status cannot exceed 50 characters")
     private String simulationStatus;
 

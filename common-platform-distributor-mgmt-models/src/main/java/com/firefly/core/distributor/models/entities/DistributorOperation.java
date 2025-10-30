@@ -53,6 +53,12 @@ public class DistributorOperation {
     @Column("administrative_division_id")
     private UUID administrativeDivisionId;
 
+    @Column("managed_by_agent_id")
+    private UUID managedByAgentId;
+
+    @Column("agency_id")
+    private UUID agencyId;
+
     @Column("is_active")
     private Boolean isActive;
 

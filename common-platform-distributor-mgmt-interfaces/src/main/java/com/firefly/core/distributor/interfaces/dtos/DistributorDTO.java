@@ -33,7 +33,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * DTO representing a distributor in the system.
+ * Data Transfer Object for Distributor entity representing distributor organizations.
+ * Used for transferring distributor data between application layers.
  */
 @Data
 @Builder
