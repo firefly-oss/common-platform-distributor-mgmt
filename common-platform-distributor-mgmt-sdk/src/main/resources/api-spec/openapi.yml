@@ -12,14 +12,8 @@ servers:
   - url: /
     description: Local Development Environment
 tags:
-  - name: Product
-    description: API for managing distributor products
-  - name: Distributor
-    description: API for managing distributors
   - name: Lending Configuration
     description: API for managing product lending configurations
-  - name: Distributor Product Catalog
-    description: API for managing product catalog associated with distributors
   - name: Distributor Simulations
     description: API for managing distributor simulation tracking
   - name: Terms and Conditions Templates
@@ -30,36 +24,46 @@ tags:
     description: API for managing contracts associated with distributors
   - name: Product Category
     description: API for managing product categories
-  - name: Lending Contract
-    description: API for managing lending contracts
+  - name: Distributor Authorized Territories
+    description: API for managing geographic territories where distributors are authorized to operate
   - name: Agent Roles
     description: API for managing agent roles - roles that distributor agents can have
   - name: Distributor Agent Agency
     description: API for managing agent-agency relationships within a distributor
-  - name: Distributor Branding
-    description: API for managing distributor branding
   - name: Shipment
     description: API for managing shipments
-  - name: Distributor Lending Configuration
-    description: API for managing distributor-level lending configurations
   - name: Configuration Scopes
     description: API for managing configuration scopes
-  - name: Distributor Operations
-    description: API for managing distributor operational coverage
-  - name: Distributor Audit Log
-    description: API for managing distributor audit logs
   - name: Simulations
     description: API for global simulation access and management
   - name: Distributor Agencies
     description: API for managing physical agencies associated with distributors
-  - name: Distributor Agents
-    description: API for managing agents associated with distributors
   - name: Distributor Terms and Conditions
     description: API for managing distributor terms and conditions
-  - name: Configuration Data Types
-    description: API for managing configuration data types
   - name: Lending Type
     description: API for managing lending types
+  - name: Product
+    description: API for managing distributor products
+  - name: Distributor
+    description: API for managing distributors
+  - name: Distributor Product Catalog
+    description: API for managing product catalog associated with distributors
+  - name: Lending Contract
+    description: API for managing lending contracts
+  - name: Distributor Branding
+    description: API for managing distributor branding
+  - name: Distributor Lending Configuration
+    description: API for managing distributor-level lending configurations
+  - name: Distributor Operations
+    description: API for managing distributor operational coverage
+  - name: Distributor Audit Log
+    description: API for managing distributor audit logs
+  - name: Distributor Agents
+    description: API for managing agents associated with distributors
+  - name: Agency Payment Methods
+    description: API for managing payment methods for agency disbursements
+  - name: Configuration Data Types
+    description: API for managing configuration data types
 paths:
   /api/v1/terms-and-conditions-templates/{templateId}:
     get:
@@ -1674,6 +1678,119 @@ paths:
           description: Distributor branding not found
         '500':
           description: Internal server error
+  /api/v1/distributors/{distributorId}/authorized-territories/{territoryId}:
+    get:
+      tags:
+        - Distributor Authorized Territories
+      summary: Get authorized territory by ID
+      description: Retrieve a specific authorized territory for a distributor by its unique identifier
+      operationId: getById_3
+      parameters:
+        - name: distributorId
+          in: path
+          description: Unique identifier of the distributor
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: territoryId
+          in: path
+          description: Unique identifier of the territory
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Territory found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DistributorAuthorizedTerritoryDTO'
+        '404':
+          description: Territory or distributor not found
+    put:
+      tags:
+        - Distributor Authorized Territories
+      summary: Update authorized territory
+      description: Update an existing authorized territory for a distributor
+      operationId: update_3
+      parameters:
+        - name: distributorId
+          in: path
+          description: Unique identifier of the distributor
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: territoryId
+          in: path
+          description: Unique identifier of the territory
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorAuthorizedTerritoryDTO'
+        required: true
+      responses:
+        '200':
+          description: Territory successfully updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DistributorAuthorizedTerritoryDTO'
+        '400':
+          description: Invalid territory data
+        '404':
+          description: Territory or distributor not found
+    delete:
+      tags:
+        - Distributor Authorized Territories
+      summary: Delete authorized territory
+      description: Delete an authorized territory for a distributor from the system
+      operationId: delete_3
+      parameters:
+        - name: distributorId
+          in: path
+          description: Unique identifier of the distributor
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: territoryId
+          in: path
+          description: Unique identifier of the territory
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Territory successfully deleted
+        '404':
+          description: Territory or distributor not found
   /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}:
     get:
       tags:
@@ -1799,7 +1916,7 @@ paths:
         - Distributor Agents
       summary: Get agent by ID
       description: Retrieve a specific agent associated with a distributor by its unique identifier
-      operationId: getById_3
+      operationId: getById_4
       parameters:
         - name: distributorId
           in: path
@@ -1835,7 +1952,7 @@ paths:
         - Distributor Agents
       summary: Update agent
       description: Update an existing agent associated with a distributor
-      operationId: update_3
+      operationId: update_4
       parameters:
         - name: distributorId
           in: path
@@ -1879,7 +1996,7 @@ paths:
         - Distributor Agents
       summary: Delete agent
       description: Delete an agent associated with a distributor from the system
-      operationId: delete_3
+      operationId: delete_4
       parameters:
         - name: distributorId
           in: path
@@ -1912,7 +2029,7 @@ paths:
         - Distributor Agent Agency
       summary: Get agent-agency relationship by ID
       description: Returns a single agent-agency relationship
-      operationId: getById_4
+      operationId: getById_5
       parameters:
         - name: distributorId
           in: path
@@ -1950,7 +2067,7 @@ paths:
         - Distributor Agent Agency
       summary: Update an agent-agency relationship
       description: Updates an existing agent-agency relationship with the provided information
-      operationId: update_4
+      operationId: update_5
       parameters:
         - name: distributorId
           in: path
@@ -1996,7 +2113,7 @@ paths:
         - Distributor Agent Agency
       summary: Delete an agent-agency relationship
       description: Deletes an agent-agency relationship by ID
-      operationId: delete_4
+      operationId: delete_5
       parameters:
         - name: distributorId
           in: path
@@ -2031,7 +2148,7 @@ paths:
         - Distributor Agencies
       summary: Get agency by ID
       description: Retrieve a specific agency associated with a distributor by its unique identifier
-      operationId: getById_5
+      operationId: getById_6
       parameters:
         - name: distributorId
           in: path
@@ -2067,7 +2184,7 @@ paths:
         - Distributor Agencies
       summary: Update agency
       description: Update an existing agency associated with a distributor
-      operationId: update_5
+      operationId: update_6
       parameters:
         - name: distributorId
           in: path
@@ -2111,7 +2228,7 @@ paths:
         - Distributor Agencies
       summary: Delete agency
       description: Delete an agency associated with a distributor from the system
-      operationId: delete_5
+      operationId: delete_6
       parameters:
         - name: distributorId
           in: path
@@ -2242,7 +2359,7 @@ paths:
         - Configuration Scopes
       summary: Get configuration scope by ID
       description: Retrieve a specific configuration scope by its unique identifier
-      operationId: getById_6
+      operationId: getById_7
       parameters:
         - name: id
           in: path
@@ -2271,7 +2388,7 @@ paths:
         - Configuration Scopes
       summary: Update configuration scope
       description: Update an existing configuration scope
-      operationId: update_6
+      operationId: update_7
       parameters:
         - name: id
           in: path
@@ -2308,7 +2425,7 @@ paths:
         - Configuration Scopes
       summary: Delete configuration scope
       description: Delete a configuration scope from the system
-      operationId: delete_6
+      operationId: delete_7
       parameters:
         - name: id
           in: path
@@ -2334,7 +2451,7 @@ paths:
         - Configuration Data Types
       summary: Get configuration data type by ID
       description: Retrieve a specific configuration data type by its unique identifier
-      operationId: getById_7
+      operationId: getById_8
       parameters:
         - name: id
           in: path
@@ -2363,7 +2480,7 @@ paths:
         - Configuration Data Types
       summary: Update configuration data type
       description: Update an existing configuration data type
-      operationId: update_7
+      operationId: update_8
       parameters:
         - name: id
           in: path
@@ -2400,7 +2517,7 @@ paths:
         - Configuration Data Types
       summary: Delete configuration data type
       description: Delete a configuration data type from the system
-      operationId: delete_7
+      operationId: delete_8
       parameters:
         - name: id
           in: path
@@ -2426,7 +2543,7 @@ paths:
         - Agent Roles
       summary: Get agent role by ID
       description: Retrieve a specific agent role by its unique identifier
-      operationId: getById_8
+      operationId: getById_9
       parameters:
         - name: id
           in: path
@@ -2455,7 +2572,7 @@ paths:
         - Agent Roles
       summary: Update agent role
       description: Update an existing agent role
-      operationId: update_8
+      operationId: update_9
       parameters:
         - name: id
           in: path
@@ -2492,7 +2609,7 @@ paths:
         - Agent Roles
       summary: Delete agent role
       description: Delete an agent role from the system
-      operationId: delete_8
+      operationId: delete_9
       parameters:
         - name: id
           in: path
@@ -2512,6 +2629,119 @@ paths:
           description: Agent role successfully deleted
         '404':
           description: Agent role not found
+  /api/v1/agencies/{agencyId}/payment-methods/{paymentMethodId}:
+    get:
+      tags:
+        - Agency Payment Methods
+      summary: Get payment method by ID
+      description: Retrieve a specific payment method for an agency by its unique identifier
+      operationId: getById_10
+      parameters:
+        - name: agencyId
+          in: path
+          description: Unique identifier of the agency
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: paymentMethodId
+          in: path
+          description: Unique identifier of the payment method
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment method found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        '404':
+          description: Payment method or agency not found
+    put:
+      tags:
+        - Agency Payment Methods
+      summary: Update payment method
+      description: Update an existing payment method for an agency
+      operationId: update_10
+      parameters:
+        - name: agencyId
+          in: path
+          description: Unique identifier of the agency
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: paymentMethodId
+          in: path
+          description: Unique identifier of the payment method
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        required: true
+      responses:
+        '200':
+          description: Payment method successfully updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        '400':
+          description: Invalid payment method data
+        '404':
+          description: Payment method or agency not found
+    delete:
+      tags:
+        - Agency Payment Methods
+      summary: Delete payment method
+      description: Delete a payment method for an agency from the system
+      operationId: delete_10
+      parameters:
+        - name: agencyId
+          in: path
+          description: Unique identifier of the agency
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: paymentMethodId
+          in: path
+          description: Unique identifier of the payment method
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Payment method successfully deleted
+        '404':
+          description: Payment method or agency not found
   /api/v1/terms-and-conditions-templates/{templateId}/preview:
     post:
       tags:
@@ -3832,6 +4062,82 @@ paths:
           description: Distributor not found
         '500':
           description: Internal server error
+  /api/v1/distributors/{distributorId}/authorized-territories:
+    post:
+      tags:
+        - Distributor Authorized Territories
+      summary: Create authorized territory for a distributor
+      description: Create a new authorized territory for a specific distributor
+      operationId: create_3
+      parameters:
+        - name: distributorId
+          in: path
+          description: Unique identifier of the distributor
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistributorAuthorizedTerritoryDTO'
+        required: true
+      responses:
+        '201':
+          description: Authorized territory successfully created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DistributorAuthorizedTerritoryDTO'
+        '400':
+          description: Invalid territory data
+        '404':
+          description: Distributor not found
+  /api/v1/distributors/{distributorId}/authorized-territories/filter:
+    post:
+      tags:
+        - Distributor Authorized Territories
+      summary: Filter authorized territories for a distributor
+      description: Retrieve a paginated list of authorized territories for a specific distributor based on filtering criteria
+      operationId: filter_3
+      parameters:
+        - name: distributorId
+          in: path
+          description: Unique identifier of the distributor
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestDistributorAuthorizedTerritoryDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved filtered territories
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter request
+        '404':
+          description: Distributor not found
   /api/v1/distributors/{distributorId}/audit-logs/filter:
     post:
       tags:
@@ -3914,7 +4220,7 @@ paths:
         - Distributor Agents
       summary: Create agent for a distributor
       description: Create a new agent associated with a specific distributor
-      operationId: create_3
+      operationId: create_4
       parameters:
         - name: distributorId
           in: path
@@ -3952,7 +4258,7 @@ paths:
         - Distributor Agents
       summary: Filter agents for a distributor
       description: Retrieve a paginated list of agents associated with a specific distributor based on filtering criteria
-      operationId: filter_3
+      operationId: filter_4
       parameters:
         - name: distributorId
           in: path
@@ -3990,7 +4296,7 @@ paths:
         - Distributor Agent Agency
       summary: Filter agent-agency relationships
       description: Returns a paginated list of agent-agency relationships based on filter criteria
-      operationId: filter_4
+      operationId: filter_5
       parameters:
         - name: distributorId
           in: path
@@ -4026,7 +4332,7 @@ paths:
         - Distributor Agent Agency
       summary: Create a new agent-agency relationship
       description: Creates a new agent-agency relationship with the provided information
-      operationId: create_4
+      operationId: create_5
       parameters:
         - name: distributorId
           in: path
@@ -4064,7 +4370,7 @@ paths:
         - Distributor Agencies
       summary: Create agency for a distributor
       description: Create a new physical agency associated with a specific distributor
-      operationId: create_5
+      operationId: create_6
       parameters:
         - name: distributorId
           in: path
@@ -4102,7 +4408,7 @@ paths:
         - Distributor Agencies
       summary: Filter agencies for a distributor
       description: Retrieve a paginated list of agencies associated with a specific distributor based on filtering criteria
-      operationId: filter_5
+      operationId: filter_6
       parameters:
         - name: distributorId
           in: path
@@ -4200,7 +4506,7 @@ paths:
         - Configuration Scopes
       summary: Create configuration scope
       description: Create a new configuration scope
-      operationId: create_6
+      operationId: create_7
       parameters:
         - name: X-Idempotency-Key
           in: header
@@ -4229,7 +4535,7 @@ paths:
         - Configuration Scopes
       summary: Filter configuration scopes
       description: Retrieve a paginated list of configuration scopes based on filtering criteria
-      operationId: filter_6
+      operationId: filter_7
       parameters:
         - name: X-Idempotency-Key
           in: header
@@ -4258,7 +4564,7 @@ paths:
         - Configuration Data Types
       summary: Create configuration data type
       description: Create a new configuration data type
-      operationId: create_7
+      operationId: create_8
       parameters:
         - name: X-Idempotency-Key
           in: header
@@ -4287,7 +4593,7 @@ paths:
         - Configuration Data Types
       summary: Filter configuration data types
       description: Retrieve a paginated list of configuration data types based on filtering criteria
-      operationId: filter_7
+      operationId: filter_8
       parameters:
         - name: X-Idempotency-Key
           in: header
@@ -4316,7 +4622,7 @@ paths:
         - Agent Roles
       summary: Create agent role
       description: Create a new agent role
-      operationId: create_8
+      operationId: create_9
       parameters:
         - name: X-Idempotency-Key
           in: header
@@ -4345,7 +4651,7 @@ paths:
         - Agent Roles
       summary: Filter agent roles
       description: Retrieve a paginated list of agent roles based on filtering criteria
-      operationId: filter_8
+      operationId: filter_9
       parameters:
         - name: X-Idempotency-Key
           in: header
@@ -4368,6 +4674,82 @@ paths:
                 $ref: '#/components/schemas/PaginationResponse'
         '400':
           description: Invalid filter request
+  /api/v1/agencies/{agencyId}/payment-methods:
+    post:
+      tags:
+        - Agency Payment Methods
+      summary: Create payment method for an agency
+      description: Create a new payment method for a specific agency
+      operationId: create_10
+      parameters:
+        - name: agencyId
+          in: path
+          description: Unique identifier of the agency
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        required: true
+      responses:
+        '201':
+          description: Payment method successfully created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        '400':
+          description: Invalid payment method data
+        '404':
+          description: Agency not found
+  /api/v1/agencies/{agencyId}/payment-methods/filter:
+    post:
+      tags:
+        - Agency Payment Methods
+      summary: Filter payment methods for an agency
+      description: Retrieve a paginated list of payment methods for a specific agency based on filtering criteria
+      operationId: filter_10
+      parameters:
+        - name: agencyId
+          in: path
+          description: Unique identifier of the agency
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRequestAgencyPaymentMethodDTO'
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved filtered payment methods
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponse'
+        '400':
+          description: Invalid filter request
+        '404':
+          description: Agency not found
   /api/v1/terms-and-conditions-templates/{templateId}/set-default:
     patch:
       tags:
@@ -4950,6 +5332,43 @@ paths:
           description: Distributor operation not found
         '500':
           description: Internal server error
+  /api/v1/agencies/{agencyId}/payment-methods/{paymentMethodId}/set-primary:
+    patch:
+      tags:
+        - Agency Payment Methods
+      summary: Set payment method as primary
+      description: Set a specific payment method as the primary payment method for an agency
+      operationId: setPrimary
+      parameters:
+        - name: agencyId
+          in: path
+          description: Unique identifier of the agency
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: paymentMethodId
+          in: path
+          description: Unique identifier of the payment method
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Idempotency-Key
+          in: header
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment method successfully set as primary
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        '404':
+          description: Payment method or agency not found
   /api/v1/terms-and-conditions-templates/name/{name}:
     get:
       tags:
@@ -6474,9 +6893,9 @@ components:
           maxLength: 100
           minLength: 0
           type: string
-        countryCode:
-          pattern: ^[A-Z]{2}$
+        countryId:
           type: string
+          format: uuid
         isActive:
           type: boolean
         isTestDistributor:
@@ -7080,6 +7499,79 @@ components:
         updatedBy:
           type: string
           format: uuid
+    DistributorAuthorizedTerritoryDTO:
+      required:
+        - countryId
+        - distributorId
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        distributorId:
+          type: string
+          description: Distributor ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        countryId:
+          type: string
+          description: Country ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        administrativeDivisionId:
+          type: string
+          description: Administrative division ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        authorizationLevel:
+          maxLength: 50
+          minLength: 0
+          type: string
+          description: Authorization level
+          example: COUNTRY
+          enum:
+            - COUNTRY
+            - REGION
+            - CITY
+        isActive:
+          type: boolean
+          description: Whether this authorization is active
+          example: true
+        authorizedFrom:
+          type: string
+          description: Authorization start date
+          format: date-time
+        authorizedUntil:
+          type: string
+          description: Authorization end date
+          format: date-time
+        notes:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: Additional notes
+          example: Authorized for retail operations only
+        createdAt:
+          type: string
+          description: Creation timestamp
+          format: date-time
+        createdBy:
+          type: string
+          description: User who created this record
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+        updatedBy:
+          type: string
+          description: User who last updated this record
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+      description: Distributor authorized territory information
     DistributorAuditLogDTO:
       required:
         - action
@@ -7190,10 +7682,12 @@ components:
           maxLength: 100
           minLength: 0
           type: string
-        countryCode:
-          maxLength: 2
-          minLength: 0
+        countryId:
           type: string
+          format: uuid
+        administrativeDivisionId:
+          type: string
+          format: uuid
         hireDate:
           type: string
           format: date
@@ -7319,6 +7813,44 @@ components:
           maxLength: 255
           minLength: 0
           type: string
+        legalEntityName:
+          maxLength: 255
+          minLength: 0
+          type: string
+        legalFormId:
+          type: string
+          format: uuid
+        taxId:
+          maxLength: 100
+          minLength: 0
+          type: string
+        registrationNumber:
+          maxLength: 100
+          minLength: 0
+          type: string
+        vatNumber:
+          maxLength: 100
+          minLength: 0
+          type: string
+        fiscalAddressLine:
+          maxLength: 255
+          minLength: 0
+          type: string
+        fiscalPostalCode:
+          maxLength: 20
+          minLength: 0
+          type: string
+        fiscalCity:
+          maxLength: 100
+          minLength: 0
+          type: string
+        fiscalState:
+          maxLength: 100
+          minLength: 0
+          type: string
+        fiscalCountryId:
+          type: string
+          format: uuid
         isHeadquarters:
           type: boolean
         isActive:
@@ -7429,6 +7961,161 @@ components:
           type: string
           format: date-time
           readOnly: true
+    AgencyPaymentMethodDTO:
+      required:
+        - agencyId
+        - paymentMethodType
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        agencyId:
+          type: string
+          description: Agency ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        paymentMethodType:
+          maxLength: 50
+          minLength: 0
+          type: string
+          description: Payment method type
+          example: BANK_ACCOUNT
+          enum:
+            - BANK_ACCOUNT
+            - DIGITAL_WALLET
+            - WIRE_TRANSFER
+            - CHECK
+        paymentProvider:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: Payment provider name
+          example: Bank of America
+        accountHolderName:
+          maxLength: 200
+          minLength: 0
+          type: string
+          description: Account holder name
+          example: ABC Agency LLC
+        accountNumber:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: Account number (masked)
+          example: '****1234'
+        routingNumber:
+          maxLength: 50
+          minLength: 0
+          type: string
+          description: Routing number
+          example: '021000021'
+        swiftCode:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: SWIFT/BIC code
+          example: BOFAUS3N
+        iban:
+          maxLength: 50
+          minLength: 0
+          type: string
+          description: IBAN
+          example: GB82WEST12345698765432
+        bankName:
+          maxLength: 200
+          minLength: 0
+          type: string
+          description: Bank name
+          example: Bank of America
+        bankBranch:
+          maxLength: 200
+          minLength: 0
+          type: string
+          description: Bank branch
+          example: Downtown Branch
+        bankAddress:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: Bank address
+          example: 123 Main St, New York, NY 10001
+        currencyCode:
+          maxLength: 3
+          minLength: 0
+          type: string
+          description: Currency code
+          example: USD
+        walletId:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: Digital wallet ID
+          example: wallet123456
+        walletPhone:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: Wallet phone number
+          example: '+1234567890'
+        walletEmail:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: Wallet email
+          example: payments@agency.com
+        isPrimary:
+          type: boolean
+          description: Whether this is the primary payment method
+          example: true
+        isVerified:
+          type: boolean
+          description: Whether this payment method is verified
+          example: true
+        verifiedAt:
+          type: string
+          description: Verification timestamp
+          format: date-time
+        verifiedBy:
+          type: string
+          description: User who verified this payment method
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        isActive:
+          type: boolean
+          description: Whether this payment method is active
+          example: true
+        notes:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: Additional notes
+          example: Primary disbursement account
+        metadata:
+          type: string
+          description: Additional metadata in JSON format
+          example: '{"provider_id":"12345"}'
+        createdAt:
+          type: string
+          description: Creation timestamp
+          format: date-time
+        createdBy:
+          type: string
+          description: User who created this record
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+        updatedBy:
+          type: string
+          description: User who last updated this record
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+      description: Agency payment method information for disbursements
     FilterOptions:
       type: object
       properties:
@@ -7671,6 +8358,20 @@ components:
         options:
           $ref: '#/components/schemas/FilterOptions'
       description: Generic filter request that includes both filter criteria and pagination
+    FilterRequestDistributorAuthorizedTerritoryDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/DistributorAuthorizedTerritoryDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Filter criteria for authorized territories
     FilterRequestDistributorAuditLogDTO:
       required:
         - pagination
@@ -7783,3 +8484,17 @@ components:
         options:
           $ref: '#/components/schemas/FilterOptions'
       description: Filter criteria for agent roles
+    FilterRequestAgencyPaymentMethodDTO:
+      required:
+        - pagination
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/AgencyPaymentMethodDTO'
+        rangeFilters:
+          $ref: '#/components/schemas/RangeFilter'
+        pagination:
+          $ref: '#/components/schemas/PaginationRequest'
+        options:
+          $ref: '#/components/schemas/FilterOptions'
+      description: Filter criteria for payment methods
