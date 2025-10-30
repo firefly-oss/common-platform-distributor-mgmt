@@ -222,7 +222,7 @@ public class TermsAndConditionsGenerationServiceImpl implements TermsAndConditio
         variables.put("distributorAddress", distributor.getAddressLine());
         variables.put("distributorCity", distributor.getCity());
         variables.put("distributorState", distributor.getState());
-        variables.put("distributorCountry", distributor.getCountryCode());
+        variables.put("distributorCountryId", distributor.getCountryId() != null ? distributor.getCountryId().toString() : "");
         variables.put("distributorPostalCode", distributor.getPostalCode());
         variables.put("distributorWebsite", distributor.getWebsiteUrl());
         variables.put("currentDate", LocalDateTime.now().format(DATE_FORMATTER));
