@@ -19,8 +19,8 @@ package com.firefly.core.distributor.web.controllers;
 
 import com.firefly.common.core.filters.FilterRequest;
 import com.firefly.common.core.queries.PaginationResponse;
-import com.firefly.core.distributor.core.services.LeasingContractService;
-import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.core.services.LendingContractService;
+import com.firefly.core.distributor.interfaces.dtos.LendingContractDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,25 +39,25 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 /**
- * REST controller for managing leasing contracts.
+ * REST controller for managing lending contracts.
  */
 @RestController
-@RequestMapping("/api/v1/leasing-contracts")
-@Tag(name = "Leasing Contract", description = "API for managing leasing contracts")
-public class LeasingContractController {
+@RequestMapping("/api/v1/lending-contracts")
+@Tag(name = "Lending Contract", description = "API for managing lending contracts")
+public class LendingContractController {
 
     @Autowired
-    private LeasingContractService leasingContractService;
+    private LendingContractService lendingContractService;
 
     /**
-     * POST /api/v1/leasing-contracts/filter : Filter leasing contracts
+     * POST /api/v1/lending-contracts/filter : Filter lending contracts
      *
      * @param filterRequest the filter request containing criteria and pagination
-     * @return the ResponseEntity with status 200 (OK) and the list of leasing contracts in body
+     * @return the ResponseEntity with status 200 (OK) and the list of lending contracts in body
      */
-    @Operation(summary = "Filter leasing contracts", description = "Returns a paginated list of leasing contracts based on filter criteria")
+    @Operation(summary = "Filter lending contracts", description = "Returns a paginated list of lending contracts based on filter criteria")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contracts",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contracts",
                 content = @Content(mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided", 
                 content = @Content),
@@ -65,50 +65,50 @@ public class LeasingContractController {
                 content = @Content)
     })
     @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<PaginationResponse<LeasingContractDTO>>> filterLeasingContracts(
-            @Valid @RequestBody FilterRequest<LeasingContractDTO> filterRequest) {
+    public Mono<ResponseEntity<PaginationResponse<LendingContractDTO>>> filterLendingContracts(
+            @Valid @RequestBody FilterRequest<LendingContractDTO> filterRequest) {
         
-        return leasingContractService.filterLeasingContracts(filterRequest)
+        return lendingContractService.filterLendingContracts(filterRequest)
                 .map(ResponseEntity::ok);
     }
 
     /**
-     * POST /api/v1/leasing-contracts : Create a new leasing contract
+     * POST /api/v1/lending-contracts : Create a new lending contract
      *
-     * @param leasingContractDTO the leasing contract to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new leasing contract
+     * @param lendingContractDTO the lending contract to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new lending contract
      */
-    @Operation(summary = "Create a new leasing contract", description = "Creates a new leasing contract with the provided information")
+    @Operation(summary = "Create a new lending contract", description = "Creates a new lending contract with the provided information")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Leasing contract successfully created",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid leasing contract data provided", 
+                schema = @Schema(implementation = LendingContractDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid lending contract data provided", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<LeasingContractDTO>> createLeasingContract(
-            @Valid @RequestBody LeasingContractDTO leasingContractDTO) {
+    public Mono<ResponseEntity<LendingContractDTO>> createLendingContract(
+            @Valid @RequestBody LendingContractDTO lendingContractDTO) {
         
-        return leasingContractService.createLeasingContract(leasingContractDTO)
+        return lendingContractService.createLendingContract(lendingContractDTO)
                 .map(result -> ResponseEntity.status(HttpStatus.CREATED).body(result));
     }
 
     /**
-     * PUT /api/v1/leasing-contracts/{id} : Update an existing leasing contract
+     * PUT /api/v1/lending-contracts/{id} : Update an existing lending contract
      *
-     * @param id the ID of the leasing contract to update
-     * @param leasingContractDTO the leasing contract to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated leasing contract
+     * @param id the ID of the lending contract to update
+     * @param lendingContractDTO the lending contract to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated lending contract
      */
-    @Operation(summary = "Update an existing leasing contract", description = "Updates an existing leasing contract with the provided information")
+    @Operation(summary = "Update an existing lending contract", description = "Updates an existing lending contract with the provided information")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Leasing contract successfully updated",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid leasing contract data provided", 
+                schema = @Schema(implementation = LendingContractDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid lending contract data provided", 
                 content = @Content),
         @ApiResponse(responseCode = "404", description = "Leasing contract not found", 
                 content = @Content),
@@ -116,22 +116,22 @@ public class LeasingContractController {
                 content = @Content)
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<LeasingContractDTO>> updateLeasingContract(
-            @Parameter(description = "ID of the leasing contract to update", required = true)
+    public Mono<ResponseEntity<LendingContractDTO>> updateLendingContract(
+            @Parameter(description = "ID of the lending contract to update", required = true)
             @PathVariable UUID id,
-            @Valid @RequestBody LeasingContractDTO leasingContractDTO) {
+            @Valid @RequestBody LendingContractDTO lendingContractDTO) {
         
-        return leasingContractService.updateLeasingContract(id, leasingContractDTO)
+        return lendingContractService.updateLendingContract(id, lendingContractDTO)
                 .map(ResponseEntity::ok);
     }
 
     /**
-     * DELETE /api/v1/leasing-contracts/{id} : Delete a leasing contract
+     * DELETE /api/v1/lending-contracts/{id} : Delete a lending contract
      *
-     * @param id the ID of the leasing contract to delete
+     * @param id the ID of the lending contract to delete
      * @return the ResponseEntity with status 204 (NO_CONTENT)
      */
-    @Operation(summary = "Delete a leasing contract", description = "Deletes a leasing contract based on its ID")
+    @Operation(summary = "Delete a lending contract", description = "Deletes a lending contract based on its ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Leasing contract successfully deleted",
                 content = @Content),
@@ -142,178 +142,178 @@ public class LeasingContractController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<ResponseEntity<Void>> deleteLeasingContract(
-            @Parameter(description = "ID of the leasing contract to delete", required = true)
+    public Mono<ResponseEntity<Void>> deleteLendingContract(
+            @Parameter(description = "ID of the lending contract to delete", required = true)
             @PathVariable UUID id) {
         
-        return leasingContractService.deleteLeasingContract(id)
+        return lendingContractService.deleteLendingContract(id)
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 
     /**
-     * GET /api/v1/leasing-contracts/{id} : Get a leasing contract by ID
+     * GET /api/v1/lending-contracts/{id} : Get a lending contract by ID
      *
-     * @param id the ID of the leasing contract to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the leasing contract
+     * @param id the ID of the lending contract to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the lending contract
      */
-    @Operation(summary = "Get leasing contract by ID", description = "Returns a leasing contract based on its ID")
+    @Operation(summary = "Get lending contract by ID", description = "Returns a lending contract based on its ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contract",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contract",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "404", description = "Leasing contract not found", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<LeasingContractDTO>> getLeasingContractById(
-            @Parameter(description = "ID of the leasing contract to retrieve", required = true)
+    public Mono<ResponseEntity<LendingContractDTO>> getLendingContractById(
+            @Parameter(description = "ID of the lending contract to retrieve", required = true)
             @PathVariable UUID id) {
         
-        return leasingContractService.getLeasingContractById(id)
+        return lendingContractService.getLendingContractById(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /**
-     * GET /api/v1/leasing-contracts/contract/{contractId} : Get a leasing contract by contract ID
+     * GET /api/v1/lending-contracts/contract/{contractId} : Get a lending contract by contract ID
      *
-     * @param contractId the contract ID of the leasing contract to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the leasing contract
+     * @param contractId the contract ID of the lending contract to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the lending contract
      */
-    @Operation(summary = "Get leasing contract by contract ID", description = "Returns a leasing contract based on its contract ID")
+    @Operation(summary = "Get lending contract by contract ID", description = "Returns a lending contract based on its contract ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contract",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contract",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "404", description = "Leasing contract not found", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @GetMapping(value = "/contract/{contractId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<LeasingContractDTO>> getLeasingContractByContractId(
-            @Parameter(description = "Contract ID of the leasing contract to retrieve", required = true)
+    public Mono<ResponseEntity<LendingContractDTO>> getLendingContractByContractId(
+            @Parameter(description = "Contract ID of the lending contract to retrieve", required = true)
             @PathVariable UUID contractId) {
         
-        return leasingContractService.getLeasingContractByContractId(contractId)
+        return lendingContractService.getLendingContractByContractId(contractId)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     /**
-     * GET /api/v1/leasing-contracts/distributor/{distributorId} : Get all leasing contracts for a distributor
+     * GET /api/v1/lending-contracts/distributor/{distributorId} : Get all lending contracts for a distributor
      *
      * @param distributorId the ID of the distributor
-     * @return the ResponseEntity with status 200 (OK) and with body the list of leasing contracts
+     * @return the ResponseEntity with status 200 (OK) and with body the list of lending contracts
      */
-    @Operation(summary = "Get leasing contracts by distributor", description = "Returns all leasing contracts associated with a specific distributor")
+    @Operation(summary = "Get lending contracts by distributor", description = "Returns all lending contracts associated with a specific distributor")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contracts",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contracts",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "404", description = "Distributor not found", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @GetMapping(value = "/distributor/{distributorId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByDistributorId(
+    public Mono<ResponseEntity<Flux<LendingContractDTO>>> getLendingContractsByDistributorId(
             @Parameter(description = "ID of the distributor", required = true)
             @PathVariable UUID distributorId) {
         
-        Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByDistributorId(distributorId);
+        Flux<LendingContractDTO> contracts = lendingContractService.getLendingContractsByDistributorId(distributorId);
         return Mono.just(ResponseEntity.ok(contracts));
     }
 
     /**
-     * GET /api/v1/leasing-contracts/product/{productId} : Get all leasing contracts for a product
+     * GET /api/v1/lending-contracts/product/{productId} : Get all lending contracts for a product
      *
      * @param productId the ID of the product
-     * @return the ResponseEntity with status 200 (OK) and with body the list of leasing contracts
+     * @return the ResponseEntity with status 200 (OK) and with body the list of lending contracts
      */
-    @Operation(summary = "Get leasing contracts by product", description = "Returns all leasing contracts associated with a specific product")
+    @Operation(summary = "Get lending contracts by product", description = "Returns all lending contracts associated with a specific product")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contracts",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contracts",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "404", description = "Product not found", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @GetMapping(value = "/product/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByProductId(
+    public Mono<ResponseEntity<Flux<LendingContractDTO>>> getLendingContractsByProductId(
             @Parameter(description = "ID of the product", required = true)
             @PathVariable UUID productId) {
         
-        Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByProductId(productId);
+        Flux<LendingContractDTO> contracts = lendingContractService.getLendingContractsByProductId(productId);
         return Mono.just(ResponseEntity.ok(contracts));
     }
 
     /**
-     * GET /api/v1/leasing-contracts/party/{partyId} : Get all leasing contracts for a party
+     * GET /api/v1/lending-contracts/party/{partyId} : Get all lending contracts for a party
      *
      * @param partyId the ID of the party
-     * @return the ResponseEntity with status 200 (OK) and with body the list of leasing contracts
+     * @return the ResponseEntity with status 200 (OK) and with body the list of lending contracts
      */
-    @Operation(summary = "Get leasing contracts by party", description = "Returns all leasing contracts associated with a specific party")
+    @Operation(summary = "Get lending contracts by party", description = "Returns all lending contracts associated with a specific party")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contracts",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contracts",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "404", description = "Party not found", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @GetMapping(value = "/party/{partyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByPartyId(
+    public Mono<ResponseEntity<Flux<LendingContractDTO>>> getLendingContractsByPartyId(
             @Parameter(description = "ID of the party", required = true)
             @PathVariable UUID partyId) {
         
-        Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByPartyId(partyId);
+        Flux<LendingContractDTO> contracts = lendingContractService.getLendingContractsByPartyId(partyId);
         return Mono.just(ResponseEntity.ok(contracts));
     }
 
     /**
-     * GET /api/v1/leasing-contracts/status/{status} : Get all leasing contracts with a specific status
+     * GET /api/v1/lending-contracts/status/{status} : Get all lending contracts with a specific status
      *
      * @param status the status
-     * @return the ResponseEntity with status 200 (OK) and with body the list of leasing contracts
+     * @return the ResponseEntity with status 200 (OK) and with body the list of lending contracts
      */
-    @Operation(summary = "Get leasing contracts by status", description = "Returns all leasing contracts with a specific status")
+    @Operation(summary = "Get lending contracts by status", description = "Returns all lending contracts with a specific status")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved leasing contracts",
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved lending contracts",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "400", description = "Invalid status value", 
                 content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error", 
                 content = @Content)
     })
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Flux<LeasingContractDTO>>> getLeasingContractsByStatus(
-            @Parameter(description = "Status value to filter leasing contracts", required = true)
+    public Mono<ResponseEntity<Flux<LendingContractDTO>>> getLendingContractsByStatus(
+            @Parameter(description = "Status value to filter lending contracts", required = true)
             @PathVariable String status) {
         
-        Flux<LeasingContractDTO> contracts = leasingContractService.getLeasingContractsByStatus(status);
+        Flux<LendingContractDTO> contracts = lendingContractService.getLendingContractsByStatus(status);
         return Mono.just(ResponseEntity.ok(contracts));
     }
 
     /**
-     * POST /api/v1/leasing-contracts/{id}/approve : Approve a leasing contract
+     * POST /api/v1/lending-contracts/{id}/approve : Approve a lending contract
      *
-     * @param id the ID of the leasing contract to approve
+     * @param id the ID of the lending contract to approve
      * @param approvedBy the ID of the user approving the contract
-     * @return the ResponseEntity with status 200 (OK) and with body the approved leasing contract
+     * @return the ResponseEntity with status 200 (OK) and with body the approved lending contract
      */
-    @Operation(summary = "Approve a leasing contract", description = "Approves a leasing contract and updates its status")
+    @Operation(summary = "Approve a lending contract", description = "Approves a lending contract and updates its status")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Leasing contract successfully approved",
                 content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = LeasingContractDTO.class))),
+                schema = @Schema(implementation = LendingContractDTO.class))),
         @ApiResponse(responseCode = "400", description = "Invalid approval request", 
                 content = @Content),
         @ApiResponse(responseCode = "404", description = "Leasing contract not found", 
@@ -322,13 +322,13 @@ public class LeasingContractController {
                 content = @Content)
     })
     @PostMapping(value = "/{id}/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<LeasingContractDTO>> approveLeasingContract(
-            @Parameter(description = "ID of the leasing contract to approve", required = true)
+    public Mono<ResponseEntity<LendingContractDTO>> approveLendingContract(
+            @Parameter(description = "ID of the lending contract to approve", required = true)
             @PathVariable UUID id,
             @Parameter(description = "ID of the user approving the contract", required = true)
             @RequestParam UUID approvedBy) {
         
-        return leasingContractService.approveLeasingContract(id, approvedBy)
+        return lendingContractService.approveLendingContract(id, approvedBy)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }

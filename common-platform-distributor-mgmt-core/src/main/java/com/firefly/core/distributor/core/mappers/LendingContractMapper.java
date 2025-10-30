@@ -17,38 +17,38 @@
 
 package com.firefly.core.distributor.core.mappers;
 
-import com.firefly.core.distributor.interfaces.dtos.LeasingContractDTO;
+import com.firefly.core.distributor.interfaces.dtos.LendingContractDTO;
 import com.firefly.core.distributor.interfaces.dtos.ProductDTO;
-import com.firefly.core.distributor.models.entities.LeasingContract;
+import com.firefly.core.distributor.models.entities.LendingContract;
 import com.firefly.core.distributor.models.entities.Product;
 import org.mapstruct.*;
 
 /**
- * Mapper for converting between LeasingContract entity and LeasingContractDTO.
+ * Mapper for converting between LendingContract entity and LendingContractDTO.
  */
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
-public abstract class LeasingContractMapper {
+public abstract class LendingContractMapper {
 
     /**
-     * Convert a LeasingContract entity to a LeasingContractDTO.
+     * Convert a LendingContract entity to a LendingContractDTO.
      *
-     * @param leasingContract the LeasingContract entity
-     * @return the LeasingContractDTO
+     * @param leasingContract the LendingContract entity
+     * @return the LendingContractDTO
      */
-    public abstract LeasingContractDTO toDto(LeasingContract leasingContract);
+    public abstract LendingContractDTO toDto(LendingContract leasingContract);
 
     /**
-     * Convert a LeasingContractDTO to a LeasingContract entity.
+     * Convert a LendingContractDTO to a LendingContract entity.
      *
-     * @param leasingContractDTO the LeasingContractDTO
-     * @return the LeasingContract entity
+     * @param leasingContractDTO the LendingContractDTO
+     * @return the LendingContract entity
      */
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    public abstract LeasingContract toEntity(LeasingContractDTO leasingContractDTO);
+    public abstract LendingContract toEntity(LendingContractDTO leasingContractDTO);
 
     @Mapping(target = "createdAt", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public abstract void updateEntityFromDto(LeasingContractDTO dto, @MappingTarget LeasingContract entity);
+    public abstract void updateEntityFromDto(LendingContractDTO dto, @MappingTarget LendingContract entity);
 
 }

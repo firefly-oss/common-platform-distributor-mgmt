@@ -35,13 +35,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Data Transfer Object for LeasingContract entity.
+ * Data Transfer Object for LendingContract entity.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LeasingContractDTO {
+public class LendingContractDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID id;
@@ -62,6 +62,9 @@ public class LeasingContractDTO {
 
     @NotNull(message = "Lending configuration ID is required")
     private UUID lendingConfigurationId;
+
+    private UUID originatingAgentId;
+    private UUID agencyId;
 
     @NotNull(message = "Start date is required")
     private LocalDate startDate;

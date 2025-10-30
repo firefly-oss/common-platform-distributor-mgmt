@@ -33,15 +33,16 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Entity representing a leasing contract between a customer and a distributor.
- * Maps to the 'leasing_contract' table in the database.
+ * Entity representing a lending contract between a customer and a distributor.
+ * This includes various types of lending: leases, rentals, loans, and financing.
+ * Maps to the 'lending_contract' table in the database.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("leasing_contract")
-public class LeasingContract {
+@Table("lending_contract")
+public class LendingContract {
 
     @Id
     private UUID id;
@@ -60,6 +61,12 @@ public class LeasingContract {
 
     @Column("lending_configuration_id")
     private UUID lendingConfigurationId;
+
+    @Column("originating_agent_id")
+    private UUID originatingAgentId;
+
+    @Column("agency_id")
+    private UUID agencyId;
 
     @Column("start_date")
     private LocalDate startDate;
