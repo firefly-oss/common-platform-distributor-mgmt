@@ -29,45 +29,45 @@ This service acts as the central hub for all distributor-related operations, pro
 
 ## Key Features
 
-### 🏢 **Distributor Lifecycle Management**
+### **Distributor Lifecycle Management**
 - Complete distributor onboarding and profile management
 - Multi-tier distributor hierarchies and relationships
 - Real-time status tracking and lifecycle transitions
 - Comprehensive audit logging for compliance
 
-### 🌍 **Multi-Country Operations**
+### **Multi-Country Operations**
 - Geographic coverage tracking across countries and administrative divisions
 - Location-based operational authorization and validation
 - Dynamic territory management and expansion capabilities
 - Compliance monitoring for regional regulations
 
-### 🎯 **Simulation & Application Tracking**
+### **Simulation & Application Tracking**
 - Integration with external microservices for application tracking
 - Real-time simulation status monitoring
 - Cross-service data correlation and reporting
 - Performance analytics and insights
 
-### 📋 **Dynamic Terms & Conditions Management**
+### **Dynamic Terms & Conditions Management**
 - Template-based agreement generation with variable substitution
 - Digital signature workflows and audit trails
 - Multi-category template organization (General, Lending, Operational, etc.)
 - Auto-renewal and expiration management
 - Version control and change tracking
 
-### 🎨 **Customizable Branding**
+### **Customizable Branding**
 - Per-distributor branding and theming configurations
 - Logo, color scheme, and font customization
 - White-label solution support
 - Brand consistency enforcement
 
-### 📦 **Product & Lending Management**
+### **Product & Lending Management**
 - Comprehensive product catalog with categorization
 - Flexible lending configuration system
 - Multiple lending types support (personal loans, mortgages, installments)
-- Leasing contract lifecycle management
+- Lending contract lifecycle management
 - Physical product shipment tracking
 
-### 🔗 **Integration & APIs**
+### **Integration & APIs**
 - RESTful API with comprehensive OpenAPI documentation
 - Reactive programming for high-performance operations
 - Advanced filtering, sorting, and pagination
@@ -684,24 +684,22 @@ These references ensure data consistency and enable proper geographic and legal 
 #### ThemeEnum
 - `LIGHT`: Light theme configuration
 - `DARK`: Dark theme configuration
-- `AUTO`: Automatic theme based on system preferences
+- `CUSTOM`: Custom theme with specific branding settings
 
 #### DistributorActionEnum
-- `CREATE`: Distributor creation
-- `UPDATE`: Distributor information update
-- `DELETE`: Distributor deletion
-- `ACTIVATE`: Distributor activation
-- `DEACTIVATE`: Distributor deactivation
-- `BRANDING_UPDATE`: Branding configuration changes
+- `CREATED`: Distributor entity was created
+- `UPDATED`: Distributor entity was updated
+- `TERMINATED`: Distributor entity was terminated
 
-#### Contract Status
+#### Contract Status (ContractStatusEnum)
 - `DRAFT`: Contract in draft state
-- `PENDING`: Pending approval
-- `APPROVED`: Approved and active
+- `PENDING_APPROVAL`: Pending approval
+- `APPROVED`: Approved but not yet active
 - `ACTIVE`: Currently active contract
-- `COMPLETED`: Contract completed successfully
-- `CANCELLED`: Contract cancelled
+- `SUSPENDED`: Contract temporarily suspended
 - `TERMINATED`: Contract terminated
+- `EXPIRED`: Contract has expired
+- `RENEWED`: Contract has been renewed
 
 #### Shipment Status
 - `PENDING`: Shipment pending
@@ -728,7 +726,7 @@ These references ensure data consistency and enable proper geographic and legal 
 
 ## New Features
 
-### 🌍 Multi-Country Operations Support
+### Multi-Country Operations Support
 
 The service now provides comprehensive support for distributors operating across multiple countries and administrative divisions:
 
@@ -745,7 +743,7 @@ The service now provides comprehensive support for distributors operating across
 - Compliance monitoring and reporting
 - Territory-based product offerings
 
-### 🎯 Simulation & Application Tracking
+### Simulation & Application Tracking
 
 Advanced integration capabilities for tracking simulations and applications across microservices:
 
@@ -762,7 +760,7 @@ Advanced integration capabilities for tracking simulations and applications acro
 - Cross-service data correlation
 - Business intelligence and reporting
 
-### 📋 Dynamic Terms & Conditions Management
+### Dynamic Terms & Conditions Management
 
 A comprehensive framework for managing distributor agreements with advanced template capabilities:
 
@@ -898,11 +896,11 @@ curl -X POST "http://localhost:8080/api/v1/distributors" \
     "displayName": "ABC Financial",
     "taxId": "12-3456789",
     "supportEmail": "support@abcfinancial.com",
-    "supportPhoneNumber": "+1-555-0123",
+    "phoneNumber": "+1-555-0123",
     "addressLine": "123 Main Street",
     "city": "New York",
     "state": "NY",
-    "countryCode": "US",
+    "countryId": "550e8400-e29b-41d4-a716-446655440001",
     "postalCode": "10001",
     "isActive": true
   }'
@@ -911,7 +909,7 @@ curl -X POST "http://localhost:8080/api/v1/distributors" \
 ### 2. Configure Distributor Branding
 
 ```bash
-curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/branding" \
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/brandings" \
   -H "Content-Type: application/json" \
   -d '{
     "logoUrl": "https://example.com/logo.png",
@@ -1004,16 +1002,14 @@ The service provides a comprehensive RESTful API with over 100 endpoints organiz
 - `GET /api/v1/distributors/{distributorId}` - Get distributor by ID
 - `PUT /api/v1/distributors/{distributorId}` - Update distributor
 - `DELETE /api/v1/distributors/{distributorId}` - Delete distributor
-- `PATCH /api/v1/distributors/{distributorId}/activate` - Activate distributor
-- `PATCH /api/v1/distributors/{distributorId}/deactivate` - Deactivate distributor
 
 ### Distributor Branding
 
-- `POST /api/v1/distributors/{distributorId}/branding/filter` - Filter branding configurations
-- `POST /api/v1/distributors/{distributorId}/branding` - Create branding configuration
-- `GET /api/v1/distributors/{distributorId}/branding/{brandingId}` - Get branding by ID
-- `PUT /api/v1/distributors/{distributorId}/branding/{brandingId}` - Update branding
-- `DELETE /api/v1/distributors/{distributorId}/branding/{brandingId}` - Delete branding
+- `POST /api/v1/distributors/{distributorId}/brandings/filter` - Filter branding configurations
+- `POST /api/v1/distributors/{distributorId}/brandings` - Create branding configuration
+- `GET /api/v1/distributors/{distributorId}/brandings/{brandingId}` - Get branding by ID
+- `PUT /api/v1/distributors/{distributorId}/brandings/{brandingId}` - Update branding
+- `DELETE /api/v1/distributors/{distributorId}/brandings/{brandingId}` - Delete branding
 
 ### Distributor Operations (Multi-Country Support)
 
@@ -1090,52 +1086,173 @@ The service provides a comprehensive RESTful API with over 100 endpoints organiz
 
 - `POST /api/v1/distributors/{distributorId}/products/filter` - Filter products
 - `POST /api/v1/distributors/{distributorId}/products` - Create new product
+- `GET /api/v1/distributors/{distributorId}/products` - Get all products for a distributor
+- `GET /api/v1/distributors/{distributorId}/products/active` - Get all active products for a distributor
 - `GET /api/v1/distributors/{distributorId}/products/{productId}` - Get product by ID
+- `GET /api/v1/distributors/{distributorId}/products/category/{categoryId}` - Get products by category
 - `PUT /api/v1/distributors/{distributorId}/products/{productId}` - Update product
 - `DELETE /api/v1/distributors/{distributorId}/products/{productId}` - Delete product
 
 ### Product Categories
 
-- `POST /api/v1/product-categories/filter` - Filter product categories
+- `GET /api/v1/product-categories` - Get all product categories
+- `GET /api/v1/product-categories/active` - Get all active product categories
+- `GET /api/v1/product-categories/{id}` - Get category by ID
+- `GET /api/v1/product-categories/code/{code}` - Get category by code
 - `POST /api/v1/product-categories` - Create new category
-- `GET /api/v1/product-categories/{categoryId}` - Get category by ID
-- `PUT /api/v1/product-categories/{categoryId}` - Update category
-- `DELETE /api/v1/product-categories/{categoryId}` - Delete category
+- `PUT /api/v1/product-categories/{id}` - Update category
+- `DELETE /api/v1/product-categories/{id}` - Delete category
 
-### Lending Management
+### Lending Types
 
-- `POST /api/v1/lending-types/filter` - Filter lending types
+- `GET /api/v1/lending-types` - Get all lending types
+- `GET /api/v1/lending-types/active` - Get all active lending types
+- `GET /api/v1/lending-types/{id}` - Get lending type by ID
+- `GET /api/v1/lending-types/code/{code}` - Get lending type by code
 - `POST /api/v1/lending-types` - Create new lending type
-- `GET /api/v1/lending-types/{typeId}` - Get lending type by ID
-- `PUT /api/v1/lending-types/{typeId}` - Update lending type
-- `DELETE /api/v1/lending-types/{typeId}` - Delete lending type
+- `PUT /api/v1/lending-types/{id}` - Update lending type
+- `DELETE /api/v1/lending-types/{id}` - Delete lending type
 
-- `POST /api/v1/lending-configurations/filter` - Filter lending configurations
-- `POST /api/v1/lending-configurations` - Create new configuration
-- `GET /api/v1/lending-configurations/{configId}` - Get configuration by ID
-- `PUT /api/v1/lending-configurations/{configId}` - Update configuration
-- `DELETE /api/v1/lending-configurations/{configId}` - Delete configuration
+### Lending Configurations (nested under distributor/product)
 
-### Leasing Contracts
+- `POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/filter` - Filter lending configurations
+- `POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations` - Create new configuration
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}` - Get configuration by ID
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations` - Get all configurations for a product
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/active` - Get active configurations for a product
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/type/{lendingTypeId}` - Get configurations by lending type
+- `GET /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/default` - Get default configuration for a product
+- `PUT /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}` - Update configuration
+- `DELETE /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}` - Delete configuration
+- `POST /api/v1/distributors/{distributorId}/products/{productId}/lending-configurations/{configId}/create-contract` - Create lending contract from configuration
 
-- `POST /api/v1/leasing-contracts/filter` - Filter leasing contracts
-- `POST /api/v1/leasing-contracts` - Create new contract
-- `GET /api/v1/leasing-contracts/{contractId}` - Get contract by ID
-- `PUT /api/v1/leasing-contracts/{contractId}` - Update contract
-- `DELETE /api/v1/leasing-contracts/{contractId}` - Delete contract
+### Distributor Lending Configurations
+
+- `GET /api/v1/distributors/{distributorId}/lending-configurations` - Get all lending configurations for a distributor
+
+### Lending Contracts
+
+- `POST /api/v1/lending-contracts/filter` - Filter lending contracts
+- `POST /api/v1/lending-contracts` - Create new contract
+- `GET /api/v1/lending-contracts/{id}` - Get contract by ID
+- `GET /api/v1/lending-contracts/contract/{contractId}` - Get contract by contract ID
+- `GET /api/v1/lending-contracts/distributor/{distributorId}` - Get contracts by distributor
+- `GET /api/v1/lending-contracts/product/{productId}` - Get contracts by product
+- `GET /api/v1/lending-contracts/party/{partyId}` - Get contracts by party
+- `GET /api/v1/lending-contracts/status/{status}` - Get contracts by status
+- `PUT /api/v1/lending-contracts/{id}` - Update contract
+- `DELETE /api/v1/lending-contracts/{id}` - Delete contract
+- `POST /api/v1/lending-contracts/{id}/approve` - Approve a contract
 
 ### Shipment Tracking
 
 - `POST /api/v1/shipments/filter` - Filter shipments
 - `POST /api/v1/shipments` - Create new shipment
-- `GET /api/v1/shipments/{shipmentId}` - Get shipment by ID
-- `PUT /api/v1/shipments/{shipmentId}` - Update shipment
-- `DELETE /api/v1/shipments/{shipmentId}` - Delete shipment
+- `GET /api/v1/shipments/{id}` - Get shipment by ID
+- `GET /api/v1/shipments/tracking/{trackingNumber}` - Get shipment by tracking number
+- `GET /api/v1/shipments/leasing-contract/{leasingContractId}` - Get shipments by lending contract
+- `GET /api/v1/shipments/product/{productId}` - Get shipments by product
+- `GET /api/v1/shipments/status/{status}` - Get shipments by status
+- `PUT /api/v1/shipments/{id}` - Update shipment
+- `PUT /api/v1/shipments/{id}/status` - Update shipment status
+- `DELETE /api/v1/shipments/{id}` - Delete shipment
 
 ### Audit Logs
 
 - `POST /api/v1/distributors/{distributorId}/audit-logs/filter` - Filter audit logs
-- `GET /api/v1/distributors/{distributorId}/audit-logs` - Get audit logs for distributor
+- `POST /api/v1/distributors/{distributorId}/audit-logs` - Create audit log entry
+- `GET /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}` - Get audit log by ID
+- `PUT /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}` - Update audit log
+- `DELETE /api/v1/distributors/{distributorId}/audit-logs/{auditLogId}` - Delete audit log
+
+### Distributor Contracts
+
+- `POST /api/v1/distributors/{distributorId}/contracts/filter` - Filter contracts for a distributor
+- `POST /api/v1/distributors/{distributorId}/contracts` - Create contract for a distributor
+- `GET /api/v1/distributors/{distributorId}/contracts/{contractId}` - Get contract by ID
+- `PUT /api/v1/distributors/{distributorId}/contracts/{contractId}` - Update contract
+- `DELETE /api/v1/distributors/{distributorId}/contracts/{contractId}` - Delete contract
+
+### Distributor Agents
+
+- `POST /api/v1/distributors/{distributorId}/agents/filter` - Filter agents for a distributor
+- `POST /api/v1/distributors/{distributorId}/agents` - Create agent for a distributor
+- `GET /api/v1/distributors/{distributorId}/agents/{agentId}` - Get agent by ID
+- `PUT /api/v1/distributors/{distributorId}/agents/{agentId}` - Update agent
+- `DELETE /api/v1/distributors/{distributorId}/agents/{agentId}` - Delete agent
+
+### Distributor Agencies
+
+- `POST /api/v1/distributors/{distributorId}/agencies/filter` - Filter agencies for a distributor
+- `POST /api/v1/distributors/{distributorId}/agencies` - Create agency for a distributor
+- `GET /api/v1/distributors/{distributorId}/agencies/{agencyId}` - Get agency by ID
+- `PUT /api/v1/distributors/{distributorId}/agencies/{agencyId}` - Update agency
+- `DELETE /api/v1/distributors/{distributorId}/agencies/{agencyId}` - Delete agency
+
+### Agent-Agency Relationships
+
+- `POST /api/v1/distributors/{distributorId}/agent-agencies/filter` - Filter agent-agency relationships
+- `POST /api/v1/distributors/{distributorId}/agent-agencies` - Create agent-agency relationship
+- `GET /api/v1/distributors/{distributorId}/agent-agencies/{id}` - Get agent-agency relationship by ID
+- `PUT /api/v1/distributors/{distributorId}/agent-agencies/{id}` - Update agent-agency relationship
+- `DELETE /api/v1/distributors/{distributorId}/agent-agencies/{id}` - Delete agent-agency relationship
+
+### Agency Payment Methods
+
+- `POST /api/v1/agencies/{agencyId}/payment-methods/filter` - Filter payment methods for an agency
+- `POST /api/v1/agencies/{agencyId}/payment-methods` - Create payment method for an agency
+- `GET /api/v1/agencies/{agencyId}/payment-methods/{paymentMethodId}` - Get payment method by ID
+- `PUT /api/v1/agencies/{agencyId}/payment-methods/{paymentMethodId}` - Update payment method
+- `DELETE /api/v1/agencies/{agencyId}/payment-methods/{paymentMethodId}` - Delete payment method
+- `PATCH /api/v1/agencies/{agencyId}/payment-methods/{paymentMethodId}/set-primary` - Set payment method as primary
+
+### Agent Roles
+
+- `POST /api/v1/agent-roles/filter` - Filter agent roles
+- `POST /api/v1/agent-roles` - Create agent role
+- `GET /api/v1/agent-roles/{id}` - Get agent role by ID
+- `PUT /api/v1/agent-roles/{id}` - Update agent role
+- `DELETE /api/v1/agent-roles/{id}` - Delete agent role
+
+### Distributor Authorized Territories
+
+- `POST /api/v1/distributors/{distributorId}/authorized-territories/filter` - Filter authorized territories
+- `POST /api/v1/distributors/{distributorId}/authorized-territories` - Create authorized territory
+- `GET /api/v1/distributors/{distributorId}/authorized-territories/{territoryId}` - Get territory by ID
+- `PUT /api/v1/distributors/{distributorId}/authorized-territories/{territoryId}` - Update territory
+- `DELETE /api/v1/distributors/{distributorId}/authorized-territories/{territoryId}` - Delete territory
+
+### Distributor Configurations
+
+- `POST /api/v1/distributors/{distributorId}/configurations/filter` - Filter configurations
+- `POST /api/v1/distributors/{distributorId}/configurations` - Create configuration
+- `GET /api/v1/distributors/{distributorId}/configurations/{configurationId}` - Get configuration by ID
+- `PUT /api/v1/distributors/{distributorId}/configurations/{configurationId}` - Update configuration
+- `DELETE /api/v1/distributors/{distributorId}/configurations/{configurationId}` - Delete configuration
+
+### Configuration Scopes
+
+- `POST /api/v1/configuration-scopes/filter` - Filter configuration scopes
+- `POST /api/v1/configuration-scopes` - Create configuration scope
+- `GET /api/v1/configuration-scopes/{id}` - Get configuration scope by ID
+- `PUT /api/v1/configuration-scopes/{id}` - Update configuration scope
+- `DELETE /api/v1/configuration-scopes/{id}` - Delete configuration scope
+
+### Configuration Data Types
+
+- `POST /api/v1/configuration-data-types/filter` - Filter configuration data types
+- `POST /api/v1/configuration-data-types` - Create configuration data type
+- `GET /api/v1/configuration-data-types/{id}` - Get configuration data type by ID
+- `PUT /api/v1/configuration-data-types/{id}` - Update configuration data type
+- `DELETE /api/v1/configuration-data-types/{id}` - Delete configuration data type
+
+### Distributor Product Catalog
+
+- `POST /api/v1/distributors/{distributorId}/product-catalog/filter` - Filter product catalog
+- `POST /api/v1/distributors/{distributorId}/product-catalog` - Create product catalog item
+- `GET /api/v1/distributors/{distributorId}/product-catalog/{catalogId}` - Get catalog item by ID
+- `PUT /api/v1/distributors/{distributorId}/product-catalog/{catalogId}` - Update catalog item
+- `DELETE /api/v1/distributors/{distributorId}/product-catalog/{catalogId}` - Delete catalog item
 
 ### API Features
 
@@ -1170,7 +1287,7 @@ curl -X POST "http://localhost:8080/api/v1/distributors/filter" \
   -d '{
     "filters": {
       "isActive": true,
-      "countryCode": "US"
+      "countryId": "550e8400-e29b-41d4-a716-446655440001"
     },
     "rangeFilters": {
       "createdAt": {
@@ -1187,16 +1304,6 @@ curl -X POST "http://localhost:8080/api/v1/distributors/filter" \
       "sortDirection": "ASC"
     }
   }'
-```
-
-#### Update Distributor Status
-
-```bash
-# Activate distributor
-curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/activate?updatedBy=550e8400-e29b-41d4-a716-446655440005"
-
-# Deactivate distributor
-curl -X PATCH "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/deactivate?updatedBy=550e8400-e29b-41d4-a716-446655440005"
 ```
 
 ### Multi-Country Operations Management
@@ -1351,23 +1458,25 @@ curl -X POST "http://localhost:8080/api/v1/distributors/1/products" \
     "isActive": true
   }'
 
-# Create lending configuration for the product
-curl -X POST "http://localhost:8080/api/v1/lending-configurations" \
+# Create lending configuration for the product (nested under distributor/product)
+curl -X POST "http://localhost:8080/api/v1/distributors/550e8400-e29b-41d4-a716-446655440000/products/550e8400-e29b-41d4-a716-446655440010/lending-configurations" \
   -H "Content-Type: application/json" \
   -d '{
-    "productId": 1,
+    "productId": "550e8400-e29b-41d4-a716-446655440010",
     "name": "Premium Loan Configuration",
     "description": "Configuration for premium personal loans",
+    "lendingTypeId": "550e8400-e29b-41d4-a716-446655440020",
     "minTermMonths": 12,
     "maxTermMonths": 84,
     "defaultTermMonths": 36,
-    "minInterestRate": 5.99,
-    "maxInterestRate": 15.99,
-    "defaultInterestRate": 9.99,
-    "minAmount": 5000,
-    "maxAmount": 100000,
-    "defaultAmount": 25000,
+    "minDownPaymentPercentage": 10.00,
+    "defaultDownPaymentPercentage": 20.00,
+    "interestRate": 9.99,
+    "processingFeePercentage": 1.50,
+    "earlyTerminationFeePercentage": 3.00,
+    "latePaymentFeeAmount": 25.00,
     "gracePeriodDays": 10,
+    "isDefault": false,
     "isActive": true
   }'
 ```
@@ -1388,20 +1497,20 @@ curl -X POST "http://localhost:8080/api/v1/distributors" \
 
 # Response:
 # {
-#   "timestamp": "2024-01-15T10:30:00Z",
-#   "status": 400,
-#   "error": "Bad Request",
-#   "message": "Validation failed",
-#   "errors": [
-#     {
-#       "field": "name",
-#       "message": "Distributor name is required"
-#     },
-#     {
-#       "field": "supportEmail",
-#       "message": "Support email must be a valid email address"
-#     }
-#   ]
+# "timestamp": "2024-01-15T10:30:00Z",
+# "status": 400,
+# "error": "Bad Request",
+# "message": "Validation failed",
+# "errors": [
+# {
+# "field": "name",
+# "message": "Distributor name is required"
+# },
+# {
+# "field": "supportEmail",
+# "message": "Support email must be a valid email address"
+# }
+# ]
 # }
 ```
 
@@ -1553,7 +1662,7 @@ common-platform-distributor-mgmt/
 │       └── enums/            # Enumeration definitions
 ├── common-platform-distributor-mgmt-models/
 │   └── src/main/java/com/firefly/core/distributor/models/
-│       ├── entities/         # JPA entities
+│       ├── entities/         # R2DBC entities
 │       └── repositories/     # Spring Data repositories
 ├── common-platform-distributor-mgmt-sdk/
 │   └── src/main/resources/
