@@ -17,8 +17,8 @@
 
 package com.firefly.core.distributor.core.services;
 
-import com.firefly.common.core.filters.FilterRequest;
-import com.firefly.common.core.queries.PaginationResponse;
+import org.fireflyframework.core.filters.FilterRequest;
+import org.fireflyframework.core.queries.PaginationResponse;
 import com.firefly.core.distributor.interfaces.dtos.LendingConfigurationDTO;
 import com.firefly.core.distributor.interfaces.dtos.LendingTypeDTO;
 import reactor.core.publisher.Flux;

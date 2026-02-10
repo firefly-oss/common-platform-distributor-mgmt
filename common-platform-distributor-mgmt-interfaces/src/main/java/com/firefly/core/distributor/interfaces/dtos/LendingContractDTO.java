@@ -17,9 +17,9 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidAmount;
-import com.firefly.annotations.ValidDate;
-import com.firefly.core.utils.annotations.FilterableId;
+import org.fireflyframework.annotations.ValidAmount;
+import org.fireflyframework.annotations.ValidDate;
+import org.fireflyframework.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

@@ -17,8 +17,8 @@
 
 package com.firefly.core.distributor.interfaces.dtos;
 
-import com.firefly.annotations.ValidPhoneNumber;
-import com.firefly.annotations.ValidTaxId;
+import org.fireflyframework.annotations.ValidPhoneNumber;
+import org.fireflyframework.annotations.ValidTaxId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

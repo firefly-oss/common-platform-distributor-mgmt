@@ -17,7 +17,7 @@
 
 package com.firefly.core.distributor.core.services;
 
-import com.firefly.common.core.filters.FilterRequest;
+import org.fireflyframework.core.filters.FilterRequest;
 import com.firefly.core.distributor.core.mappers.DistributorMapper;
 import com.firefly.core.distributor.core.services.impl.DistributorServiceImpl;
 import com.firefly.core.distributor.interfaces.dtos.DistributorDTO;

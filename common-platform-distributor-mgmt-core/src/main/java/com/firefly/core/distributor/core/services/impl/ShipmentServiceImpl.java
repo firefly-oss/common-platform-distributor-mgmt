@@ -17,8 +17,8 @@
 
 package com.firefly.core.distributor.core.services.impl;
 
-import com.firefly.common.core.filters.FilterRequest;
-import com.firefly.common.core.queries.PaginationResponse;
+import org.fireflyframework.core.filters.FilterRequest;
+import org.fireflyframework.core.queries.PaginationResponse;
 import com.firefly.core.distributor.core.mappers.ShipmentMapper;
 import com.firefly.core.distributor.core.services.ProductService;
 import com.firefly.core.distributor.core.services.ShipmentService;

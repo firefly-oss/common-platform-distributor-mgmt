@@ -18,7 +18,7 @@
 package com.firefly.core.distributor.interfaces.dtos;
 
 import com.firefly.core.distributor.interfaces.enums.DistributorActionEnum;
-import com.firefly.core.utils.annotations.FilterableId;
+import org.fireflyframework.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.constraints.NotBlank;
