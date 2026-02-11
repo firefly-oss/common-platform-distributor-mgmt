@@ -1,6 +1,6 @@
 spring:
   application:
-    name: common-platform-distributor-mgmt
+    name: core-common-distributor-mgmt
     version: 1.0.0
     description: Distributor Management Core Application
     team:

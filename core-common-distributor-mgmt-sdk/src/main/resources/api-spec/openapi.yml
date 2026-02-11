@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: common-platform-distributor-mgmt
+  title: core-common-distributor-mgmt
   description: Distributor Management Core Application
   contact:
     name: Firefly Software Solutions Inc

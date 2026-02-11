@@ -78,12 +78,12 @@ This service acts as the central hub for all distributor-related operations, pro
 The service follows a clean, modular architecture with clear separation of concerns:
 
 ```
-common-platform-distributor-mgmt/
-├── common-platform-distributor-mgmt-core/       # Business logic and service implementations
-├── common-platform-distributor-mgmt-interfaces/ # DTOs and public interfaces
-├── common-platform-distributor-mgmt-models/     # Data entities and repositories
-├── common-platform-distributor-mgmt-sdk/        # Client SDK for other services
-└── common-platform-distributor-mgmt-web/        # REST API controllers and web configuration
+core-common-distributor-mgmt/
+├── core-common-distributor-mgmt-core/       # Business logic and service implementations
+├── core-common-distributor-mgmt-interfaces/ # DTOs and public interfaces
+├── core-common-distributor-mgmt-models/     # Data entities and repositories
+├── core-common-distributor-mgmt-sdk/        # Client SDK for other services
+└── core-common-distributor-mgmt-web/        # REST API controllers and web configuration
 ```
 
 ### Technology Stack
@@ -671,7 +671,7 @@ erDiagram
 
 ### Master Data References
 
-This service integrates with the **common-platform-reference-master-data** service for the following reference data:
+This service integrates with the **core-common-reference-master-data** service for the following reference data:
 
 - **Country** (`country_id`): Referenced by Distributor, DistributorAgent, DistributorAgency, DistributorAuthorizedTerritory
 - **AdministrativeDivision** (`division_id`): Referenced by DistributorAgent, DistributorAgency, DistributorAuthorizedTerritory
@@ -832,7 +832,7 @@ spring:
 1. **Clone the Repository:**
 ```bash
 git clone <repository-url>
-cd common-platform-distributor-mgmt
+cd core-common-distributor-mgmt
 ```
 
 2. **Build the Project:**
@@ -842,7 +842,7 @@ mvn clean install
 
 3. **Run the Service:**
 ```bash
-cd common-platform-distributor-mgmt-web
+cd core-common-distributor-mgmt-web
 mvn spring-boot:run
 ```
 
@@ -1650,24 +1650,24 @@ spring:
 The project follows a clean architecture with clear separation of concerns:
 
 ```
-common-platform-distributor-mgmt/
-├── common-platform-distributor-mgmt-core/
+core-common-distributor-mgmt/
+├── core-common-distributor-mgmt-core/
 │   ├── src/main/java/com/firefly/core/distributor/core/
 │   │   ├── mappers/          # MapStruct mappers for entity-DTO conversion
 │   │   └── services/         # Business logic and service implementations
 │   └── src/test/java/        # Unit tests for services
-├── common-platform-distributor-mgmt-interfaces/
+├── core-common-distributor-mgmt-interfaces/
 │   └── src/main/java/com/firefly/core/distributor/interfaces/
 │       ├── dtos/             # Data Transfer Objects
 │       └── enums/            # Enumeration definitions
-├── common-platform-distributor-mgmt-models/
+├── core-common-distributor-mgmt-models/
 │   └── src/main/java/com/firefly/core/distributor/models/
 │       ├── entities/         # R2DBC entities
 │       └── repositories/     # Spring Data repositories
-├── common-platform-distributor-mgmt-sdk/
+├── core-common-distributor-mgmt-sdk/
 │   └── src/main/resources/
 │       └── api-spec/         # OpenAPI specification
-└── common-platform-distributor-mgmt-web/
+└── core-common-distributor-mgmt-web/
     ├── src/main/java/com/firefly/core/distributor/web/
     │   └── controllers/      # REST API controllers
     └── src/main/resources/   # Configuration files
@@ -1750,7 +1750,7 @@ common-platform-distributor-mgmt/
 mvn test
 
 # Run tests for specific module
-mvn test -pl common-platform-distributor-mgmt-core
+mvn test -pl core-common-distributor-mgmt-core
 
 # Run tests with coverage report
 mvn test jacoco:report
@@ -1817,7 +1817,7 @@ FROM openjdk:17-jre-slim
 
 WORKDIR /app
 
-COPY common-platform-distributor-mgmt-web/target/distributor-management-service.jar app.jar
+COPY core-common-distributor-mgmt-web/target/distributor-management-service.jar app.jar
 
 EXPOSE 8080
 
@@ -2104,7 +2104,7 @@ groups:
 1. **Fork the Repository**
    ```bash
    git clone <your-fork-url>
-   cd common-platform-distributor-mgmt
+   cd core-common-distributor-mgmt
    ```
 
 2. **Set Up Development Environment**
